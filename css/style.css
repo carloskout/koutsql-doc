@@ -82,18 +82,24 @@ main {
 
 /*
  * Navbar
- */
+
 
 .navbar-brand {
   background-color: #007bff;
   border-color: #007bff;
   color: aliceblue;
-  padding: 0.5rem;
   position: absolute;
   right: 0;
   top: 1rem;
-}
+} */
 
+.btn-menu {
+  position: absolute;
+  right: 0.7rem;
+  top: 1rem;
+  z-index: 100;
+  display: none;
+}
 .navbar-toggle {
   padding: .5rem;
 }
@@ -120,6 +126,10 @@ main {
 @media(max-width: 768px) {
   .main-header > #link-github{
     margin-right: 80px;
+  }
+
+  .btn-menu {
+    display: block;
   }
 }
 

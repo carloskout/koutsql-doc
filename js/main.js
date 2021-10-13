@@ -1,15 +1,15 @@
-const fragDir = './fragments/';
+let links = null;
+const fragDir = './fragments';
 const container = document.querySelector('#container');
 
 window.onload = (e) => {
     loadHomePage();
-    initRoutes();
 }
 
 
 
 function loadHomePage() {
-    resolveRoute('home');
+    resolveRoute('/home');
 }
 
 function request(path) {
@@ -17,10 +17,14 @@ function request(path) {
     let req = new XMLHttpRequest();
     req.open('GET', path);
     req.send();
-    
+
     return new Promise((resolve, reject) => {
         req.onload = (e) => {
-            resolve(e.target.response);
+            if(e.target.status == 200) {
+                resolve(e.target.response);
+            } else {
+                reject(e.target.status);
+            }
         };
         req.onerror = reject;
     });
@@ -31,29 +35,28 @@ function updateContent(content) {
     container.innerHTML = content;
 }
 
-function resolveRoute(path) {
-    request(path)
-    .then((content) => {
-        updateContent(content);
-    })
-    .catch(() => {
-        resolveRoute('404');
+function updateLinks() {
+    links = document.querySelectorAll('a');
+    links.forEach((link) => {
+        link.addEventListener('click', checkRoute, false);
     });
 }
 
-function initRoutes() {
+function resolveRoute(path) {
+    request(path)
+        .then((content) => {
+            updateContent(content);
+            updateLinks();
+        })
+        .catch(() => {
+            resolveRoute('/404');
+        });
+}
 
-    const checkRoute = function(e) {
-        /*if(e.target.className.contains('route')) {
-            e.target.preventDefault();
-            resolveRoute(e.target.href);
-        }*/
-
-        console.log(e.target.className);
+function checkRoute(e) {
+    console.log(e.target.href);
+    if (/route/.test(e.target.className)) {
+        e.preventDefault();
+        resolveRoute(e.target.href);
     }
-
-    const links = document.querySelectorAll('a');
-    links.forEach((link) => {
-        link.addEventListener('click', checkRoute);
-    });
 }
