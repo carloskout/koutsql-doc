@@ -1,16 +1,9 @@
+
+
 let links = null;
 const fragDir = './fragments';
 const container = document.querySelector('#container');
 
-window.onload = (e) => {
-    loadHomePage();
-}
-
-
-
-function loadHomePage() {
-    resolveRoute('/home');
-}
 
 function request(path) {
     path = fragDir + path + '.html';
@@ -54,9 +47,19 @@ function resolveRoute(path) {
 }
 
 function checkRoute(e) {
-    console.log(e.target.href);
+    
     if (/route/.test(e.target.className)) {
         e.preventDefault();
-        resolveRoute(e.target.href);
+        let index = e.target.href.lastIndexOf('/');
+        path = e.target.href.substring(index);
+        resolveRoute(path);
     }
+
 }
+
+window.onload = (e) => {
+    resolveRoute('/home');
+};
+
+
+

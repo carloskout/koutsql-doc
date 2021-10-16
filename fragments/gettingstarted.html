@@ -1,7 +1,49 @@
 <h1>Primeiros passos com KoutDB</h1>
 
 <p>
-    Antes de comerçarmos a criar e executar instruções SQL, devemos primeiros
-    informar para KoutDB uma conexão com Banco de Dados (PDO). Para isso, basta
-    usarmos o método KoutDB::setPDO.
+    Antes de comerçarmos a criar e executar instruções SQL, devemos primeiro
+    informar para KoutDB uma conexão com Banco de Dados existente. Para isso, basta
+    passarmos por parâmetro um objeto PDO para o método KoutDB::setPDO.
+</p>
+
+<pre class="block-code">
+    <code>
+        $pdo = new \PDO(...);
+        KoutDB::setPDO($pdo);
+    </code>
+</pre>
+
+<p>Prontinho! Agora nós podemos começar a criar e executar instruções SQL. Veja como é fácil:</p>
+
+<pre class="block-code">
+    <code>
+        $result = KoutDB::select('*')
+        ->table('produto')
+        ->exec()
+        ->getAll();
+    </code>
+</pre>
+
+<p>
+    Para vermos a instrução SQL gerada, basta executarmos o método sql() em vez do
+    método exec():
+</p>
+
+<pre class="block-code">
+    <code>
+        $result = KoutDB::select('*')
+        ->table('produto')
+        ->sql();
+
+        var_dump($result);
+
+        SQL Gerada:
+            SELECT * FROM produto;
+    </code>
+</pre>
+
+<p>
+    Ok. Então vimos uma simples demonstração de uso da API KoutDB, para prosseguir 
+    aprendendo mais recursos avançados desta API click 
+    <a href="/query" class="route" title="Consultas SQL">aqui</a>.
 </p>
