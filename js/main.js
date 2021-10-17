@@ -1,9 +1,9 @@
+let links = undefined;
+let currentPage = 'Página inicial';
+let currentPageElem = undefined;
 
-
-let links = null;
-const fragDir = './fragments';
 const container = document.querySelector('#container');
-
+const fragDir = './fragments';
 
 function request(path) {
     path = fragDir + path + '.html';
@@ -35,11 +35,18 @@ function updateLinks() {
     });
 }
 
+function updateBreadCrumbs() {
+    currentPageElem = document.querySelector('#current-page');
+    currentPageElem.textContent = currentPage;
+    currentPageElem.href = '#link-top';
+}
+
 function resolveRoute(path) {
     request(path)
         .then((content) => {
             updateContent(content);
             updateLinks();
+            updateBreadCrumbs();
         })
         .catch(() => {
             resolveRoute('/404');
@@ -52,6 +59,7 @@ function checkRoute(e) {
         e.preventDefault();
         let index = e.target.href.lastIndexOf('/');
         path = e.target.href.substring(index);
+        currentPage = e.target.title;
         resolveRoute(path);
     }
 
@@ -59,6 +67,7 @@ function checkRoute(e) {
 
 window.onload = (e) => {
     resolveRoute('/home');
+    updateBreadCrumbs();
 };
 
 

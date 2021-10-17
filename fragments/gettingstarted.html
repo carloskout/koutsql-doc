@@ -1,9 +1,9 @@
-<h1>Primeiros passos com KoutDB</h1>
+<h1 id="link-top">Primeiros passos com KoutDB</h1>
 
 <p>
     Antes de comerçarmos a criar e executar instruções SQL, devemos primeiro
     informar para KoutDB uma conexão com Banco de Dados existente. Para isso, basta
-    passarmos por parâmetro um objeto PDO para o método KoutDB::setPDO.
+    passarmos por parâmetro um objeto PDO para o método <code>KoutDB::setPDO</code>:
 </p>
 
 <pre class="block-code">
@@ -17,7 +17,7 @@
 
 <pre class="block-code">
     <code>
-        $result = KoutDB::select('*')
+        $result = KoutDB::select('descricao', 'preco_compra')
         ->table('produto')
         ->exec()
         ->getAll();
@@ -25,17 +25,28 @@
 </pre>
 
 <p>
-    Para vermos a instrução SQL gerada, basta executarmos o método sql() em vez do
-    método exec():
+    O trecho de código acima demonstra uma consulta de todos os registros
+    da tabela produto. No método <code>select('descricao', 'preco_compra')</code>
+    informamos a lista de campos que queremos recuperar separados por vírgula. Em seguida,
+    chamamos o método <code>table('produto')</code> para informarmos o nome da tabela
+    que será feita a consulta SQL. Para executarmos a instrução, chamamos o método 
+    <code>exec()</code> e para recuperarmos os registros retornados pela consulta usamos o método 
+    <code>getAll()</code>. Existem outros métodos além de <code>getAll()</code> 
+    para recuperar o resultado que serão demonstrados no decorrer da documentação.
+</p>
+
+<p>
+    Para vermos a instrução SQL gerada pela API, basta executarmos o método <code>sql()</code> em vez do
+    método <code>exec()</code>:
 </p>
 
 <pre class="block-code">
     <code>
-        $result = KoutDB::select('*')
+        $sql = KoutDB::select('*')
         ->table('produto')
         ->sql();
 
-        var_dump($result);
+        var_dump($sql);
 
         SQL Gerada:
             SELECT * FROM produto;
@@ -44,6 +55,6 @@
 
 <p>
     Ok. Então vimos uma simples demonstração de uso da API KoutDB, para prosseguir 
-    aprendendo mais recursos avançados desta API click 
+    aprendendo mais recursos avançados click 
     <a href="/query" class="route" title="Consultas SQL">aqui</a>.
 </p>

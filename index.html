@@ -23,7 +23,7 @@
 
       <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
         <h3>
-          <a href="/home" class="route">KoutDB</a>
+          <a href="/home" class="route" title="Página inicial">KoutDB</a>
         </h3>
 
         <div class="sidebar-sticky pt-3">
@@ -40,12 +40,12 @@
                 <div class="accordion-body">
                   <ul class="nav flex-column">
                     <li class="nav-item">
-                      <a class="nav-link active route" href="/gettingstarted">
+                      <a class="nav-link active route" href="/gettingstarted" title="Primeiros passos com KoutDB">
                         Primeiros passos
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#">
+                      <a class="nav-link route" href="/query">
                         Consultas SQL
                       </a>
                     </li>
@@ -112,17 +112,27 @@
         <div class="row">
           <div class="col-md-8 offset-1">
 
-            <div class="main-header">
-              <span>Doc > Pagina Inicial</span>
-              <a href="#" id="link-github">KoutDB no Github</a>
+            <div id="page-info">
+              Doc > <a id="current-page" href="#">Pagina Inicial</a>
+              <hr>
             </div>
-
-            <hr>
 
             <section id="container">
 
             </section>
           </div>
+        </div>
+
+        <div class="row">
+          <footer id="main-footer" class="col-md-12">
+            <hr>
+            <p>
+              Desenvolvido por Carlos Coutinho &lt;coutinhoco@outlook.com&gt;
+              |
+              Encontre-me no <a href="https://github.com/carloskout" target="_blank">Github</a>
+              
+            </p>
+          </footer>
         </div>
       </main>
     </div>

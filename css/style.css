@@ -6,6 +6,29 @@ main {
   margin-top: 2rem;
 }
 
+#page-info {
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding-top: 10px;
+  background-color: #fff;
+}
+
+#page-info hr {
+  margin-bottom: 0;
+}
+
+#container {
+  margin-top: 3rem;
+}
+
+#main-footer {
+  margin-top: 2rem;
+  font-size: 8pt;
+  text-align: center;
+}
+
 pre, code {
   padding-left: 0;
 }
@@ -128,17 +151,7 @@ pre, code {
   cursor: pointer;
 }
 
-.main-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-}
-
 @media(max-width: 768px) {
-  .main-header > #link-github{
-    margin-right: 80px;
-  }
-
   .btn-menu {
     display: block;
   }
