@@ -1,23 +1,23 @@
-<h1 id="link-top">Primeiros passos com KoutDB</h1>
+<h1 id="link-top">Primeiros passos com DataB</h1>
 
 <p>
-    Antes de comerçarmos a criar e executar instruções SQL, devemos primeiro
-    informar para KoutDB uma conexão com Banco de Dados existente. Para isso, basta
-    passarmos por parâmetro um objeto PDO para o método <code>KoutDB::setPDO</code>:
+    Antes de comerçar a criar e executar instruções SQL, primeiro você deve
+    informar para DataB uma conexão com Banco de Dados existente. Para isso, basta
+    passar por parâmetro um objeto PDO para o método <code>DataB::setPDO</code>:
 </p>
 
 <pre class="block-code">
     <code>
         $pdo = new \PDO(...);
-        KoutDB::setPDO($pdo);
+        DataB::setPDO($pdo);
     </code>
 </pre>
 
-<p>Prontinho! Agora nós podemos começar a criar e executar instruções SQL. Veja como é fácil:</p>
+<p>Prontinho! Agora você pode começar a criar e executar instruções SQL. Veja como é fácil:</p>
 
 <pre class="block-code">
     <code>
-        $result = KoutDB::select('descricao', 'preco_compra')
+        $result = DataB::select('descricao', 'preco_compra')
         ->table('produto')
         ->exec()
         ->getAll();
@@ -36,13 +36,13 @@
 </p>
 
 <p>
-    Para vermos a instrução SQL gerada pela API, basta executarmos o método <code>sql()</code> em vez do
+    Caso queira ver a instrução SQL gerada pela lib DataB, basta executar o método <code>sql()</code> em vez do
     método <code>exec()</code>:
 </p>
 
 <pre class="block-code">
     <code>
-        $sql = KoutDB::select('*')
+        $sql = DataB::select('*')
         ->table('produto')
         ->sql();
 
@@ -54,7 +54,6 @@
 </pre>
 
 <p>
-    Ok. Então vimos uma simples demonstração de uso da API KoutDB, para prosseguir 
-    aprendendo mais recursos avançados click 
-    <a href="/query" class="route" title="Consultas SQL">aqui</a>.
+    Ok. Então você viu uma simples demonstração de uso da lib DataB, para prosseguir aprendendo mais recursos avançados click 
+    <a href="/query" class="route link-aux" title="Consultas SQL">aqui</a>.
 </p>

@@ -1,15 +1,73 @@
 <h1 id="top-link">Consultas SQL</h1>
 
 <p>
-    Neste módulo aprenderemos tudo sobre como criar e executar consultas SQL usando a API koutDB.
-    Mostraremos o uso de cláusulas, junções de tabelas com joins, expressões lógicas e aritméticas,
+    Neste módulo você aprenderá tudo sobre como criar e executar consultas SQL usando DataB.
+    Será demonstrado o uso de cláusulas, junções de tabelas com joins, expressões lógicas e aritméticas,
     subqueries e uso de funções nativas do Banco de Dados.
 </p>
 
 <p>
     Se você não viu o módulo anterior, 
-    <a href="/gettingstarted" class="route" title="Primeiros passos com KoutDB">
-        Como dá os primeiros passos com koutDB
+    <a href="/gettingstarted" class="route link-aux" title="Primeiros passos com DataB">
+        Como dá os primeiros passos com a library DataB
     </a>,
-     volte para lá e veja como configurar a API para prosseguirmos com nossos estudos.
+     volte para lá e veja como configurará-la para poder usá-la.
 </p>
+
+<h4 class="sub-title">Especificando quais colunas serão retornadas pela consulta</h4>
+
+<p>
+    Use o método <code>select()</code> para especificar a lista de campos que serão
+    retornados pela consulta. Você pode passar por parâmetro tanto um array de 
+    nomes de colunas quanto uma lista de nomes de colunas separadas por virgulas.
+</p>
+
+<p>Usando array como parâmetro:</p>
+
+<pre class="block-code">
+    <code>
+        $colunas = array(
+            'descricao_produto',
+            'preco_compra',
+            'preco_venda'
+        );
+
+        $result = DataB::select($colunas)
+            ->table('produto')
+            ->exec()
+            ->getAll();
+        var_dump($result);
+    </code>
+</pre>
+
+<p>Usando lista de campos como parâmetro:</p>
+
+<pre class="block-code">
+    <code>
+        $result = DataB::select('descricao', 'preco_compra')
+            ->table('produto')
+            ->exec()
+            ->getAll();
+        var_dump($result);
+    </code>
+</pre>
+
+<p>Para recuperar todos os campos da tabela use <code>select('*')</code></p>
+
+<h4 class="sub-title">Definindo o tipo de retorna da consulta SQL</h4>
+
+<p>
+    * Use o método <code>getAll()</code> para retornar um array contendo todos
+    os registros retornados pela consulta.
+</p>
+
+<pre class="block-code">
+    <code>
+        $result = DataB::select('*')
+            ->table('produto')
+            ->exec()
+            ->getAll();
+        var_dump($result);
+    </code>
+</pre>
+
