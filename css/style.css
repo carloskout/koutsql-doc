@@ -50,6 +50,14 @@ pre, code {
   font-size: 13pt;
 }
 
+.nav-link-content {
+  background-color: aliceblue;
+}
+
+.nav-link-content ul {
+  list-style-type: circle;
+}
+
 /*
  * Sidebar
  */

@@ -1,28 +1,78 @@
-<h1 id="top-link">Consultas SQL</h1>
+<h1 id="link-top">Consultas SQL</h1>
 
 <p>
     Neste módulo você aprenderá tudo sobre como criar e executar consultas SQL usando DataB.
-    Será demonstrado o uso de cláusulas, junções de tabelas com joins, expressões lógicas e aritméticas,
-    subqueries e uso de funções nativas do Banco de Dados.
+    Será demonstrado o uso de cláusulas, junções de tabelas com joins, operadores relacionais,
+    expressões lógicas, subqueries e uso de funções nativas do Banco de Dados.
 </p>
 
 <p>
-    Se você não viu o módulo anterior, 
+    Se você não viu o módulo anterior,
     <a href="/gettingstarted" class="route link-aux" title="Primeiros passos com DataB">
         Como dá os primeiros passos com a library DataB
     </a>,
-     volte para lá e veja como configurará-la para poder usá-la.
+    volte para lá e veja como configurará-la para poder usá-la.
 </p>
 
-<h4 class="sub-title">Especificando quais colunas serão retornadas pela consulta</h4>
+<div>
+    <h4 class="sub-title">Conteúdo da página</h4>
+    <nav class="nav-link-content">
+        <ul>
+            <li>
+                <a href="#title-01">Especificando quais colunas serão retornadas pela consulta</a>
+            </li>
+            <li>
+                <a href="#title-02">Especificando o método de busca (fetch)</a>
+            </li>
+            <li>
+                <a href="#title-03">
+                    Definindo condições para a consulta SQL
+                </a>
+            </li>
+            <li>
+                <a href="#title-04">
+                    Criando parâmetros SQL com dados de entrada
+                </a>
+            </li>
+            <li>
+                <a href="#title-05">Operadores relacionais</a>
+            </li>
+            <li>
+                <a href="#title-06">
+                    Unindo tabelas com joins
+                </a>
+            </li>
+            <li>
+                <a href="#title-07">Operadores lógicos</a>
+            </li>
+            <li>
+                <a href="#title-08">Funções de agregação</a>
+            </li>
+            <li>
+                <a href="#title-09">Executando funções nativas</a>
+            </li>
+            <li>
+                <a href="#title-10">Consultas avançadas com subqueries</a>
+            </li>
+            <li>
+                <a href="#title-11">Consultas avançadas com subexpressões</a>
+            </li>
+            <li>
+                <a href="#title-12">Consultas nativas</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<h4 class="sub-title" id="title-01">Especificando quais colunas serão retornadas pela consulta</h4>
 
 <p>
     Use o método <code>select()</code> para especificar a lista de campos que serão
-    retornados pela consulta. Você pode passar por parâmetro tanto um array de 
+    retornados pela consulta. Você pode passar por parâmetro tanto um array de
     nomes de colunas quanto uma lista de nomes de colunas separadas por virgulas.
 </p>
 
-<p>Usando array como parâmetro:</p>
+<p><b>Usando array como parâmetro:</b></p>
 
 <pre class="block-code">
     <code>
@@ -36,11 +86,12 @@
             ->table('produto')
             ->exec()
             ->getAll();
+
         var_dump($result);
     </code>
 </pre>
 
-<p>Usando lista de campos como parâmetro:</p>
+<p><b>Usando lista de campos como parâmetro:</b></p>
 
 <pre class="block-code">
     <code>
@@ -48,17 +99,18 @@
             ->table('produto')
             ->exec()
             ->getAll();
+
         var_dump($result);
     </code>
 </pre>
 
 <p>Para recuperar todos os campos da tabela use <code>select('*')</code></p>
 
-<h4 class="sub-title">Definindo o tipo de retorna da consulta SQL</h4>
+<h4 class="sub-title" id="title-02">Especificando o método de busca (fetch)</h4>
 
 <p>
-    * Use o método <code>getAll()</code> para retornar um array contendo todos
-    os registros retornados pela consulta.
+    Use <code>getAll()</code> para recuperar todos
+    os registros retornados pela consulta:
 </p>
 
 <pre class="block-code">
@@ -67,7 +119,278 @@
             ->table('produto')
             ->exec()
             ->getAll();
+            
         var_dump($result);
+
+        SAÍDA >>>
+
+        array (size=5)
+            0 => 
+                array (size=3)
+                'id' => string '1' (length=1)
+                'descricao' => string 'CR HID SKALA 1KG' (length=16)
+                'preco_venda' => string '6.55' (length=4)
+            1 => 
+                array (size=3)
+                'id' => string '2' (length=1)
+                'descricao' => string 'CR DENTAL COLG 90G' (length=18)
+                'preco_venda' => string '3.89' (length=4)
+            ...
     </code>
 </pre>
 
+<p>
+    Use <code>getFirst()</code> para recuperar o primeiro
+    registro retornado pela consulta:
+</p>
+
+<pre class="block-code">
+    <code>
+        $result = DataB::select('*')
+            ->table('produto')
+            ->exec()
+            ->getFirst();
+            
+        var_dump($result);
+
+        SAÍDA >>>
+
+        array (size=3)
+            'id' => string '1' (length=1)
+            'descricao' => string 'CR HID SKALA 1KG' (length=16)
+            'preco_venda' => string '6.55' (length=4)
+    </code>
+</pre>
+
+<p>
+    Use <code>getLast()</code> para recuperar o último
+    registro retornado pela consulta:
+</p>
+
+<pre class="block-code">
+    <code>
+        $result = DataB::select('*')
+            ->table('produto')
+            ->exec()
+            ->getLast();
+            
+        var_dump($result);
+
+        SAÍDA >>>
+
+        array (size=3)
+            'id' => string '10' (length=1)
+            'descricao' => string 'DES AER DOVE 150ML' (length=16)
+            'preco_venda' => string '13.50' (length=4)
+    </code>
+</pre>
+
+<p>
+    Use <code>getSingleResult()</code> para recuperar o valor de uma
+    coluna específica. Observe que este método não retorna um array contento o resultado
+    da consulta mas sim o valor literal da coluna. Veja como funciona:
+</p>
+
+<pre class="block-code">
+    <code>
+        $result = DataB::select('descricao')
+            ->table('produto')
+            ->cond('id')
+            ->eq(1)
+            ->exec()
+            ->getSingleResult();
+            
+        var_dump($result);
+
+        SAÍDA >>>
+
+        'CR HID SKALA 1KG'
+
+    </code>
+</pre>
+
+<p>
+    No exemplo acima foi usada uma condição para limitar a quantidade de registros retornados pela
+    consulta. Se nenhuma condição for definida, então o método <code>getSingleResult()</code> irá
+    retornar o valor da primeira coluna do primeiro registro encontrado.
+</p>
+
+<p>
+    Use <code>getObjects()</code> para recuperar todos os
+    registros como objetos. Este método recebe por
+    parâmetro o nome da classe que será usada para criar as instâncias dos objetos.
+    Se nenhum parâmetro for especificado, então os registros serão retornados como
+    objetos 'stdClass':
+</p>
+
+<pre class="block-code">
+    <code>
+
+        class Produto {
+
+        }
+        
+        $rs = DataB::select('*')
+                ->table('produto')
+                ->exec()
+                ->getObjects('Produto');
+        
+        var_dump($rs);
+
+        SAÍDA >>>
+
+        array (size=5)
+            0 => 
+                object(Produto)[2]
+                public 'id' => string '1' (length=1)
+                public 'descricao' => string 'CR HID SKALA 1KG' (length=16)
+                public 'preco_compra' => string '4.98' (length=4)
+                public 'preco_venda' => string '6.55' (length=4)
+            1 => 
+                object(Produto)[6]
+                public 'id' => string '2' (length=1)
+                public 'descricao' => string 'CR DENTAL COLG 90G' (length=18)
+                public 'preco_compra' => string '1.97' (length=4)
+                public 'preco_venda' => string '3.89' (length=4)
+            ...
+    </code>
+</pre>
+
+<p>
+    Use <code>getObject()</code> para recuperar o primeiro
+    registro como objeto. Este método recebe por
+    parâmetro o nome da classe que será usada para criar a instância do objeto.
+    Se nenhum parâmetro for especificado, então o primeiro registro será retornado como
+    um objeto 'stdClass'.
+</p>
+
+<p>
+    Use <code>getLazy()</code> para recuperar o primeiro
+    registro como um objeto PDORow onde as variáveis desse objeto correspondem
+    aos nomes das colunas da tabela. Esse método faz o carregamento dos
+    dados conforme as variáveis do objeto PDORow forem acessadas.
+</p>
+
+<h4 class="sub-title" id="title-03">Definindo condições para a consulta SQL</h4>
+
+<p>
+    Use o método <code>cond()</code> para adicionar a cláusula where à
+    consulta SQL:
+</p>
+
+<pre class="block-code">
+    <code>
+        $result = DataB::select('*')
+            ->table('produto')
+            ->cond('preco_venda')
+            ->eq(2.00)
+            ->exec()
+            ->getAll();
+
+        SQL Gerada >>>
+
+        'select * from produto where preco_venda = ?'
+
+    </code>
+</pre>
+
+<h4 class="sub-title" id="title-04">Criando parâmetros SQL com dados de entrada</h4>
+
+<p>
+    Existem duas maneiras para criar parâmetros SQL com dados de entrada usando DataB.
+    A primeira é através de métodos que recebem algum valor de entrada, como por exemplo o
+    método <code>eq()</code> que equivale ao operador relacional de igualdade. Por padrão,
+    todo valor passado para esses métodos são convertidos para mask placeholders para evitar
+    SQL Injection. Observe a instrução SQL gerada no exemplo acima onde temos o campo
+    <code>preco_venda = ?</code>.
+</p>
+
+<p>
+    A outra maneira é passando um array de dados para o método <code>exec()</code>. Ao trabalhar desta
+    forma, fica ao seu critério usar mask placeholders ou named placeholders. Se você optar por esta, deverá
+    passar um array associativo onde as chaves do array devem corresponder aos nomes das colunas da tabela; caso opte
+    por aquela então você terá que passar um array indexado como parâmentro. Veja como funciona:
+</p>
+
+<p>
+    <b>Usando mask placeholders:</b>
+</p>
+
+<pre class="block-code">
+    <code>
+        $result = DataB::select('*')
+            ->table('produto')
+            ->cond('preco_venda')
+            ->gt('?')
+            ->exec(array(25.00))
+            ->getAll();
+
+        SQL Gerada >>>
+
+        'select * from produto where preco_venda > ?'
+
+    </code>
+</pre>
+
+<p>
+    <b>Usando named placeholders:</b>
+</p>
+
+<pre class="block-code">
+    <code>
+
+        $data = array(
+            'email' => 'abc@gmail.com',
+            'senha' => 12345
+        );
+
+        $result = DataB::select('*')
+            ->table('usuario')
+            ->cond('email')
+            ->eq(':email')
+            ->and('senha')
+            ->eq(':senha')
+            ->exec($data)
+            ->getAll();
+
+        SQL Gerada >>>
+
+        select * from usuario where email = :email
+            and senha = :senha'
+
+    </code>
+</pre>
+
+<h4 class="sub-title" id="title-04">Operadores relacionais</h4>
+
+<p>
+    Nos exemplos anteriores você viu o uso de alguns operadores relacionais, como por exemplo
+    <code>eq()</code> e <code>lt()</code>. É muito simples o uso desses métodos, eles
+    recebem como parâmetro um valor a ser comparado. Esse valor pode ser tanto um literal
+    (strings, inteiros ou boleanos) quanto um callable para <a href="#title-10">subqueries</a>.
+</p>
+
+<p>
+    Os métodos de comparação são estes:
+</p>
+
+<ul>
+    <li>
+        <code>eq()</code> (=)
+    </li>
+    <li>
+        <code>ne()</code> (!=)
+    </li>
+    <li>
+        <code>lt()</code> (&lt;)
+    </li>
+    <li>
+        <code>gt()</code> (&gt;)
+    </li>
+    <li>
+        <code>le()</code> (&lt;=)
+    </li>
+    <li>
+        <code>ge()</code> (&gt;=)
+    </li>
+</ul>
