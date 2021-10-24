@@ -139,7 +139,7 @@ pre, code {
 .btn-menu {
   position: absolute;
   right: 0.7rem;
-  top: 1rem;
+  top: .5rem;
   z-index: 100;
   display: none;
 }
@@ -164,6 +164,10 @@ pre, code {
   .btn-menu {
     display: block;
   }
+}
+
+.next-pages {
+  float: right;
 }
 
 

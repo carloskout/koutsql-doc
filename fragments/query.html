@@ -1,7 +1,7 @@
-<h1 id="link-top">Consultas SQL</h1>
+<h1 id="link-top">Introdução</h1>
 
 <p>
-    Neste seção você aprenderá criar e executar consultas SQL usando DataB.
+    Esta seção demonstra como criar e executar consultas SQL usando DataB.
 </p>
 
 <p>
@@ -12,65 +12,36 @@
     volte para lá e veja como configurará-la para poder usá-la.
 </p>
 
+<!--Link de navegação de conteudo-->
 <div>
     <h4 class="sub-title">Conteúdo da página</h4>
     <nav class="nav-link-content">
         <ul>
             <li>
-                <a href="#title-01">Especificando quais colunas serão retornadas pela consulta</a>
+                <a href="#title-01">Consultando dados</a>
             </li>
             <li>
-                <a href="#title-02">Especificando o método de busca (fetch)</a>
+                <a href="#title-02">Ordenação de dados</a>
             </li>
             <li>
-                <a href="#title-03">
-                    Definindo condições para a consulta SQL
-                </a>
-            </li>
-            <li>
-                <a href="#title-04">
-                    Criando parâmetros SQL com dados de entrada
-                </a>
-            </li>
-            <li>
-                <a href="#title-05">Operadores relacionais</a>
-            </li>
-            <li>
-                <a href="#title-06">Operadores lógicos</a>
-            </li>
-            <li>
-                <a href="#title-07">
-                    Unindo tabelas com joins
-                </a>
-            </li>
-            <li>
-                <a href="#title-08">Funções de agregação</a>
-            </li>
-            <li>
-                <a href="#title-09">Executando funções nativas</a>
-            </li>
-            <li>
-                <a href="#title-10">Consultas avançadas com subqueries</a>
-            </li>
-            <li>
-                <a href="#title-11">Consultas avançadas com subexpressões</a>
-            </li>
-            <li>
-                <a href="#title-12">Consultas nativas</a>
+                <a href="#title-03">Filtrando dados</a>
             </li>
         </ul>
     </nav>
 </div>
 
-<h4 class="sub-title" id="title-01">Especificando quais colunas serão retornadas pela consulta</h4>
+<h1 class="sub-title" id="title-01"># Consultando Dados</h1>
+
+<p></p>
 
 <p>
-    Use o método <code>select()</code> para especificar a lista de campos que serão
+    Para fazer consultas SQL use o método <code>select()</code> para especificar a lista de campos que serão
     retornados pela consulta. Você pode passar por parâmetro tanto um array de
-    nomes de colunas quanto uma lista de nomes de colunas separadas por virgulas.
+    nomes de colunas quanto uma lista de nomes de colunas separadas por virgulas. Em seguida, use o 
+    método <code>table()</code> para definir em qual tabela será feita a consulta de dados.
 </p>
 
-<p><b>Usando array como parâmetro:</b></p>
+<h5>Usando array como parâmetro:</h5>
 
 <pre class="block-code">
     <code>
@@ -89,7 +60,7 @@
     </code>
 </pre>
 
-<p><b>Usando lista de campos como parâmetro:</b></p>
+<h5>Usando lista de campos como parâmetro:</h5>
 
 <pre class="block-code">
     <code>
@@ -102,9 +73,14 @@
     </code>
 </pre>
 
+<p>
+    O método <code>exec()</code> é chamado para executar a instrução SQL enquanto o método
+    <code>getAll()</code> recupera o resultado retornado pelo o banco de dados.
+</p>
+
 <p>Para recuperar todos os campos da tabela use <code>select('*')</code></p>
 
-<h4 class="sub-title" id="title-02">Especificando o método de busca (fetch)</h4>
+<h3 class="sub-title">Especificando o método de busca (fetch)</h3>
 
 <p>
     Use <code>getAll()</code> para recuperar todos
@@ -269,6 +245,156 @@
     dados conforme as variáveis do objeto PDORow forem acessadas.
 </p>
 
+<h3 class="sub-title">Consultas nativas</h3>
+
+<p>
+    Para executar consultas nativas com DataB use o método <code>DataB::statement()</code>, que pode
+    ser usado para executar instruções DML e DDL;
+</p>
+
+<h5>Executando instrução DML</h5>
+
+<pre class="block-code">
+    <code>
+        $sql = 'select * from produto';
+        $produtos = DataB::statement($sql)->getAll();
+    </code>
+</pre>
+
+<h5>Executando instrução DDL</h5>
+
+<pre class="block-code">
+    <code>
+        $sql = 'alter table usuario add column level int(2)';
+        $rowCount = DataB::statement($sql)->rows();
+    </code>
+</pre>
+
+<h3 class="sub-title">Funções de agregação</h3>
+
+<h5>Calculando a quantidade de registros de uma consulta:</h5>
+
+<pre class="block-code">
+    <code>
+        $result = DataB::count('*')
+            ->table('produto')
+            ->exec()
+            ->getSingleResult();
+    </code>
+</pre>
+
+<h5>Calculando o valor mínimo de todos os valores de um conjunto:</h5>
+
+<pre class="block-code">
+    <code>
+        $result = DataB::min('preco_compra')
+        ->table('produto')
+        ->exec()
+        ->getSingleResult();
+    </code>
+</pre>
+
+<h5>Calculando o valor máximo de todos os valores de um conjunto:</h5>
+
+<pre class="block-code">
+    <code>
+        $result = DataB::max('preco_compra')
+        ->table('produto')
+        ->exec()
+        ->getSingleResult();
+    </code>
+</pre>
+
+<h5>Calculando a média de todos os valores de um conjunto:</h5>
+
+<pre class="block-code">
+    <code>
+        $result = DataB::avg('preco_venda')
+        ->table('produto')
+        ->exec()
+        ->getSingleResult();
+    </code>
+</pre>
+
+<h5>Calculando a soma de todos os valores de um conjunto:</h5>
+
+<pre class="block-code">
+    <code>
+        $result = DataB::sum('preco_venda')
+        ->table('produto')
+        ->exec()
+        ->getSingleResult();
+    </code>
+</pre>
+
+<h3 class="sub-title">Executando funções nativas</h3>
+
+<p>
+    Use <code>DataB::fn()</code> para executar de forma nativa qualquer função disponível
+    no banco de dados. O primeiro parâmetro passado para esse método deve ser o nome da função
+    a ser executada; os demais, são parâmetros de entradas para a função.
+</p>
+
+<h5>Executando função <code>concat</code>:</h5>
+<pre class="block-code">
+    <code>
+        $result = DataB::fn('concat', 'nome', 'sobrenome')
+        ->table('cliente')
+        ->exec()
+        ->getAll();
+    </code>
+</pre>
+
+<h5>Executando função <code>count</code>:</h5>
+<pre class="block-code">
+    <code>
+        $result = DataB::fn('count', '*')
+        ->table('cliente')
+        ->exec()
+        ->getSingleResult();
+    </code>
+</pre>
+
+<h1 class="sub-title" id="title-02"># Ordenação de Dados</h1>
+
+<h5>Ordenação ascendente:</h5>
+
+<pre class="block-code">
+    <code>
+        $result = DataB::select('*')
+        ->table('produto')
+        ->orderByAsc('descricao')
+        ->exec()
+        ->getAll();
+    </code>
+</pre>
+
+<h5>Ordenação descendente:</h5>
+
+<pre class="block-code">
+    <code>
+        $result = DataB::select('*')
+        ->table('produto')
+        ->orderByDesc('descricao')
+        ->exec()
+        ->getAll();
+    </code>
+</pre>
+
+<h5>Usando várias colunas para ordenação:</h5>
+
+<pre class="block-code">
+    <code>
+        $result = DataB::select('*')
+        ->table('cliente')
+        ->orderByAsc('nome', 'idade')
+        ->exec()
+        ->getAll();
+    </code>
+</pre>
+
+<h1 class="sub-title" id="title-03"># Filtrando Dados</h1>
+<!--
 <h4 class="sub-title" id="title-03">Definindo condições para a consulta SQL</h4>
 
 <p>
@@ -394,3 +520,4 @@
 </ul>
 
 <h4 class="sub-title" id="title-06">Operadores lógicos</h4>
+-->
