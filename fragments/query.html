@@ -5,7 +5,7 @@
 </p>
 
 <p>
-    Se você não viu o módulo anterior,
+    Se você não viu o módulo
     <a href="/gettingstarted" class="route link-aux" title="Primeiros passos com DataB">
         Como dá os primeiros passos com a library DataB
     </a>,
@@ -21,7 +21,7 @@
                 <a href="#title-01">Consultando dados</a>
             </li>
             <li>
-                <a href="#title-02">Ordenação de dados</a>
+                <a href="#title-02">Ordenando dados</a>
             </li>
             <li>
                 <a href="#title-03">Filtrando dados</a>
@@ -248,8 +248,9 @@
 <h3 class="sub-title">Consultas nativas</h3>
 
 <p>
-    Para executar consultas nativas com DataB use o método <code>DataB::statement()</code>, que pode
-    ser usado para executar instruções DML e DDL;
+    Para executar consultas nativas use <code>DataB::nativeSQL()</code>.
+    Este método executa qualquer instrução SQL, tanto
+    DML quanto DDL.
 </p>
 
 <h5>Executando instrução DML</h5>
@@ -257,7 +258,7 @@
 <pre class="block-code">
     <code>
         $sql = 'select * from produto';
-        $produtos = DataB::statement($sql)->getAll();
+        $produtos = DataB::nativeSQL($sql)->getAll();
     </code>
 </pre>
 
@@ -355,9 +356,16 @@
     </code>
 </pre>
 
-<h1 class="sub-title" id="title-02"># Ordenação de Dados</h1>
+<h1 class="sub-title" id="title-02"># Ordenando Dados</h1>
 
-<h5>Ordenação ascendente:</h5>
+<p>
+    Para ordenar dados use os métodos <code>orderByAsc()</code> e
+    <code>orderByDesc()</code>. Esses métodos recebem como parâmetro
+    a(s) coluna(s) que serão usadas na ordenação dos dados.
+    Observe os exemplos a seguir:
+</p>
+
+<h5>Ordenação ascendente.</h5>
 
 <pre class="block-code">
     <code>
@@ -369,7 +377,7 @@
     </code>
 </pre>
 
-<h5>Ordenação descendente:</h5>
+<h5>Ordenação descendente.</h5>
 
 <pre class="block-code">
     <code>
@@ -381,7 +389,7 @@
     </code>
 </pre>
 
-<h5>Usando várias colunas para ordenação:</h5>
+<h5>Usando colunas para ordenação.</h5>
 
 <pre class="block-code">
     <code>
@@ -394,8 +402,8 @@
 </pre>
 
 <h1 class="sub-title" id="title-03"># Filtrando Dados</h1>
-<!--
-<h4 class="sub-title" id="title-03">Definindo condições para a consulta SQL</h4>
+
+<h3 class="sub-title">Cláusula where</h3>
 
 <p>
     Use o método <code>cond()</code> para adicionar a cláusula where à
@@ -414,51 +422,50 @@
         SQL Gerada >>>
 
         'select * from produto where preco_venda = ?'
-
     </code>
 </pre>
 
-<h4 class="sub-title" id="title-04">Criando parâmetros SQL com dados de entrada</h4>
+<p>
+    Observe a instrução SQL gerada no exemplo acima onde temos o campo
+    <code>preco_venda = ?</code>. Por padrão, todos os parâmetros de entrada 
+    para a instrução SQL são convertidos para <strong>mask placeholders</strong> para evitar
+    SQL Injection.
+</p>
 
 <p>
     Existem duas maneiras para criar parâmetros SQL com dados de entrada usando DataB.
     A primeira é através de métodos que recebem algum valor de entrada, como por exemplo o
-    método <code>eq()</code> que equivale ao operador relacional de igualdade. Por padrão,
-    todo valor passado para esses métodos são convertidos para mask placeholders para evitar
-    SQL Injection. Observe a instrução SQL gerada no exemplo acima onde temos o campo
-    <code>preco_venda = ?</code>.
+    método <code>eq()</code> que equivale ao operador relacional de igualdade.  A segunda é 
+    passando um array de dados para o método <code>exec()</code>. Ao trabalhar desta forma, 
+    fica ao seu critério usar <strong>mask placeholders</strong> ou <strong>named placeholders</strong>. 
+    Se você optar por esta, deverá passar um array associativo onde as chaves do array devem 
+    corresponder aos nomes das colunas da tabela; caso opte por aquela, então você terá que 
+    passar um array indexado como parâmentro. Veja como funciona:
 </p>
 
-<p>
-    A outra maneira é passando um array de dados para o método <code>exec()</code>. Ao trabalhar desta
-    forma, fica ao seu critério usar mask placeholders ou named placeholders. Se você optar por esta, deverá
-    passar um array associativo onde as chaves do array devem corresponder aos nomes das colunas da tabela; caso opte
-    por aquela então você terá que passar um array indexado como parâmentro. Veja como funciona:
-</p>
-
-<p>
-    <b>Usando mask placeholders:</b>
-</p>
+<h5>Usando mask placeholders:</h5>
 
 <pre class="block-code">
     <code>
+        $data = array(
+            'abc@gmail.com',
+        );
+
         $result = DataB::select('*')
-            ->table('produto')
-            ->cond('preco_venda')
-            ->gt('?')
-            ->exec(array(25.00))
+            ->table('usuario')
+            ->cond('email')
+            ->eq('?')
+            ->exec($data)
             ->getAll();
 
         SQL Gerada >>>
 
-        'select * from produto where preco_venda > ?'
+        'select * from usuario where email = ?'
 
     </code>
 </pre>
 
-<p>
-    <b>Usando named placeholders:</b>
-</p>
+<h5>Usando named placeholders:</h5>
 
 <pre class="block-code">
     <code>
@@ -485,17 +492,10 @@
     </code>
 </pre>
 
-<h4 class="sub-title" id="title-05">Operadores relacionais</h4>
+<h3 class="sub-title">Operadores relacionais</h3>
 
 <p>
-    Nos exemplos anteriores você viu o uso de alguns operadores relacionais, como por exemplo
-    <code>eq()</code> e <code>lt()</code>. É muito simples o uso desses métodos, eles
-    recebem como parâmetro um valor a ser comparado. Esse valor pode ser tanto um literal
-    (strings, inteiros ou boleanos) quanto um callable para <a href="#title-10">subqueries</a>.
-</p>
-
-<p>
-    Os métodos de comparação são estes:
+    Use os seguintes métodos para comparar valores com DataB:
 </p>
 
 <ul>
@@ -519,5 +519,210 @@
     </li>
 </ul>
 
-<h4 class="sub-title" id="title-06">Operadores lógicos</h4>
--->
+<p>
+    Os métodos de comparação recebem como parâmetro um valor a ser comparado ou uma função
+    callback que é usada para criar <a href="#title-">subqueries</a>. Veja um exemplo básico de uso:
+</p>
+
+<pre class="block-code">
+    <code>
+        $precoCompra = 1.99;
+        $precoVenda = 12.59;
+
+        $result = DataB::select('*')
+            ->table('produto')
+            ->cond('preco_compra')
+            ->gt($precoCompra)
+            ->or('preco_venda')
+            ->lt($precoVenda)
+            ->exec()
+            ->getAll();
+        
+        SQL Gerada >>>
+            'select * from produto where preco_compra > ?
+                    or preco_venda &lt; ?'
+    </code>
+</pre>
+
+<p>
+    Para fazer comparação entre campos de tabela, use o método <code>DataB::field()</code> para incluir o campo a ser comparado na instrução. Observe no trecho de código abaixo que demonstra a consulta de todos os
+    produtos e seus respectivos valores de estoque:
+</p>
+
+<pre class="block-code">
+    <code>
+        $result = DataB::select('p.descricao', 'e.atual')
+            ->table('produto as p, estoque as e')
+            ->cond('p.id')
+            ->eq()
+            ->field('e.produto_id')
+            ->exec()
+            ->getAll();
+
+        SQL Gerada >>>
+            'select p.descricao, e.atual from produto as p, estoque as e 
+                where p.id = e.produto_id'
+    </code>
+</pre>
+
+<h3 class="sub-title">Operadores lógicos</h3>
+
+<h5>Operadores AND e OR</h5>
+
+<p>
+    Para combinar duas ou mais expressões lógicas, use os métodos <code>DataB::and()</code> e
+    <code>DataB::or()</code>. Esses métodos recebem como parâmetro um nome de um campo
+    a ser incluído na expressão ou uma função callback que é usada para criar 
+    <a href="#title">subexpressões</a>. Observe o trecho de código abaixo:
+</p>
+
+<pre class="block-code">
+    <code>
+        $result = DataB::select('*')
+            ->table('produto as p, estoque as e')
+            ->cond('p.id')
+            ->eq()
+            ->field('e.produto_id')
+            ->and('p.preco_venda')
+            ->ge(15.99)
+            ->or('p.preco_compra')
+            ->le(1.99)
+            ->exec()
+            ->getAll();
+
+        SQL Gerada >>>
+            'select * from produto as p, estoque as e 
+                where p.id = e.produto_id 
+                    and p.preco_venda >= ? or p.preco_compra &lt;= ?'
+    </code>
+</pre>
+
+<h5>Operadores IN e NOT IN. </h5>
+
+<p>
+    Use os métodos <code>DataB::in()</code> e <code>DataB::notIn()</code>, respectivamente.
+    Você pode passar por parâmetro tanto um array de valores quanto um conjunto de valores
+    separados por vírgula. Veja como funciona:
+</p>
+
+<h6>Passando um conjunto de valores por parâmetro:</h6>
+
+<pre class="block-code">
+    <code>
+        $result = DataB::select('*')
+            ->table('fruta')
+            ->cond('nome')
+            ->in('Banana', 'Maçã', 'Uva')
+            ->exec()
+            ->getAll();
+
+        SQL Gerada >>>
+            'select * from frutas where nome in(?, ?, ?)'
+    </code>
+</pre>
+
+<h6>Passando um array de valores por parâmetro:</h6>
+
+<pre class="block-code">
+    <code>
+        $frutas = array('Pera', 'Laranja', 'Goiaba');
+
+        $result = DataB::select('*')
+            ->table('fruta')
+            ->cond('nome')
+            ->notIn($frutas)
+            ->exec()
+            ->getAll();
+
+        SQL Gerada >>>
+            'select * from frutas where nome not in(?, ?, ?)'
+    </code>
+</pre>
+
+<h5>Operadores BETWEEN e NOT BETWEEN</h5>
+
+<p>
+    Para incluir estes operadores na instrução SQL use os métodos
+    <code>DataB::between()</code> e <code>DataB::notBetween()</code>:
+</p>
+
+<pre class="block-code">
+    <code>
+
+        $result = DataB::select('*')
+            ->table('produto')
+            ->cond('preco_venda')
+            ->between(4.99, 12.00)
+            ->exec()
+            ->getAll();
+
+        SQL Gerada >>>
+            'select * from produto where preco_venda between ? and ?'
+    </code>
+</pre>
+
+<h5>Operador LIKE</h5>
+
+<p>
+    DataB disponibiliza três métodos para se trabalhar com o operador <code>LIKE</code>:
+</p>
+
+<ul>
+    <li>
+        <code>DataB::startsWith()</code> - Busca por um valor que começa com um padrão.
+    </li>
+    <li>
+        <code>DataB::contains()</code>   - Busca por um valor que contêm um padrão.
+    </li>
+    <li>
+        <code>DataB::endsWith()</code>   - Busca por um valor que termina com um padrão.
+    </li>
+</ul>
+
+<p>
+    Esses métodos recebem como parâmetros o padrão a ser usado na busca de valores.
+    Observe:
+</p>
+
+<pre class="block-code">
+    <code>
+
+        $result = DataB::select('*')
+            ->table('frutas')
+            ->cond('nome')
+            ->startsWith('M')
+            ->exec()
+            ->getAll();
+
+        SQL Gerada >>>
+
+            array (size=2)
+                0 => 
+                array (size=2)
+                    'id' => string '1' (length=1)
+                    'nome' => string 'Maçã' (length=6)
+                1 => 
+                array (size=2)
+                    'id' => string '7' (length=1)
+                    'nome' => string 'Melancia' (length=8)
+    </code>
+</pre>
+
+<p>
+    Veja o mesmo exemplo acima só que usando o método <code>DataB::exec()</code> para receber o
+    padrão como parâmetro:
+</p>
+
+<pre class="block-code">
+    <code>
+        $result = DataB::select('*')
+            ->table('frutas')
+            ->cond('nome')
+            ->startsWith('?')
+            ->exec('M%')
+            ->getAll();
+    </code>
+</pre>
+
+
+
