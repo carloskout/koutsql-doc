@@ -18,13 +18,16 @@
     <nav class="nav-link-content">
         <ul>
             <li>
-                <a href="#title-01">Consultando dados</a>
+                <a href="#title-01">Consultando Dados</a>
             </li>
             <li>
-                <a href="#title-02">Ordenando dados</a>
+                <a href="#title-02">Ordenando Dados</a>
             </li>
             <li>
-                <a href="#title-03">Filtrando dados</a>
+                <a href="#title-03">Filtrando Dados</a>
+            </li>
+            <li>
+                <a href="#title-04">Junção De Tabelas</a>
             </li>
         </ul>
     </nav>
@@ -205,7 +208,7 @@
         }
         
         $rs = DataB::select('*')
-                ->table('produto')
+                ->table('produtos')
                 ->exec()
                 ->getObjects('Produto');
         
@@ -413,7 +416,7 @@
 <pre class="block-code">
     <code>
         $result = DataB::select('*')
-            ->table('produto')
+            ->table('produtos')
             ->cond('preco_venda')
             ->eq(2.00)
             ->exec()
@@ -421,7 +424,7 @@
 
         SQL Gerada >>>
 
-        'select * from produto where preco_venda = ?'
+        'select * from produtos where preco_venda = ?'
     </code>
 </pre>
 
@@ -530,7 +533,7 @@
         $precoVenda = 12.59;
 
         $result = DataB::select('*')
-            ->table('produto')
+            ->table('produtos')
             ->cond('preco_compra')
             ->gt($precoCompra)
             ->or('preco_venda')
@@ -539,7 +542,7 @@
             ->getAll();
         
         SQL Gerada >>>
-            'select * from produto where preco_compra > ?
+            'select * from produtos where preco_compra > ?
                     or preco_venda &lt; ?'
     </code>
 </pre>
@@ -552,7 +555,7 @@
 <pre class="block-code">
     <code>
         $result = DataB::select('p.descricao', 'e.atual')
-            ->table('produto as p, estoque as e')
+            ->table('produtos as p, estoque as e')
             ->cond('p.id')
             ->eq()
             ->field('e.produto_id')
@@ -560,7 +563,7 @@
             ->getAll();
 
         SQL Gerada >>>
-            'select p.descricao, e.atual from produto as p, estoque as e 
+            'select p.descricao, e.atual from produtos as p, estoque as e 
                 where p.id = e.produto_id'
     </code>
 </pre>
@@ -579,7 +582,7 @@
 <pre class="block-code">
     <code>
         $result = DataB::select('*')
-            ->table('produto as p, estoque as e')
+            ->table('produtos as p, estoque as e')
             ->cond('p.id')
             ->eq()
             ->field('e.produto_id')
@@ -591,7 +594,7 @@
             ->getAll();
 
         SQL Gerada >>>
-            'select * from produto as p, estoque as e 
+            'select * from produtos as p, estoque as e 
                 where p.id = e.produto_id 
                     and p.preco_venda >= ? or p.preco_compra &lt;= ?'
     </code>
@@ -650,14 +653,14 @@
     <code>
 
         $result = DataB::select('*')
-            ->table('produto')
+            ->table('produtos')
             ->cond('preco_venda')
             ->between(4.99, 12.00)
             ->exec()
             ->getAll();
 
         SQL Gerada >>>
-            'select * from produto where preco_venda between ? and ?'
+            'select * from produtos where preco_venda between ? and ?'
     </code>
 </pre>
 
@@ -724,5 +727,84 @@
     </code>
 </pre>
 
+<h5>Operadores IS NULL e IS NOT NULL</h5>
 
+<p>
+    Use os métodos <code>DataB::isNull()</code> e <code>DataB::isNotNull()</code>, respectivamente.
+    Observe:
+</p>
+
+<pre class="block-code">
+    <code>
+        $result = DataB::select('*')
+            ->table('frutas')
+            ->cond('nome')
+            ->isNotNull()
+            ->exec()
+            ->getAll();
+    </code>
+</pre>
+
+<h3>Restringindo o número de linhas retornados pela consulta</h3>
+
+<p>
+    Use <code>DataB::limit()</code>:
+</p>
+
+<pre class="block-code">
+    <code>
+        $result = DataB::select('*')
+            ->table('produtos')
+            ->limit(10)
+            ->exec()
+            ->getAll();
+    </code>
+</pre>
+
+<p>
+    Você pode especificar também o número de linhas a pular antes de retornar o resultado 
+    da consulta. Observe:
+</p>
+
+<pre class="block-code">
+    <code>
+        $result = DataB::select('*')
+            ->table('produtos')
+            ->limit(10, 2)
+            ->exec()
+            ->getAll();
+
+        SQL Gerada:
+            'select * from produtos limit 2, 10'
+    </code>
+</pre>
+
+<p>
+    No trecho de código acima, buscamos por dez registros da tabela <code>produtos</code>, inicando
+    na linha seguinte depois da linha <code>2</code>.
+</p>
+
+<h3>
+    Buscando dados não duplicados
+</h3>
+
+<p>Use o método <code>DataB::distinct()</code>:</p>
+
+<pre class="block-code">
+    <code>
+        $result = DataB::distinct('descricao')
+            ->table('produtos')
+            ->exec()
+            ->getAll();
+
+        SQL Gerada:
+            'select distinct descricao from produtos'
+    </code>
+</pre>
+
+<h1 class="sub-title" id="title-04"># Junção de Tabelas</h1>
+
+<p>
+    Para você unir duas ou mais tabelas com DataB, use os métodos
+</p>
 
