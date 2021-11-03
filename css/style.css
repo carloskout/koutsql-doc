@@ -33,12 +33,15 @@ pre, code {
   padding-left: 0;
 }
 
+/*
 .block-code {
   border: 1px solid #333;
   border-radius: .3rem;
   background-color: #333;
   color: cyan;
 }
+
+*/
 
 .sub-title {
   margin-top: 2rem;
@@ -50,12 +53,16 @@ pre, code {
   font-size: 13pt;
 }
 
-.nav-link-content {
+.note {
   background-color: aliceblue;
 }
 
-.nav-link-content ul {
+.pg-sumary {
   list-style-type: circle;
+}
+
+.param {
+  color: #fff;
 }
 
 /*

@@ -1,7 +1,7 @@
 <h1 id="link-top">Introdução</h1>
 
 <p>
-    Esta seção demonstra como criar e executar consultas SQL usando DataB.
+    Nesta seção você aprenderá a criar e executar consultas SQL usando DataB.
 </p>
 
 <p>
@@ -13,10 +13,10 @@
 </p>
 
 <!--Link de navegação de conteudo-->
-<div>
-    <h4 class="sub-title">Conteúdo da página</h4>
-    <nav class="nav-link-content">
-        <ul>
+<h4 class="sub-title">Conteúdo da página</h4>
+<div class="note">
+    <nav>
+        <ul class="pg-sumary">
             <li>
                 <a href="#title-01">Consultando Dados</a>
             </li>
@@ -40,39 +40,39 @@
 <p>
     Para fazer consultas SQL use o método <code>select()</code> para especificar a lista de campos que serão
     retornados pela consulta. Você pode passar por parâmetro tanto um array de
-    nomes de colunas quanto uma lista de nomes de colunas separadas por virgulas. Em seguida, use o 
+    nomes de colunas quanto uma lista de nomes de colunas separadas por virgulas. Em seguida, use o
     método <code>table()</code> para definir em qual tabela será feita a consulta de dados.
 </p>
 
 <h5>Usando array como parâmetro:</h5>
 
-<pre class="block-code">
+<pre>
     <code>
-        $colunas = array(
-            'descricao_produto',
-            'preco_compra',
-            'preco_venda'
+        $columns = array(
+            'title',
+            'price',
+            'published'
         );
 
-        $result = DataB::select($colunas)
-            ->table('produto')
+        $books = DataB::select($columns)
+            ->table('books')
             ->exec()
             ->getAll();
 
-        var_dump($result);
+        var_dump($books);
     </code>
 </pre>
 
 <h5>Usando lista de campos como parâmetro:</h5>
 
-<pre class="block-code">
+<pre>
     <code>
-        $result = DataB::select('descricao', 'preco_compra')
-            ->table('produto')
+        $books = DataB::select('title', 'published')
+            ->table('books')
             ->exec()
             ->getAll();
 
-        var_dump($result);
+        var_dump($books);
     </code>
 </pre>
 
@@ -90,28 +90,36 @@
     os registros retornados pela consulta:
 </p>
 
-<pre class="block-code">
+<pre>
     <code>
-        $result = DataB::select('*')
-            ->table('produto')
+        $authors = DataB::select('*')
+            ->table('authors')
             ->exec()
             ->getAll();
             
-        var_dump($result);
+        var_dump($authors);
+    </code>
+</pre>
 
-        SAÍDA >>>
+<p>
+    O código acima gera a seguinte saída:
+</p>
 
+<pre>
+    <code>
         array (size=5)
             0 => 
-                array (size=3)
+                array (size=2)
                 'id' => string '1' (length=1)
-                'descricao' => string 'CR HID SKALA 1KG' (length=16)
-                'preco_venda' => string '6.55' (length=4)
+                'name' => string 'Yvonne do Amaral Pereira' (length=24)
             1 => 
-                array (size=3)
+                array (size=2)
                 'id' => string '2' (length=1)
-                'descricao' => string 'CR DENTAL COLG 90G' (length=18)
-                'preco_venda' => string '3.89' (length=4)
+                'name' => string 'Henrik Ibsen' (length=12)
+            2 => 
+                array (size=2)
+                'id' => string '3' (length=1)
+                'name' => string 'John Green' (length=10)
             ...
     </code>
 </pre>
@@ -121,21 +129,14 @@
     registro retornado pela consulta:
 </p>
 
-<pre class="block-code">
+<pre>
     <code>
-        $result = DataB::select('*')
-            ->table('produto')
+        $category = DataB::select('*')
+            ->table('categories')
             ->exec()
             ->getFirst();
             
-        var_dump($result);
-
-        SAÍDA >>>
-
-        array (size=3)
-            'id' => string '1' (length=1)
-            'descricao' => string 'CR HID SKALA 1KG' (length=16)
-            'preco_venda' => string '6.55' (length=4)
+        var_dump($category);
     </code>
 </pre>
 
@@ -144,53 +145,55 @@
     registro retornado pela consulta:
 </p>
 
-<pre class="block-code">
+<pre>
     <code>
-        $result = DataB::select('*')
-            ->table('produto')
+        $author = DataB::select('*')
+            ->table('categories')
             ->exec()
             ->getLast();
             
-        var_dump($result);
-
-        SAÍDA >>>
-
-        array (size=3)
-            'id' => string '10' (length=1)
-            'descricao' => string 'DES AER DOVE 150ML' (length=16)
-            'preco_venda' => string '13.50' (length=4)
+        var_dump($category);
     </code>
 </pre>
 
 <p>
-    Use <code>getSingleResult()</code> para recuperar o valor de uma
-    coluna específica. Observe que este método não retorna um array contento o resultado
-    da consulta mas sim o valor literal da coluna. Veja como funciona:
+    Use <code>getSingleResult()</code> para recuperar o valor literal retornado pela query.
+    Observe que, diferente dos outros métodos visto acima, este método não retorna um array contento o resultado da
+    consulta: Observe o trecho de código abaixo:
 </p>
 
-<pre class="block-code">
+<pre>
     <code>
-        $result = DataB::select('descricao')
-            ->table('produto')
-            ->cond('id')
-            ->eq(1)
+        $result = DataB::select(1 + 1)
             ->exec()
             ->getSingleResult();
             
         var_dump($result);
 
-        SAÍDA >>>
-
-        'CR HID SKALA 1KG'
+        // A saída do método var_dump() será o valor '2'
 
     </code>
 </pre>
 
 <p>
-    No exemplo acima foi usada uma condição para limitar a quantidade de registros retornados pela
-    consulta. Se nenhuma condição for definida, então o método <code>getSingleResult()</code> irá
-    retornar o valor da primeira coluna do primeiro registro encontrado.
+    Veja este outro exemplo onde buscamos pelo campo <code>title</code> da tabela
+    <code>books</code>. Neste exemplo, usamos uma condição para limitar a quantidade de registros retornados pela
+    query. Se nenhuma condição for definida, então o método <code>getSingleResult()</code>
+    retornará o valor da primeira coluna do primeiro registro encontrado.
 </p>
+
+<pre>
+    <code>
+        $title = DataB::select('title')
+            ->table('books')
+            ->cond('id')
+            ->eq(1)
+            ->exec()
+            ->getSingleResult();
+        
+        var_dump($title);
+    </code>
+</pre>
 
 <p>
     Use <code>getObjects()</code> para recuperar todos os
@@ -200,42 +203,44 @@
     objetos 'stdClass':
 </p>
 
-<pre class="block-code">
+<pre>
     <code>
 
-        class Produto {
+        class Author {
 
         }
         
-        $rs = DataB::select('*')
-                ->table('produtos')
-                ->exec()
-                ->getObjects('Produto');
+        $authors = DataB::select('*')
+            ->table('authors')
+            ->exec()
+            ->getObjects('Author');
         
-        var_dump($rs);
+        var_dump($authors);
+    </code>
+</pre>
 
-        SAÍDA >>>
+<p>
+    O código acima gera a seguinte saída:
+</p>
 
+<pre>
+    <code>
         array (size=5)
             0 => 
-                object(Produto)[2]
+                object(Author)[2]
                 public 'id' => string '1' (length=1)
-                public 'descricao' => string 'CR HID SKALA 1KG' (length=16)
-                public 'preco_compra' => string '4.98' (length=4)
-                public 'preco_venda' => string '6.55' (length=4)
+                public 'name' => string 'Yvonne do Amaral Pereira' (length=24)
             1 => 
-                object(Produto)[6]
+                object(Author)[6]
                 public 'id' => string '2' (length=1)
-                public 'descricao' => string 'CR DENTAL COLG 90G' (length=18)
-                public 'preco_compra' => string '1.97' (length=4)
-                public 'preco_venda' => string '3.89' (length=4)
+                public 'name' => string 'Henrik Ibsen' (length=12)
             ...
     </code>
 </pre>
 
 <p>
     Use <code>getObject()</code> para recuperar o primeiro
-    registro como objeto. Este método recebe por
+    registro como objeto. Este método recebe como
     parâmetro o nome da classe que será usada para criar a instância do objeto.
     Se nenhum parâmetro for especificado, então o primeiro registro será retornado como
     um objeto 'stdClass'.
@@ -245,7 +250,7 @@
     Use <code>getLazy()</code> para recuperar o primeiro
     registro como um objeto PDORow onde as variáveis desse objeto correspondem
     aos nomes das colunas da tabela. Esse método faz o carregamento dos
-    dados conforme as variáveis do objeto PDORow forem acessadas.
+    dados conforme as variáveis do objeto <code>PDORow</code> forem acessadas.
 </p>
 
 <h3 class="sub-title">Consultas nativas</h3>
@@ -258,74 +263,74 @@
 
 <h5>Executando instrução DML</h5>
 
-<pre class="block-code">
+<pre>
     <code>
-        $sql = 'select * from produto';
-        $produtos = DataB::nativeSQL($sql)->getAll();
+        $sql = 'SELECT * FROM authors';
+        $authors = DataB::nativeSQL($sql)->getAll();
     </code>
 </pre>
 
 <h5>Executando instrução DDL</h5>
 
-<pre class="block-code">
+<pre>
     <code>
-        $sql = 'alter table usuario add column level int(2)';
-        $rowCount = DataB::statement($sql)->rows();
+        $sql = 'ALTER TABLE categories ADD COLUMN parent INTEGER';
+        $rowCount = DataB::nativeSQL($sql)->rows();
     </code>
 </pre>
 
 <h3 class="sub-title">Funções de agregação</h3>
 
-<h5>Calculando a quantidade de registros de uma consulta:</h5>
+<h5>Buscando o número de registros retornados pela query:</h5>
 
-<pre class="block-code">
+<pre>
     <code>
-        $result = DataB::count('*')
-            ->table('produto')
+        $count = DataB::count('*')
+            ->table('categories')
             ->exec()
             ->getSingleResult();
     </code>
 </pre>
 
-<h5>Calculando o valor mínimo de todos os valores de um conjunto:</h5>
+<h5>Calculando o valor mínimo dentre um conjunto de valores:</h5>
 
-<pre class="block-code">
+<pre>
     <code>
-        $result = DataB::min('preco_compra')
-        ->table('produto')
+        $min = DataB::min('price')
+        ->table('books')
         ->exec()
         ->getSingleResult();
     </code>
 </pre>
 
-<h5>Calculando o valor máximo de todos os valores de um conjunto:</h5>
+<h5>Calculando o valor máximo dentre um conjunto de valores:</h5>
 
-<pre class="block-code">
+<pre>
     <code>
-        $result = DataB::max('preco_compra')
-        ->table('produto')
+        $max = DataB::max('price')
+        ->table('books')
         ->exec()
         ->getSingleResult();
     </code>
 </pre>
 
-<h5>Calculando a média de todos os valores de um conjunto:</h5>
+<h5>Calculando a média aritmética dentre um conjunto de valores:</h5>
 
-<pre class="block-code">
+<pre>
     <code>
-        $result = DataB::avg('preco_venda')
-        ->table('produto')
+        $avg = DataB::avg('price')
+        ->table('books')
         ->exec()
         ->getSingleResult();
     </code>
 </pre>
 
-<h5>Calculando a soma de todos os valores de um conjunto:</h5>
+<h5>Calculando a soma total de todos os valores de um conjunto:</h5>
 
-<pre class="block-code">
+<pre>
     <code>
-        $result = DataB::sum('preco_venda')
-        ->table('produto')
+        $sum = DataB::sum('price')
+        ->table('books')
         ->exec()
         ->getSingleResult();
     </code>
@@ -336,26 +341,53 @@
 <p>
     Use <code>DataB::fn()</code> para executar de forma nativa qualquer função disponível
     no banco de dados. O primeiro parâmetro passado para esse método deve ser o nome da função
-    a ser executada; os demais, são parâmetros de entradas para a função.
+    a ser executada, os demais são parâmetros de entradas para a função especificada.
 </p>
 
 <h5>Executando função <code>concat</code>:</h5>
-<pre class="block-code">
+
+<pre>
     <code>
-        $result = DataB::fn('concat', 'nome', 'sobrenome')
-        ->table('cliente')
-        ->exec()
-        ->getAll();
+        $result = DataB::fn("concat", "title", "' - Publicado em: '", "published")
+            ->table('books')
+            ->exec()
+            ->getAll();
+        
+        var_dump($result);
+    </code>
+</pre>
+
+<p>
+    No exemplo acima concatenamos o título e o ano da publicação de todos os
+    registros da tabela <code>books</code>. Observe que passamos uma <code>string</code>
+    no terceiro parâmetro onde a mesma é passada dentro de aspas simples para que o
+    código funcione corretamente. Todo parâmetro que não está dentro de aspas é considerado
+    como um campo da tabela especificada na query.
+</p>
+
+<pre>
+    <code>
+        array (size=7)
+            0 => 
+            array (size=1)
+                'concat(title, ' - Publicado em: ', published)' => string 'Memórias de um suicida - Publicado em: 1958' (length=44)
+            1 => 
+            array (size=1)
+                'concat(title, ' - Publicado em: ', published)' => string 'Nas voragens do pecado - Publicado em: 1959' (length=43)
+            2 => 
+            array (size=1)
+                'concat(title, ' - Publicado em: ', published)' => string 'A Doll's House and Other Plays - Publicado em: 1889' (length=51)
+        ...
     </code>
 </pre>
 
 <h5>Executando função <code>count</code>:</h5>
-<pre class="block-code">
+<pre>
     <code>
         $result = DataB::fn('count', '*')
-        ->table('cliente')
-        ->exec()
-        ->getSingleResult();
+            ->table('cliente')
+            ->exec()
+            ->getSingleResult();
     </code>
 </pre>
 
@@ -370,11 +402,11 @@
 
 <h5>Ordenação ascendente.</h5>
 
-<pre class="block-code">
+<pre>
     <code>
-        $result = DataB::select('*')
-        ->table('produto')
-        ->orderByAsc('descricao')
+        $books = DataB::select('*')
+        ->table('books')
+        ->orderByAsc('published')
         ->exec()
         ->getAll();
     </code>
@@ -382,25 +414,25 @@
 
 <h5>Ordenação descendente.</h5>
 
-<pre class="block-code">
+<pre>
     <code>
-        $result = DataB::select('*')
-        ->table('produto')
-        ->orderByDesc('descricao')
+        $books = DataB::select('*')
+        ->table('books')
+        ->orderByDesc('published')
         ->exec()
         ->getAll();
     </code>
 </pre>
 
-<h5>Usando colunas para ordenação.</h5>
+<h5>Ordenando colunas.</h5>
 
-<pre class="block-code">
+<pre>
     <code>
-        $result = DataB::select('*')
-        ->table('cliente')
-        ->orderByAsc('nome', 'idade')
-        ->exec()
-        ->getAll();
+        $books = DataB::select('*')
+            ->table('books')
+            ->orderByAsc('title', 'published')
+            ->exec()
+            ->getAll();
     </code>
 </pre>
 
@@ -413,24 +445,28 @@
     consulta SQL:
 </p>
 
-<pre class="block-code">
+<pre>
     <code>
-        $result = DataB::select('*')
-            ->table('produtos')
-            ->cond('preco_venda')
-            ->eq(2.00)
+        $books = DataB::select('*')
+            ->table('books')
+            ->cond('price')
+            ->eq(29.99)
             ->exec()
             ->getAll();
+    </code>
+</pre>
 
-        SQL Gerada >>>
+<h6>Saída SQL:</h6>
 
-        'select * from produtos where preco_venda = ?'
+<pre>
+    <code>
+        SELECT * FROM books WHERE price = ?
     </code>
 </pre>
 
 <p>
     Observe a instrução SQL gerada no exemplo acima onde temos o campo
-    <code>preco_venda = ?</code>. Por padrão, todos os parâmetros de entrada 
+    <code>price = ?</code>. Por padrão, todos os parâmetros de entrada
     para a instrução SQL são convertidos para <strong>mask placeholders</strong> para evitar
     SQL Injection.
 </p>
@@ -438,60 +474,64 @@
 <p>
     Existem duas maneiras para criar parâmetros SQL com dados de entrada usando DataB.
     A primeira é através de métodos que recebem algum valor de entrada, como por exemplo o
-    método <code>eq()</code> que equivale ao operador relacional de igualdade.  A segunda é 
-    passando um array de dados para o método <code>exec()</code>. Ao trabalhar desta forma, 
-    fica ao seu critério usar <strong>mask placeholders</strong> ou <strong>named placeholders</strong>. 
-    Se você optar por esta, deverá passar um array associativo onde as chaves do array devem 
-    corresponder aos nomes das colunas da tabela; caso opte por aquela, então você terá que 
+    método <code>eq()</code> que equivale ao operador relacional de igualdade. A segunda é
+    passando um array de dados para o método <code>exec()</code>. Ao trabalhar desta forma,
+    fica ao seu critério usar <strong>mask placeholders</strong> ou <strong>named placeholders</strong>.
+    Se você optar por esta, deverá passar um array associativo onde as chaves do array devem
+    corresponder aos nomes das colunas da tabela; caso opte por aquela, então você terá que
     passar um array indexado como parâmentro. Veja como funciona:
 </p>
 
 <h5>Usando mask placeholders:</h5>
 
-<pre class="block-code">
+<pre>
     <code>
-        $data = array(
-            'abc@gmail.com',
-        );
+        $data = array('Romance');
 
-        $result = DataB::select('*')
-            ->table('usuario')
-            ->cond('email')
+        $category = DataB::select('*')
+            ->table('categories')
+            ->cond('name')
             ->eq('?')
             ->exec($data)
             ->getAll();
+    </code>
+</pre>
 
-        SQL Gerada >>>
+<h6>Saída SQL:</h6>
 
-        'select * from usuario where email = ?'
-
+<pre>
+    <code>
+        SELECT * FROM categories WHERE name = ?
     </code>
 </pre>
 
 <h5>Usando named placeholders:</h5>
 
-<pre class="block-code">
+<pre>
     <code>
 
         $data = array(
-            'email' => 'abc@gmail.com',
-            'senha' => 12345
+            'price' => 29.99,
+            'published' => 2011
         );
 
-        $result = DataB::select('*')
-            ->table('usuario')
-            ->cond('email')
-            ->eq(':email')
-            ->and('senha')
-            ->eq(':senha')
+        $book = DataB::select('*')
+            ->table('books')
+            ->cond('price')
+            ->eq(':price')
+            ->and('published')
+            ->eq(':published')
             ->exec($data)
             ->getAll();
+    </code>
+</pre>
 
-        SQL Gerada >>>
+<h6>Saída SQL:</h6>
 
-        select * from usuario where email = :email
-            and senha = :senha'
-
+<pre>
+    <code>
+        SELECT * FROM books WHERE price = :price
+            AND published = :published'
     </code>
 </pre>
 
@@ -527,44 +567,56 @@
     callback que é usada para criar <a href="#title-">subqueries</a>. Veja um exemplo básico de uso:
 </p>
 
-<pre class="block-code">
+<pre>
     <code>
-        $precoCompra = 1.99;
-        $precoVenda = 12.59;
+        $value = 25.00;
+        $year = 2005;
 
-        $result = DataB::select('*')
-            ->table('produtos')
-            ->cond('preco_compra')
-            ->gt($precoCompra)
-            ->or('preco_venda')
-            ->lt($precoVenda)
+        $book = DataB::select('*')
+            ->table('books')
+            ->cond('price')
+            ->gt($value)
+            ->or('published')
+            ->lt($year)
             ->exec()
             ->getAll();
-        
-        SQL Gerada >>>
-            'select * from produtos where preco_compra > ?
-                    or preco_venda &lt; ?'
+    </code>
+</pre>
+
+<h6>Saída SQL:</h6>
+
+<pre>
+    <code>
+        SELECT * FROM books WHERE price > ?
+                    OR published &lt; ?
     </code>
 </pre>
 
 <p>
-    Para fazer comparação entre campos de tabela, use o método <code>DataB::field()</code> para incluir o campo a ser comparado na instrução. Observe no trecho de código abaixo que demonstra a consulta de todos os
-    produtos e seus respectivos valores de estoque:
+    Para fazer comparação entre campos de tabelas, use o método <code>DataB::field()</code> para incluir o campo a ser
+    comparado na instrução. Observe no trecho de código abaixo onde fazemos um join entre as
+    tabelas authors e books. Na cláusula <code>where</code> fazemos a comparação entre o campo <code>id</code>
+    da tabela <code>authors</code> e o campo <code>authors_id</code> da tabela <code>books</code>.
 </p>
 
-<pre class="block-code">
+<pre>
     <code>
-        $result = DataB::select('p.descricao', 'e.atual')
-            ->table('produtos as p, estoque as e')
-            ->cond('p.id')
+        $result = DataB::select('authors.name', 'books.title')
+            ->table('authors, books')
+            ->cond('authors.id')
             ->eq()
-            ->field('e.produto_id')
+            ->field('books.authors_id')
             ->exec()
             ->getAll();
+    </code>
+</pre>
 
-        SQL Gerada >>>
-            'select p.descricao, e.atual from produtos as p, estoque as e 
-                where p.id = e.produto_id'
+<h6>Saída SQL:</h6>
+
+<pre>
+    <code>
+        SELECT authors.name, books.title FROM authors, books 
+            WHERE authors.id = books.authors_id
     </code>
 </pre>
 
@@ -575,28 +627,20 @@
 <p>
     Para combinar duas ou mais expressões lógicas, use os métodos <code>DataB::and()</code> e
     <code>DataB::or()</code>. Esses métodos recebem como parâmetro um nome de um campo
-    a ser incluído na expressão ou uma função callback que é usada para criar 
+    a ser incluído na expressão ou uma função callback que é usada para criar
     <a href="#title">subexpressões</a>. Observe o trecho de código abaixo:
 </p>
 
-<pre class="block-code">
+<pre>
     <code>
-        $result = DataB::select('*')
-            ->table('produtos as p, estoque as e')
-            ->cond('p.id')
-            ->eq()
-            ->field('e.produto_id')
-            ->and('p.preco_venda')
-            ->ge(15.99)
-            ->or('p.preco_compra')
-            ->le(1.99)
+        $books = DataB::select('*')
+            ->table('books')
+            ->cond('published')
+            ->gt(2005)
+            ->and('price')
+            ->lt(59.99)
             ->exec()
             ->getAll();
-
-        SQL Gerada >>>
-            'select * from produtos as p, estoque as e 
-                where p.id = e.produto_id 
-                    and p.preco_venda >= ? or p.preco_compra &lt;= ?'
     </code>
 </pre>
 
@@ -610,35 +654,29 @@
 
 <h6>Passando um conjunto de valores por parâmetro:</h6>
 
-<pre class="block-code">
+<pre>
     <code>
-        $result = DataB::select('*')
-            ->table('fruta')
-            ->cond('nome')
-            ->in('Banana', 'Maçã', 'Uva')
+        $books = DataB::select('*')
+            ->table('books')
+            ->cond('published')
+            ->in(1958, 2011, 2019)
             ->exec()
             ->getAll();
-
-        SQL Gerada >>>
-            'select * from frutas where nome in(?, ?, ?)'
     </code>
 </pre>
 
 <h6>Passando um array de valores por parâmetro:</h6>
 
-<pre class="block-code">
+<pre>
     <code>
-        $frutas = array('Pera', 'Laranja', 'Goiaba');
+        $years = array(1958, 2011, 2019);
 
-        $result = DataB::select('*')
-            ->table('fruta')
-            ->cond('nome')
-            ->notIn($frutas)
+        $books = DataB::select('*')
+            ->table('books')
+            ->cond('published')
+            ->notIn($years)
             ->exec()
             ->getAll();
-
-        SQL Gerada >>>
-            'select * from frutas where nome not in(?, ?, ?)'
     </code>
 </pre>
 
@@ -649,18 +687,14 @@
     <code>DataB::between()</code> e <code>DataB::notBetween()</code>:
 </p>
 
-<pre class="block-code">
+<pre>
     <code>
-
-        $result = DataB::select('*')
-            ->table('produtos')
-            ->cond('preco_venda')
-            ->between(4.99, 12.00)
+        $books = DataB::select('*')
+            ->table('books')
+            ->cond('price')
+            ->between(34.59, 48.75)
             ->exec()
             ->getAll();
-
-        SQL Gerada >>>
-            'select * from produtos where preco_venda between ? and ?'
     </code>
 </pre>
 
@@ -675,10 +709,10 @@
         <code>DataB::startsWith()</code> - Busca por um valor que começa com um padrão.
     </li>
     <li>
-        <code>DataB::contains()</code>   - Busca por um valor que contêm um padrão.
+        <code>DataB::contains()</code> - Busca por um valor que contêm um padrão.
     </li>
     <li>
-        <code>DataB::endsWith()</code>   - Busca por um valor que termina com um padrão.
+        <code>DataB::endsWith()</code> - Busca por um valor que termina com um padrão.
     </li>
 </ul>
 
@@ -687,27 +721,15 @@
     Observe:
 </p>
 
-<pre class="block-code">
+<pre>
     <code>
 
-        $result = DataB::select('*')
-            ->table('frutas')
-            ->cond('nome')
-            ->startsWith('M')
+        $categories = DataB::select('*')
+            ->table('categories')
+            ->cond('name')
+            ->startsWith('R')
             ->exec()
             ->getAll();
-
-        SQL Gerada >>>
-
-            array (size=2)
-                0 => 
-                array (size=2)
-                    'id' => string '1' (length=1)
-                    'nome' => string 'Maçã' (length=6)
-                1 => 
-                array (size=2)
-                    'id' => string '7' (length=1)
-                    'nome' => string 'Melancia' (length=8)
     </code>
 </pre>
 
@@ -716,16 +738,21 @@
     padrão como parâmetro:
 </p>
 
-<pre class="block-code">
+<pre>
     <code>
-        $result = DataB::select('*')
-            ->table('frutas')
-            ->cond('nome')
+        $categories = DataB::select('*')
+            ->table('categories')
+            ->cond('name')
             ->startsWith('?')
-            ->exec('M%')
+            ->exec('R%')
             ->getAll();
     </code>
 </pre>
+
+<p>
+    No exemplo acima foi usado <code>mask placeholders</code>, mas você pode usar também 
+    <code>named placeholders</code>.
+</p>
 
 <h5>Operadores IS NULL e IS NOT NULL</h5>
 
@@ -734,11 +761,11 @@
     Observe:
 </p>
 
-<pre class="block-code">
+<pre>
     <code>
-        $result = DataB::select('*')
-            ->table('frutas')
-            ->cond('nome')
+        $books = DataB::select('*')
+            ->table('books')
+            ->cond('note')
             ->isNotNull()
             ->exec()
             ->getAll();
@@ -751,10 +778,10 @@
     Use <code>DataB::limit()</code>:
 </p>
 
-<pre class="block-code">
+<pre>
     <code>
-        $result = DataB::select('*')
-            ->table('produtos')
+        $books = DataB::select('*')
+            ->table('books')
             ->limit(10)
             ->exec()
             ->getAll();
@@ -762,20 +789,25 @@
 </pre>
 
 <p>
-    Você pode especificar também o número de linhas a pular antes de retornar o resultado 
+    Você pode especificar também o número de linhas a pular antes de retornar o resultado
     da consulta. Observe:
 </p>
 
-<pre class="block-code">
+<pre>
     <code>
-        $result = DataB::select('*')
-            ->table('produtos')
+        $books = DataB::select('*')
+            ->table('books')
             ->limit(10, 2)
             ->exec()
             ->getAll();
+    </code>
+</pre>
 
-        SQL Gerada:
-            'select * from produtos limit 2, 10'
+<h6>Saída SQL</h6>
+
+<pre>
+    <code>
+        SELECT * FROM produtos LIMIT 2, 10
     </code>
 </pre>
 
@@ -790,21 +822,92 @@
 
 <p>Use o método <code>DataB::distinct()</code>:</p>
 
-<pre class="block-code">
+<pre>
     <code>
-        $result = DataB::distinct('descricao')
-            ->table('produtos')
+        $books = DataB::distinct('published')
+            ->table('books')
             ->exec()
             ->getAll();
-
-        SQL Gerada:
-            'select distinct descricao from produtos'
     </code>
 </pre>
 
 <h1 class="sub-title" id="title-04"># Junção de Tabelas</h1>
 
 <p>
-    Para você unir duas ou mais tabelas com DataB, use os métodos
+    A junção de tabelas com DataB pode ser feita usando um dos seguintes métodos:
+    <code>DataB::cond()</code>, <code>DataB::innerJoin()</code>,
+    <code>DataB::leftJoin()</code>, <code>DataB::rightJoin()</code> ou
+    <code>DataB::crossJoin()</code>.
 </p>
 
+<h3 class="sub-title">Junção de tabelas com <code>DataB::cond()</code></h3>
+
+<p>
+    No trecho de código abaixo, buscamos por todos os clientes e seus pedidos.
+</p>
+
+<pre>
+    <code>
+        $result = DataB::select('*')
+            ->table('clientes cli, pedidos pe')
+            ->cond('cli.id')
+            ->eq()
+            ->field('pe.cliente_id')
+            ->exec()
+            ->getAll();
+
+        SQL Gerada:
+            'select * from clientes cli, pedidos pe 
+                where cli.id = pe.cliente_id'
+    </code>
+</pre>
+
+<h3 class="sub-title">Junção de tabelas com <code>DataB::innerJoin()</code></h3>
+
+<p>
+    No exemplo asseguir, buscamos pelo nome de todos os autores e pelos títulos
+    de seus respectivos livros:
+</p>
+
+<pre>
+    <code>
+        $result = DataB::select('autores.nome', 'livros.titulo')
+            ->table('autores')
+            ->innerJoin('livros')
+            ->on('autores.id')
+            ->eq()
+            ->field('livros.autor_id')
+            ->exec()
+            ->getAll()
+        
+        SQL Gerada >>>
+            'select autores.nome, livros.titulo from autores 
+                inner join livros on autores.id = livros.autor_id'
+    </code>
+</pre>
+
+<p>
+    Se os campos de comparação das tabelas envolvidas tiverem o mesmo nome, então você pode usar
+    o método <code>DataB::using()</code> em vez do método <code>DataB::on()</code>. Observe:
+</p>
+
+<pre>
+    <code>
+        $result = DataB::select('autores.nome', 'livros.titulo')
+            ->table('autores')
+            ->innerJoin('livros')
+            ->using('autor_id')
+            ->exec()
+            ->getAll()
+        
+        SQL Gerada >>>
+            'select autores.nome, livros.titulo from autores 
+                inner join livros on autores.id = livros.autor_id'
+    </code>
+</pre>
+
+<p>
+    Para que o método <code>DataB::using()</code> funcione corretamente, o nome do campo que
+    representa a chave primária na primeira tabela deverá ser idêntico ao campo de referência
+    presente na segunda tabela.
+</p>

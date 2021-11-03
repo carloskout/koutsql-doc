@@ -6,58 +6,52 @@
     passar por parâmetro um objeto PDO para o método <code>DataB::setPDO</code>:
 </p>
 
-<pre class="block-code">
-    <code>
+<pre>
+    <code class="hljs">
         $pdo = new \PDO(...);
         DataB::setPDO($pdo);
     </code>
 </pre>
 
-<p>Prontinho! Agora você pode começar a criar e executar instruções SQL. Veja como é fácil:</p>
+<p>Prontinho! Agora você já pode começar a criar e executar instruções SQL. Veja como é fácil:</p>
 
-<pre class="block-code">
+<pre>
     <code>
-        $result = DataB::select('descricao', 'preco_compra')
-        ->table('produto')
+        $result = DataB::select('*')
+        ->table('books')
         ->exec()
         ->getAll();
     </code>
 </pre>
 
 <p>
-    O trecho de código acima demonstra uma consulta de todos os registros
-    da tabela produto. No método <code>select('descricao', 'preco_compra')</code>
-    informamos a lista de campos que queremos recuperar separados por vírgula. Em seguida,
-    chamamos o método <code>table('produto')</code> para informarmos o nome da tabela
-    que será feita a consulta SQL. Para executarmos a instrução, chamamos o método 
-    <code>exec()</code> e para recuperarmos os registros retornados pela consulta usamos o método 
-    <code>getAll()</code>. Existem outros métodos além de <code>getAll()</code> 
-    para recuperar o resultado que serão demonstrados no decorrer da documentação.
+    No exemplo acima, buscamos por todos os registros da tabela <code>books</code>.
 </p>
 
 <p>
-    Caso queira ver a instrução SQL gerada pela lib DataB, basta executar o método <code>sql()</code> em vez do
+    Para ver a instrução SQL gerada no código acima, basta executar o método <code>sql()</code> em vez do
     método <code>exec()</code>:
 </p>
 
-<pre class="block-code">
+<pre>
     <code>
         $sql = DataB::select('*')
-        ->table('produto')
+        ->table('books')
         ->sql();
 
         var_dump($sql);
-
-        SQL Gerada:
-            SELECT * FROM produto;
     </code>
 </pre>
 
 <p>
-    Ok. Então você viu uma simples demonstração de uso da lib DataB, para prosseguir aprendendo mais recursos avançados navegue pela documentação e divirta-se \O/.
+    Ok. Então você viu uma simples demonstração de uso da lib DataB, para prosseguir aprendendo mais recursos avançados
+    navegue pela documentação e divirta-se \O/.
 </p>
 
 
 <div class="next-pages">
     <a href="/query" class="route link-aux" title="Consultas SQL">Próximo></a>
 </div>
+
+<script src="./js/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>

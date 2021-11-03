@@ -88,6 +88,12 @@ function updateNavbar(path) {
 
 }
 
+function updateBlockCode() {
+    document.querySelectorAll('pre code').forEach((el) => {
+        hljs.highlightElement(el);
+      });
+}
+
 function resolveRoute(path) {
     request(path)
         .then((content) => {
@@ -95,6 +101,7 @@ function resolveRoute(path) {
             updateLinks();
             updateBreadCrumbs();
             updateNavbar(path);
+            updateBlockCode();
         })
         .catch(() => {
             resolveRoute('/404');
@@ -114,10 +121,12 @@ function checkRoute(e) {
 
 }
 
-window.onload = (e) => {
+window.addEventListener('load', (e) => {
     resolveRoute('/home');
     updateBreadCrumbs();
-};
+    hljs.configure({language: 'php'});
+});
+
 
 
 
