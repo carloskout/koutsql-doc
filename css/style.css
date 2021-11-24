@@ -1,181 +1,63 @@
+
 body {
   font-size: .875rem;
 }
 
-main {
-  margin-top: 2rem;
+a {
+  text-decoration: none;
 }
 
-#page-info {
-  overflow: hidden;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  padding-top: 10px;
-  background-color: #fff;
+a:hover {
+  text-decoration: none;
 }
 
-#page-info hr {
-  margin-bottom: 0;
+hr {
+  margin: 0;
 }
 
-#container {
-  margin-top: 3rem;
+/*INICIO HEADER TOPO*/
+#header-top {
+  padding: 5px 10px 5px 20px;
+  display: flex;
+  align-items: center;
 }
 
-#main-footer {
-  margin-top: 2rem;
-  font-size: 8pt;
-  text-align: center;
+#header-top div:last-child {
+  flex: 3;
+  display: flex;
+  justify-content: end;
 }
 
-pre, code {
-  padding-left: 0;
-}
 
-/*
-.block-code {
-  border: 1px solid #333;
-  border-radius: .3rem;
-  background-color: #333;
-  color: cyan;
-}
-
-*/
-
-.sub-title {
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-}
-
-#container {
-  color: #444;
-  font-size: 13pt;
-}
-
-.note {
-  background-color: aliceblue;
-}
-
-.pg-sumary {
-  list-style-type: circle;
-}
-
-.param {
+#logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 20pt;
   color: #fff;
 }
 
-/*
- * Sidebar
- */
+.link-github {
+  font-weight: bolder;
+  color: #fff;
+}
 
+.link-github:hover {
+  color: cyan;
+}
+
+/*FIM HEADER TOPO*/
+
+/*INICIO SIDEBAR*/
 .sidebar {
   position: fixed;
-  top: 0;
+  background-color: #f8f9fa;
+  padding-top: 15px;
+  padding-left: 20px;
+  overflow-y: scroll;
   bottom: 0;
-  left: 0;
-  z-index: 100; /* Behind the navbar */
-  padding: 5px 0 0; /* Height of navbar */
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+  top: 50px;
 }
 
-.sidebar h3{
-  display: inline-block;
-  padding: 1rem 0 0 1rem;
-  margin-bottom: 0;
+.sidebar h3 {
+  color: #4C33A6;
 }
-
-.sidebar h3 a {
-  color: #333;
-}
-
-.sidebar h3 a:hover {
-  text-decoration: none;
-}
-
-@media (max-width: 767.98px) {
-  .sidebar {
-    top: 5rem;
-  }
-}
-
-.sidebar-sticky {
-  position: relative;
-  top: 0;
-  height: calc(100vh - 48px);
-  padding-top: .5rem;
-  overflow-x: hidden;
-  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-}
-
-@supports ((position: -webkit-sticky) or (position: sticky)) {
-  .sidebar-sticky {
-    position: -webkit-sticky;
-    position: sticky;
-  }
-}
-
-.sidebar .nav-link {
-  font-weight: 500;
-  color: #333;
-}
-
-.sidebar .nav-link.active {
-  color: #007bff;
-}
-
-
-.sidebar-heading {
-  font-size: .75rem;
-  text-transform: uppercase;
-}
-
-/*
- * Navbar
-
-
-.navbar-brand {
-  background-color: #007bff;
-  border-color: #007bff;
-  color: aliceblue;
-  position: absolute;
-  right: 0;
-  top: 1rem;
-} */
-
-.btn-menu {
-  position: absolute;
-  right: 0.7rem;
-  top: .5rem;
-  z-index: 100;
-  display: none;
-}
-.navbar-toggle {
-  padding: .5rem;
-}
-
-.accordion {
-  padding-left: 10px;
-}
-.accordion-button {
-  font-size: 1rem;
-  font-weight: bolder;
-}
-
-.accordion-button:hover {
-  text-decoration: none;
-  cursor: pointer;
-}
-
-@media(max-width: 768px) {
-  .btn-menu {
-    display: block;
-  }
-}
-
-.next-pages {
-  float: right;
-}
-
-
-
+/*FIM SIDEBAR*/
