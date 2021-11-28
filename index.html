@@ -48,28 +48,41 @@
     </div>
   </header>
 
-  <!--Siderbar-->
-  <button class="btn-bar">
-    <span class="icon-bar"></span>
-    <span class="icon-bar"></span>
-    <span class="icon-bar"></span>
-  </button>
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <h3>Conteúdo</h3>
+  <div class="container-fluid">
+    <div class="row">
+      <!--Siderbar-->
+      <button class="btn-bar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      <aside class="sidebar col-md-3">
+        <div class="sidebar-header">
+          <h3>Conteúdo</h3>
+        </div>
+        <hr>
+        <nav>
+          <ul class="sidebar-nav">
+            <li class="">
+              <a class="" href="#">Prefacio</a>
+            </li>
+            <li class="">
+              <a class="" href="#">Primeiros passos</a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="col-md-9 main-content">
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores fugit, nulla consequatur eum eos eaque
+          numquam
+          ducimus, quibusdam enim ratione suscipit sequi veritatis ad consectetur impedit quasi doloremque magnam
+          dolorem!
+        </p>
+      </main>
     </div>
-    <hr>
-    <nav>
-      <ul class="sidebar-nav">
-        <li class="">
-          <a class="" href="#">Prefacio</a>
-        </li>
-        <li class="">
-          <a class="" href="#">Primeiros passos</a>
-        </li>
-      </ul>
-    </nav>
-  </aside>
+  </div>
 
   <!--
   <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"

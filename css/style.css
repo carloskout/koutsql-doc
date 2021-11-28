@@ -1,6 +1,6 @@
 body {
   font-size: .875rem;
-  position: relative;
+  position : relative;
 }
 
 a {
@@ -51,10 +51,12 @@ hr {
 .sidebar {
   box-sizing      : border-box;
   position        : fixed;
+  float           : left;
   height          : 100%;
-  min-width       : 250px;
+  width           : 250px;
   background-color: #f8f9fa;
   transition      : all 0.2s linear;
+  padding: 0px!important;
 }
 
 .sidebar-header {
@@ -76,16 +78,8 @@ hr {
   transition: all .2s linear;
 }
 
-.sidebar-hide {
-  transform: translateX(-250px);
-}
-
-.btn-sidebar-hide {
-  transform: translateX(-200px);
-}
-
 .btn-bar {
-  position       : absolute;
+  position       : fixed;
   top            : 60px;
   left           : 200px;
   display        : flex;
@@ -103,7 +97,7 @@ hr {
 
 .icon-bar {
   display   : block;
-  width     : 100%;
+  width     : 25px;
   height    : 3px;
   background: rgba(250, 3, 168, 0.333);
   transition: .3s;
@@ -125,21 +119,37 @@ hr {
   transform: translate3d(0, -8px, 0) rotate(-45deg);
 }
 
-.btn-bar.btn-sidebar-hide .icon-bar:nth-of-type(1) {
+.sidebar.hide {
+  transform: translateX(-250px);
+}
+
+.btn-bar.hide {
+  transform: translateX(-200px);
+}
+
+.btn-bar.hide .icon-bar:nth-of-type(1) {
   transform: translate3d(0, 0, 0) rotate(0deg);
 }
 
-.btn-bar.btn-sidebar-hide .icon-bar:nth-of-type(2) {
+.btn-bar.hide .icon-bar:nth-of-type(2) {
   opacity: 1;
 }
 
-.btn-bar.btn-sidebar-hide .icon-bar:nth-of-type(3) {
+.btn-bar.hide .icon-bar:nth-of-type(3) {
   transform: translate3d(0, 0, 0) rotate(0deg);
 }
 
-.btn-bar.btn-sidebar-hide .icon-bar {
+.btn-bar.hide .icon-bar {
   background-color: var(--bs-blue);
 }
 
-
 /*FIM SIDEBAR*/
+
+.main-content {
+  margin-left: 250px;
+  transition: all 0.2s linear;
+}
+
+.main-content.hide {
+  transform: translateX(-200px);
+}
