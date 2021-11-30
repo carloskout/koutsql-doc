@@ -68,6 +68,7 @@ hr {
 }
 
 .sidebar nav {
+  font-size: 13pt;
   position  : relative;
   padding   : 5px;
   height    : 100%;
@@ -75,6 +76,11 @@ hr {
   overflow-y: auto;
   box-sizing: border-box;
   overflow-y: scroll;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding-left: 10px;
 }
 
 .btn-bar {
