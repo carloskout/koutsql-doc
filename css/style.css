@@ -49,14 +49,14 @@ hr {
 
 /*INICIO SIDEBAR*/
 .sidebar {
+  padding-right   : 0;
   box-sizing      : border-box;
   position        : fixed;
-  float           : left;
+  left: 0;
   height          : 100%;
-  width           : 250px;
+  width           : 300px;
   background-color: #f8f9fa;
-  transition      : all 0.2s linear;
-  padding: 0px!important;
+  transition      : all 0.3s linear;
 }
 
 .sidebar-header {
@@ -68,27 +68,26 @@ hr {
 }
 
 .sidebar nav {
-  position  : absolute;
+  position  : relative;
   padding   : 5px;
   height    : 100%;
   width     : 100%;
   overflow-y: auto;
   box-sizing: border-box;
   overflow-y: scroll;
-  transition: all .2s linear;
 }
 
 .btn-bar {
   position       : fixed;
   top            : 60px;
-  left           : 200px;
+  left           : 250px;
   display        : flex;
   flex-direction : column;
   justify-content: center;
   border         : 0;
   background     : transparent;
   border-radius  : 0;
-  transition     : all .1s linear;
+  transition     : all .3s linear;
   height         : 30px;
   width          : 35px;
   cursor         : pointer;
@@ -120,11 +119,11 @@ hr {
 }
 
 .sidebar.hide {
-  transform: translateX(-250px);
+  margin-left: -300px;
 }
 
 .btn-bar.hide {
-  transform: translateX(-200px);
+  transform: translateX(-230px);
 }
 
 .btn-bar.hide .icon-bar:nth-of-type(1) {
@@ -145,11 +144,35 @@ hr {
 
 /*FIM SIDEBAR*/
 
-.main-content {
-  margin-left: 250px;
-  transition: all 0.2s linear;
+.content {
+  padding: 0 15px;
+  margin-left: 330px;
+  transition      : all 0.3s linear;
 }
 
-.main-content.hide {
-  transform: translateX(-200px);
+.content a h1 {
+  color: #4C33A6;
+}
+
+.content a:hover h1 {
+  color: var(--bs-blue);
+}
+
+.content.hide {
+  margin-left: 60px;
+}
+
+.content #main-section {
+  padding-top: 15px;
+}
+
+@media (max-width: 450px) {
+  .btn-bar {
+    margin-left: -15px;
+  }
+
+  .content {
+    padding-left: 0;
+    margin-left: 10px;
+  }
 }
