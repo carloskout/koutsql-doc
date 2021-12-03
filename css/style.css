@@ -1,3 +1,11 @@
+html {
+  scroll-behavior: smooth;
+}
+
+:target {
+ scroll-margin-top: 70px;
+}
+
 body {
   font-size: .875rem;
   position : relative;
@@ -15,11 +23,18 @@ hr {
   margin: 0;
 }
 
+#header-container {
+  height: 50px;
+  margin-bottom: 20px;
+
+}
+
 /*INICIO HEADER TOPO*/
 #header-top {
   padding    : 5px 10px 5px 20px;
   display    : flex;
   align-items: center;
+  position   : fixed;
 }
 
 #header-top div:last-child {
@@ -52,7 +67,8 @@ hr {
   padding-right   : 0;
   box-sizing      : border-box;
   position        : fixed;
-  left: 0;
+  top             : 50px;
+  left            : 0;
   height          : 100%;
   width           : 300px;
   background-color: #f8f9fa;
@@ -68,7 +84,7 @@ hr {
 }
 
 .sidebar nav {
-  font-size: 13pt;
+  font-size : 13pt;
   position  : relative;
   padding   : 5px;
   height    : 100%;
@@ -80,7 +96,11 @@ hr {
 
 .sidebar ul {
   list-style-type: none;
-  padding-left: 10px;
+  padding-left   : 10px;
+}
+
+ul.sublist {
+  padding-left: 30px;
 }
 
 .btn-bar {
@@ -151,25 +171,28 @@ hr {
 /*FIM SIDEBAR*/
 
 .content {
-  padding: 0 15px;
+  padding-left    : 15px;
   margin-left: 330px;
-  transition      : all 0.3s linear;
+  transition : all 0.3s linear;
 }
 
-.content a h1 {
-  color: #4C33A6;
+.content h1,
+.content h2,
+.content h3,
+.content h4,
+.content h5,
+.content h6 {
+  color : #4C33A6;
+  margin: 20px 0;
 }
 
-.content a:hover h1 {
-  color: var(--bs-blue);
+.content p {
+  font-size       : 13pt;
+  background-color: (0, 0, 0, .5);
 }
 
 .content.hide {
   margin-left: 60px;
-}
-
-.content #main-section {
-  padding-top: 15px;
 }
 
 @media (max-width: 450px) {
@@ -179,6 +202,6 @@ hr {
 
   .content {
     padding-left: 0;
-    margin-left: 10px;
+    margin-left : 10px;
   }
 }

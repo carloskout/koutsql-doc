@@ -24,76 +24,160 @@
 
   <script src="./js/highlight.min.js"></script>
   <script type="module">
-    //hljs.highlightAll();
-    import hljs from 'highlight.js/lib/core';
-    import php from 'highlight.js/lib/languages/php';
-    hljs.registerLanguage('php', php);
+    hljs.highlightAll();
   </script>
 </head>
 
 <body>
 
+  <div id="header-container">
     <header class="container-fluid bg-primary" id="header-top">
-    <div>
-      <a id="logo" href="#">
-        DataB<i class="bi bi-server"></i>
-      </a>
+      <div>
+        <a id="logo" href="#">
+          DataB<i class="bi bi-server"></i>
+        </a>
+      </div>
+  
+      <div>
+        <a href="#" id="link-github">
+          DataB no Github
+          <i class="bi bi-box-arrow-up-right"></i>
+        </a>
+      </div>
+    </header>
+  </div>
+
+  <!--Siderbar-->
+  <button class="btn-bar">
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+  </button>
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h3>Conteúdo</h3>
     </div>
-
-    <div>
-      <a href="#" id="link-github">
-        DataB no Github
-        <i class="bi bi-box-arrow-up-right"></i>
-      </a>
-    </div>
-  </header>
-
-      <!--Siderbar-->
-      <button class="btn-bar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-
-        <aside class="sidebar">
-          <div class="sidebar-header">
-            <h3>Conteúdo</h3>
-          </div>
-          <hr>
-          <nav>
-            <ul class="sidebar-list">
-              <li class="">
-                <a class="" href="#">Introdução</a>
+    <hr>
+    <nav>
+      <ul>
+        <li class="">
+          <details>
+            <summary>
+              <a class="" href="#1">1. Introdução</a>
+            </summary>
+            <ul class="sublist">
+              <li>
+                <a class="" href="#1.1">1.1. Detalhes</a>
               </li>
-              <li class="">
-                <a class="" href="#">Primeiros passos</a>
+              <li>
+                <a class="" href="#1.2">1.2. Como instalar</a>
               </li>
-              <li class="">
-                <details>
-                  <summary>
-                    <a class="" href="#">Consultas SQL</a>
-                  </summary>
-                  <ol>
-                    <li>
-                      
-                    </li>
-                  </ol>
-                </details>
+              <li>
+                <a class="" href="#1.3">1.3. Configuração e exemplo de uso</a>
               </li>
             </ul>
-          </nav>
-        </aside>
+          </details>
+        </li>
+        <li class="">
+          <details>
+            <summary>
+              <a class="" href="#">Consultas SQL</a>
+            </summary>
+            <ol>
+              <li>
 
-          <main class="content">
-            <div class="row">
-              <section class="col-md-9" id="main-section">
-                <a href="#">
-                  <h1>Prefácio</h1>
-                </a>
-               
-              </section>
-            </div>
-          </main>
+              </li>
+            </ol>
+          </details>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <div class="row">
+      <div class="col-md-9">
+        <section>
+          <h1 id="1">Introdução</h1>
+          <p>
+            DataB é uma library PHP que facilita a criação e execução de instruções SQL usando PDO (PHP Data Object).
+          </p>
+          <h3 id="1.1">Detalhes</h3>
+          <p>
+            Bancos de dados suportados: <b>MYSQL</b> <br>
+            Versão atual: <b>1.0.1</b> <br>
+            Licença: <b>MIT</b>
+          </p>
+          <h3 id="1.2">Como instalar</h3>
+          <p>
+            DataB pode ser instalada através do Composer, que é gerenciador de pacotes
+            para a linguagem PHP. Basta executar o comando: <code>composer require kout/datab</code>
+          </p>
+
+          <p>
+            Instalado? Ótimo! Agora você está pronto para dá os primeiros passos
+            com DataB através de exemplos práticos</a>.
+          </p>
+
+          <h3 id="1.3">Configuração e exemplo de uso</h3>
+
+          <p>
+            Antes de comerçar a criar e executar instruções SQL, primeiro você deve
+            informar para DataB uma conexão com Banco de Dados existente. Para isso, basta
+            passar por parâmetro um objeto PDO para o método <code>DataB::setPDO</code>:
+          </p>
+
+          <pre>
+            <code>
+                $pdo = new \PDO(...);
+                DataB::setPDO($pdo);
+            </code>
+          </pre>
+
+          <p>Prontinho! Agora você já pode começar a criar e executar instruções SQL. Veja como é fácil:</p>
+
+          <pre>
+            <code>
+                $result = DataB::select('*')
+                ->table('books')
+                ->exec()
+                ->getAll();
+            </code>
+          </pre>
+
+          <p>
+            No exemplo acima, buscamos por todos os registros da tabela <code>books</code>.
+          </p>
+
+          <p>
+            Para ver a instrução SQL gerada no código acima, basta executar o método <code>sql()</code> em vez do
+            método <code>exec()</code>:
+          </p>
+
+          <pre>
+            <code>
+                $sql = DataB::select('*')
+                ->table('books')
+                ->sql();
+
+                var_dump($sql);
+            </code>
+          </pre>
+        </section>
+
+        <hr>
+
+        <section>
+          
+          
+        </section>
+
+        <hr>
+
+      </div>
+    </div>
+  </main>
 
   <!--
   <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
