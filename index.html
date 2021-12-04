@@ -14,7 +14,7 @@
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
 
-  <link rel="stylesheet" href="./css/a11y-dark.min.css">
+  <link rel="stylesheet" href="./css/idea.min.css">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +23,7 @@
   <link rel="stylesheet" href="./css/style.css">
 
   <script src="./js/highlight.min.js"></script>
-  <script type="module">
+  <script>
     hljs.highlightAll();
   </script>
 </head>
@@ -37,7 +37,7 @@
           DataB<i class="bi bi-server"></i>
         </a>
       </div>
-  
+
       <div>
         <a href="#" id="link-github">
           DataB no Github
@@ -61,34 +61,41 @@
     <hr>
     <nav>
       <ul>
-        <li class="">
+        <li>
           <details>
             <summary>
-              <a class="" href="#1">1. Introdução</a>
+              <a href="#1">1. Introdução</a>
             </summary>
             <ul class="sublist">
               <li>
-                <a class="" href="#1.1">1.1. Detalhes</a>
+                <a href="#1.1">1.1. Detalhes</a>
               </li>
               <li>
-                <a class="" href="#1.2">1.2. Como instalar</a>
+                <a href="#1.2">1.2. Como instalar</a>
               </li>
               <li>
-                <a class="" href="#1.3">1.3. Configuração e exemplo de uso</a>
+                <a href="#1.3">1.3. Configuração e exemplo de uso</a>
               </li>
             </ul>
           </details>
         </li>
-        <li class="">
+        <li>
           <details>
             <summary>
-              <a class="" href="#">Consultas SQL</a>
+              <a href="#2">2. Consultas SQL</a>
             </summary>
-            <ol>
+            <ul class="sublist">
               <li>
-
+                <a href="#2.1">2.1. Recuperando resultado</a>
               </li>
-            </ol>
+              <li>
+                <a href="#2.2">2.2. Consultas nativas</a>
+              </li>
+              <li>
+                <a href="#2.3">2.3. Funções de agregação</a>
+              </li>
+              
+            </ul>
           </details>
         </li>
       </ul>
@@ -98,53 +105,60 @@
   <main class="content">
     <div class="row">
       <div class="col-md-9">
+
         <section>
           <h1 id="1">Introdução</h1>
           <p>
             DataB é uma library PHP que facilita a criação e execução de instruções SQL usando PDO (PHP Data Object).
           </p>
-          <h3 id="1.1">Detalhes</h3>
-          <p>
-            Bancos de dados suportados: <b>MYSQL</b> <br>
-            Versão atual: <b>1.0.1</b> <br>
-            Licença: <b>MIT</b>
-          </p>
-          <h3 id="1.2">Como instalar</h3>
-          <p>
-            DataB pode ser instalada através do Composer, que é gerenciador de pacotes
-            para a linguagem PHP. Basta executar o comando: <code>composer require kout/datab</code>
-          </p>
 
-          <p>
-            Instalado? Ótimo! Agora você está pronto para dá os primeiros passos
-            com DataB através de exemplos práticos</a>.
-          </p>
+          <section>
+            <h3 id="1.1">Detalhes</h3>
+            <p>
+              Bancos de dados suportados: <b>MYSQL</b> <br>
+              Versão atual: <b>1.0.1</b> <br>
+              Licença: <b>MIT</b>
+            </p>
+          </section>
 
-          <h3 id="1.3">Configuração e exemplo de uso</h3>
+          <section>
+            <h3 id="1.2">Como instalar</h3>
+            <p>
+              DataB pode ser instalada através do Composer, que é gerenciador de pacotes
+              para a linguagem PHP. Basta executar o comando: <code>composer require kout/datab</code>
+            </p>
+            <p>
+              Instalado? Ótimo! Agora você está pronto para dá os primeiros passos
+              com DataB através de exemplos práticos</a>.
+            </p>
+          </section>
 
-          <p>
-            Antes de comerçar a criar e executar instruções SQL, primeiro você deve
-            informar para DataB uma conexão com Banco de Dados existente. Para isso, basta
-            passar por parâmetro um objeto PDO para o método <code>DataB::setPDO</code>:
-          </p>
+          <section>
+            <h3 id="1.3">Configuração e exemplo de uso</h3>
+            <p>
+              Antes de comerçar a criar e executar instruções SQL, primeiro você deve
+              informar para DataB uma conexão com Banco de Dados existente. Para isso, basta
+              passar por parâmetro um objeto PDO para o método <code>DataB::setPDO</code>:
+            </p>
+          </section>
 
-          <pre>
-            <code>
-                $pdo = new \PDO(...);
-                DataB::setPDO($pdo);
-            </code>
-          </pre>
+<pre>
+<code>
+$pdo = new \PDO(...);
+DataB::setPDO($pdo);
+</code>
+</pre>
 
           <p>Prontinho! Agora você já pode começar a criar e executar instruções SQL. Veja como é fácil:</p>
 
-          <pre>
-            <code>
-                $result = DataB::select('*')
-                ->table('books')
-                ->exec()
-                ->getAll();
-            </code>
-          </pre>
+<pre>
+<code>
+$result = DataB::select('*')
+->table('books')
+->exec()
+->getAll();
+</code>
+</pre>
 
           <p>
             No exemplo acima, buscamos por todos os registros da tabela <code>books</code>.
@@ -155,23 +169,328 @@
             método <code>exec()</code>:
           </p>
 
-          <pre>
-            <code>
-                $sql = DataB::select('*')
-                ->table('books')
-                ->sql();
+<pre>
+<code>
+$sql = DataB::select('*')
+->table('books')
+->sql();
 
-                var_dump($sql);
-            </code>
-          </pre>
+var_dump($sql);
+</code>
+</pre>
         </section>
 
         <hr>
 
         <section>
-          
-          
+          <h1 id="2">Consultas SQL</h1>
+          <p>
+            Para fazer consultas SQL use o método <code>select()</code> para especificar a lista de campos que serão
+            retornados pela consulta. Você pode passar por parâmetro tanto um array de
+            nomes de colunas quanto uma lista de nomes de colunas separadas por virgulas. Em seguida, use o
+            método <code>table()</code> para definir em qual tabela será feita a consulta de dados.
+        </p>
+        <p>
+            No exemplo abaixo passamos um array como parâmetro contendo os nomes das colunas que queremos recuperar no resultado da query:
+        </p>
+        
+<pre>
+<code>
+$columns = array(
+    'title',
+    'price',
+    'published'
+);
+
+$books = DataB::select($columns)
+  ->table('books')
+  ->exec()
+  ->getAll();
+
+var_dump($books);
+</code>
+</pre>
+        
+        <p>
+          Neste outro exemplo passamos duas strings por parâmetro representando os nomes das colunas que queremos recuperar no resultado da query:
+        </p>
+        
+<pre>
+<code>
+$books = DataB::select('title', 'published')
+  ->table('books')
+  ->exec()
+  ->getAll();
+
+var_dump($books);
+</code>
+</pre>
+        
+        <p>
+            O método <code>exec()</code> é chamado para executar a instrução SQL enquanto o método
+            <code>getAll()</code> recupera o resultado retornado pelo o banco de dados.
+        </p>
+        <p>Para recuperar todos os campos da tabela use <code>select('*')</code></p>
+        
+        <section>
+          <h3 id="2.1">Recuperando resultado</h3>
+          <p>
+            Use <code>getAll()</code> para recuperar todos
+            os registros retornados pela consulta:
+        </p>
+        
+<pre>
+<code>
+$authors = DataB::select('*')
+  ->table('authors')
+  ->exec()
+  ->getAll();
+    
+var_dump($authors);
+</code>
+</pre>
+        
+        <p>
+            O código acima gera a seguinte saída:
+        </p>
+        
+<pre>
+<code>
+array (size=5)
+  0 => 
+      array (size=2)
+      'id' => string '1' (length=1)
+      'name' => string 'Yvonne do Amaral Pereira' (length=24)
+  1 => 
+      array (size=2)
+      'id' => string '2' (length=1)
+      'name' => string 'Henrik Ibsen' (length=12)
+  2 => 
+      array (size=2)
+      'id' => string '3' (length=1)
+      'name' => string 'John Green' (length=10)
+    ...
+</code>
+</pre>
+        
+        <p>
+            Use <code>getFirst()</code> para recuperar o primeiro
+            registro retornado pela consulta:
+        </p>
+
+<pre>
+<code>
+$category = DataB::select('*')
+  ->table('categories')
+  ->exec()
+  ->getFirst();
+    
+var_dump($category);
+</code>
+</pre>
+        
+        <p>
+            Use <code>getLast()</code> para recuperar o último
+            registro retornado pela consulta:
+        </p>
+        
+<pre>
+<code>
+$author = DataB::select('*')
+  ->table('categories')
+  ->exec()
+  ->getLast();
+    
+var_dump($category);
+</code>
+</pre>
+        
+        <p>
+            Use <code>getSingleResult()</code> para recuperar o valor literal retornado pela query.
+            Observe que, diferente dos outros métodos visto acima, este método não retorna um array contento o resultado da
+            consulta: Observe o trecho de código abaixo:
+        </p>
+        
+<pre>
+<code>
+$result = DataB::select(1 + 1)
+  ->exec()
+  ->getSingleResult();
+    
+var_dump($result);
+
+// A saída do método var_dump() será o valor '2'
+
+</code>
+</pre>
+        
+        <p>
+            Veja este outro exemplo onde buscamos pelo campo <code>title</code> da tabela
+            <code>books</code>. Neste exemplo, usamos uma condição para limitar a quantidade de registros retornados pela
+            query. Se nenhuma condição for definida, então o método <code>getSingleResult()</code>
+            retornará o valor da primeira coluna do primeiro registro encontrado.
+        </p>
+        
+<pre>
+<code>
+$title = DataB::select('title')
+  ->table('books')
+  ->cond('id')
+  ->eq(1)
+  ->exec()
+  ->getSingleResult();
+
+var_dump($title);
+</code>
+</pre>
+        
+        <p>
+            Use <code>getObjects()</code> para recuperar todos os
+            registros como objetos. Este método recebe por
+            parâmetro o nome da classe que será usada para criar as instâncias dos objetos.
+            Se nenhum parâmetro for especificado, então os registros serão retornados como
+            objetos 'stdClass':
+        </p>
+        
+<pre>
+<code>
+
+class Author {
+
+}
+
+$authors = DataB::select('*')
+  ->table('authors')
+  ->exec()
+  ->getObjects('Author');
+
+var_dump($authors);
+</code>
+</pre>
+        
+        <p>
+            O código acima gera a seguinte saída:
+        </p>
+        
+<pre>
+<code>
+array (size=5)
+  0 => 
+      object(Author)[2]
+      public 'id' => string '1' (length=1)
+      public 'name' => string 'Yvonne do Amaral Pereira' (length=24)
+  1 => 
+      object(Author)[6]
+      public 'id' => string '2' (length=1)
+      public 'name' => string 'Henrik Ibsen' (length=12)
+  ...
+</code>
+</pre>
+        
+        <p>
+            Use <code>getObject()</code> para recuperar o primeiro
+            registro como objeto. Este método recebe como
+            parâmetro o nome da classe que será usada para criar a instância do objeto.
+            Se nenhum parâmetro for especificado, então o primeiro registro será retornado como
+            um objeto 'stdClass'.
+        </p>
+        
+        <p>
+            Use <code>getLazy()</code> para recuperar o primeiro
+            registro como um objeto PDORow onde as variáveis desse objeto correspondem
+            aos nomes das colunas da tabela. Esse método faz o carregamento dos
+            dados conforme as variáveis do objeto <code>PDORow</code> forem acessadas.
+        </p>
+        
         </section>
+
+        <section>
+          <h3 id="2.2">Consultas nativas</h3>
+          <p>
+            Para executar consultas nativas use <code>DataB::nativeSQL()</code>.
+            Este método executa qualquer instrução SQL, tanto
+            DML quanto DDL.
+        </p>
+        
+        <p>Executando instrução DML:</p>
+        
+<pre>
+<code>
+$sql = 'SELECT * FROM authors';
+$authors = DataB::nativeSQL($sql)->getAll();
+</code>
+</pre>
+        
+        <p>Executando instrução DDL:</p>
+        
+<pre>
+<code>
+$sql = 'ALTER TABLE categories ADD COLUMN parent INTEGER';
+$rowCount = DataB::nativeSQL($sql)->rows();
+</code>
+</pre>
+        </section>
+
+        <section>
+          <h3 id="2.3">Funções de agregação</h3>
+
+          <p>Buscando o número de registros retornados pela query:</p>
+
+<pre>
+<code>
+$count = DataB::count('*')
+  ->table('categories')
+  ->exec()
+  ->getSingleResult();
+</code>
+</pre>
+
+<p>Calculando o valor mínimo dentre um conjunto de valores:</p>
+
+<pre>
+<code>
+$min = DataB::min('price')
+  ->table('books')
+  ->exec()
+  ->getSingleResult();
+</code>
+</pre>
+
+<p>Calculando o valor máximo dentre um conjunto de valores:</p>
+
+<pre>
+<code>
+$max = DataB::max('price')
+  ->table('books')
+  ->exec()
+  ->getSingleResult();
+</code>
+</pre>
+
+<p>Calculando a média aritmética dentre um conjunto de valores:</p>
+
+<pre>
+<code>
+$avg = DataB::avg('price')
+  ->table('books')
+  ->exec()
+  ->getSingleResult();
+</code>
+</pre>
+
+<p>Calculando a soma total de todos os valores de um conjunto:</p>
+
+<pre>
+<code>
+$sum = DataB::sum('price')
+  ->table('books')
+  ->exec()
+  ->getSingleResult();
+</code>
+</pre>
+        </section>
+
+      </section>
 
         <hr>
 

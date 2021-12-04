@@ -23,9 +23,16 @@ hr {
   margin: 0;
 }
 
+pre code {
+  border: 1px solid #c1e8fa;
+  border-radius: 5px;
+  background-color: aliceblue!important;
+  padding-top: 0!important;
+  font-size: 12pt;
+}
+
 #header-container {
   height: 50px;
-  margin-bottom: 20px;
 
 }
 
@@ -184,6 +191,11 @@ ul.sublist {
 .content h6 {
   color : #4C33A6;
   margin: 20px 0;
+}
+
+.content h1 {
+  margin-top: 50px;
+  margin-bottom: 30px;
 }
 
 .content p {
