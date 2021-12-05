@@ -2,13 +2,12 @@ html {
   scroll-behavior: smooth;
 }
 
-:target {
- scroll-margin-top: 70px;
+body {
+  overflow-x: hidden;
 }
 
-body {
-  font-size: .875rem;
-  position : relative;
+:target {
+ scroll-margin-top: 70px;
 }
 
 a {
