@@ -7,7 +7,7 @@ body {
 }
 
 :target {
- scroll-margin-top: 70px;
+  scroll-margin-top: 70px;
 }
 
 a {
@@ -23,11 +23,11 @@ hr {
 }
 
 pre code {
-  border: 1px solid #c1e8fa;
-  border-radius: 5px;
-  background-color: aliceblue!important;
-  padding-top: 0!important;
-  font-size: 12pt;
+  border          : 1px solid #c1e8fa;
+  border-radius   : 5px;
+  background-color: aliceblue !important;
+  padding-top     : 0 !important;
+  font-size       : 12pt;
 }
 
 #header-container {
@@ -90,14 +90,15 @@ pre code {
 }
 
 .sidebar nav {
-  font-size : 13pt;
-  position  : relative;
-  padding   : 5px;
-  height    : 100%;
-  width     : 100%;
-  overflow-y: auto;
-  box-sizing: border-box;
-  overflow-y: scroll;
+  font-size: 13pt;
+  padding  : 5px;
+  width    : 300px;
+  min-height: 520px;
+  overflow : scroll;
+}
+
+.sidebar nav > ul {
+  width: 350px;
 }
 
 .sidebar ul {
@@ -177,9 +178,9 @@ ul.sublist {
 /*FIM SIDEBAR*/
 
 .content {
-  padding-left    : 15px;
-  margin-left: 330px;
-  transition : all 0.3s linear;
+  padding-left: 15px;
+  margin-left : 330px;
+  transition  : all 0.3s linear;
 }
 
 .content h1,
@@ -193,7 +194,7 @@ ul.sublist {
 }
 
 .content h1 {
-  margin-top: 50px;
+  margin-top   : 50px;
   margin-bottom: 30px;
 }
 

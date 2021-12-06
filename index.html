@@ -101,7 +101,16 @@
                 <a href="#2.5">2.5. Ordenação de dados</a>
               </li>
               <li>
-                <a href="#2.6">2.6. Filtrando dados</a>
+                <details>
+                  <summary>
+                    <a href="#2.6">2.6. Filtrando dados</a>
+                  </summary>
+                  <ul class="sublist">
+                    <li>
+                      <a href="#2.6.1">2.5. Operadores relacionais</a>
+                    </li>
+                  </ul>
+                </details>
               </li>
             </ul>
           </details>
@@ -679,7 +688,7 @@ SELECT * FROM books WHERE price = ?
 <p>
   Existem duas maneiras para criar parâmetros SQL com dados de entrada usando DataB.
   A primeira é através de métodos que recebem algum valor de entrada, como por exemplo o
-  método <code>eq()</code> que equivale ao operador relacional de igualdade. A segunda é
+  método <code>eqValue()</code> que equivale ao operador relacional de igualdade. A segunda é
   passando um array de dados para o método <code>exec()</code>. Ao trabalhar desta forma,
   fica ao seu critério usar <strong>mask placeholders</strong> ou <strong>named placeholders</strong>.
   Se você optar por esta, deverá passar um array associativo onde as chaves do array devem
@@ -740,6 +749,9 @@ SELECT * FROM books WHERE price = :price
 </code>
 </pre>
 
+<section>
+  <h4 id="2.6.1">Operadores relacionais</h4>
+</section>
 
 </section>
 
