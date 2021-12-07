@@ -751,6 +751,79 @@ SELECT * FROM books WHERE price = :price
 
 <section>
   <h4 id="2.6.1">Operadores relacionais</h4>
+
+  <p>
+    DataB disponibiliza métodos para comparação de valores literais, como strings, números, booleanos; e
+    para comparação de colunas do banco de dados. Por exemplo, para usar o operador relacional de igualdade
+    <code>(=)</code> para comparar valores literais use o método <code>DataB::eqValue()</code>; para comparar colunas do banco
+    de dados use o método <code>DataB::eqColumn()</code>.
+  </p>
+
+  <p>
+    Veja no exemplo abaixo no qual buscamos todos os registros da tabela <code>books</code> onde o
+    ano de publicação seja igual a 2019:
+  </p>
+
+<pre>
+<code>
+$books = DataB::select('*')
+  ->table('books')
+  ->cond('published')
+  ->eqValue(2019)
+  ->exec()
+  ->getAll();
+
+var_dump($books);
+</code>
+</pre>
+
+  <p>
+    Neste outro exemplo fazemos consultas na tabela <code>authors</code> e <code>books</code> onde buscamos pelos nomes dos autores e pelos titulos de seus respectivos livros publicados:
+  </p>
+
+<pre>
+<code>
+$result = DataB::select('authors.name', 'books.title')
+  ->table('authors, books')
+  ->cond('authors.id')
+  ->eqColumn('books.authors_id')
+  ->exec()
+  ->getAll();
+
+var_dump($result);
+</code>
+</pre>
+
+  <p>
+    Veja a lista completa de todos os métodos usados para comparar valores com DataB:
+  </p>
+
+  <ul>
+    <li>
+        <code>eqValue()</code>, <code>eqColumn()</code> (=)
+    </li>
+    <li>
+        <code>neValue()</code>, <code>neColumn()</code> (!=)
+    </li>
+    <li>
+        <code>ltValue()</code>, <code>ltColumn()</code> (&lt;)
+    </li>
+    <li>
+        <code>gtValue()</code>, <code>gtColumn()</code> (&gt;)
+    </li>
+    <li>
+        <code>leValue()</code>, <code>leColumn()</code> (&lt;=)
+    </li>
+    <li>
+        <code>geValue()</code>, <code>geColumn()</code> (&gt;=)
+    </li>
+</ul>
+
+  <div class="alert alert-warning">
+      <b>Observação:</b> Todo parâmetro de entrada para os métodos que comparam valores literais são convertidos
+      para mask place holders por padrão para evitar SQL Injection. Você tem que tomar cuidado somente ao usar os métodos que comparam colunas do banco de dados, pois os parâmetros passados para esses métodos são usados diretamente na montagem da query.
+  </div>
+
 </section>
 
 </section>
