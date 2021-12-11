@@ -107,7 +107,10 @@
                   </summary>
                   <ul class="sublist">
                     <li>
-                      <a href="#2.6.1">2.5. Operadores relacionais</a>
+                      <a href="#2.6.1">2.6.1. Operadores relacionais</a>
+                    </li>
+                    <li>
+                      <a href="#2.6.2">2.6.2. Operadores lógicos</a>
                     </li>
                   </ul>
                 </details>
@@ -171,9 +174,9 @@ DataB::setPDO($pdo);
 <pre>
 <code>
 $result = DataB::select('*')
-->table('books')
-->exec()
-->getAll();
+  ->table('books')
+  ->exec()
+  ->getAll();
 </code>
 </pre>
 
@@ -189,8 +192,8 @@ $result = DataB::select('*')
 <pre>
 <code>
 $sql = DataB::select('*')
-->table('books')
-->sql();
+  ->table('books')
+  ->sql();
 
 var_dump($sql);
 </code>
@@ -220,9 +223,9 @@ $columns = array(
 );
 
 $books = DataB::select($columns)
-->table('books')
-->exec()
-->getAll();
+  ->table('books')
+  ->exec()
+  ->getAll();
 
 var_dump($books);
 </code>
@@ -235,9 +238,9 @@ var_dump($books);
 <pre>
 <code>
 $books = DataB::select('title', 'published')
-->table('books')
-->exec()
-->getAll();
+  ->table('books')
+  ->exec()
+  ->getAll();
 
 var_dump($books);
 </code>
@@ -259,9 +262,9 @@ var_dump($books);
 <pre>
 <code>
 $authors = DataB::select('*')
-->table('authors')
-->exec()
-->getAll();
+  ->table('authors')
+  ->exec()
+  ->getAll();
 
 var_dump($authors);
 </code>
@@ -274,19 +277,19 @@ var_dump($authors);
 <pre>
 <code>
 array (size=5)
-0 => 
-array (size=2)
-'id' => string '1' (length=1)
-'name' => string 'Yvonne do Amaral Pereira' (length=24)
-1 => 
-array (size=2)
-'id' => string '2' (length=1)
-'name' => string 'Henrik Ibsen' (length=12)
-2 => 
-array (size=2)
-'id' => string '3' (length=1)
-'name' => string 'John Green' (length=10)
-...
+  0 => 
+    array (size=2)
+    'id' => string '1' (length=1)
+    'name' => string 'Yvonne do Amaral Pereira' (length=24)
+  1 => 
+    array (size=2)
+    'id' => string '2' (length=1)
+    'name' => string 'Henrik Ibsen' (length=12)
+  2 => 
+    array (size=2)
+    'id' => string '3' (length=1)
+    'name' => string 'John Green' (length=10)
+  ...
 </code>
 </pre>
 
@@ -298,9 +301,9 @@ array (size=2)
 <pre>
 <code>
 $category = DataB::select('*')
-->table('categories')
-->exec()
-->getFirst();
+  ->table('categories')
+  ->exec()
+  ->getFirst();
 
 var_dump($category);
 </code>
@@ -314,9 +317,9 @@ var_dump($category);
 <pre>
 <code>
 $author = DataB::select('*')
-->table('categories')
-->exec()
-->getLast();
+  ->table('categories')
+  ->exec()
+  ->getLast();
 
 var_dump($category);
 </code>
@@ -331,8 +334,8 @@ var_dump($category);
 <pre>
 <code>
 $result = DataB::select(1 + 1)
-->exec()
-->getSingleResult();
+  ->exec()
+  ->getSingleResult();
 
 var_dump($result);
 
@@ -351,11 +354,11 @@ var_dump($result);
 <pre>
 <code>
 $title = DataB::select('title')
-->table('books')
-->cond('id')
-->eqValue(1)
-->exec()
-->getSingleResult();
+  ->table('books')
+  ->cond('id')
+  ->eqValue(1)
+  ->exec()
+  ->getSingleResult();
 
 var_dump($title);
 </code>
@@ -377,9 +380,9 @@ class Author {
 }
 
 $authors = DataB::select('*')
-->table('authors')
-->exec()
-->getObjects('Author');
+  ->table('authors')
+  ->exec()
+  ->getObjects('Author');
 
 var_dump($authors);
 </code>
@@ -392,15 +395,15 @@ var_dump($authors);
 <pre>
 <code>
 array (size=5)
-0 => 
-object(Author)[2]
-public 'id' => string '1' (length=1)
-public 'name' => string 'Yvonne do Amaral Pereira' (length=24)
-1 => 
-object(Author)[6]
-public 'id' => string '2' (length=1)
-public 'name' => string 'Henrik Ibsen' (length=12)
-...
+  0 => 
+    object(Author)[2]
+    public 'id' => string '1' (length=1)
+    public 'name' => string 'Yvonne do Amaral Pereira' (length=24)
+  1 => 
+    object(Author)[6]
+    public 'id' => string '2' (length=1)
+    public 'name' => string 'Henrik Ibsen' (length=12)
+  ...
 </code>
 </pre>
 
@@ -466,9 +469,9 @@ $rowCount = DataB::nativeSQL($sql)->rows();
 <pre>
 <code>
 $count = DataB::count('*')
-->table('categories')
-->exec()
-->getSingleResult();
+  ->table('categories')
+  ->exec()
+  ->getSingleResult();
 </code>
 </pre>
 
@@ -480,15 +483,15 @@ $count = DataB::count('*')
 <pre>
 <code>
 $result = DataB::select('authors.name')
-->count('*')
-->alias('qtd_livros_publicados')
-->table('books')
-->innerJoin('authors')
-->on('books.authors_id')
-->eqColumn('authors.id')
-->groupBy('authors.name')
-->exec()
-->getAll();
+  ->count('*')
+  ->alias('qtd_livros_publicados')
+  ->table('books')
+  ->innerJoin('authors')
+  ->on('books.authors_id')
+  ->eqColumn('authors.id')
+  ->groupBy('authors.name')
+  ->exec()
+  ->getAll();
 </code>
 </pre>
 
@@ -497,8 +500,8 @@ $result = DataB::select('authors.name')
 <pre>
 <code>
 SELECT authors.name, COUNT(*) AS 'qtd_livros_publicados' FROM books
-INNER JOIN authors ON books.authors_id = authors.id 
-GROUP BY authors.name
+  INNER JOIN authors ON books.authors_id = authors.id 
+  GROUP BY authors.name
 </code>
 </pre>
 
@@ -538,10 +541,10 @@ GROUP BY authors.name
 <pre>
 <code>
 $result = DataB::fnConcat('title', "' | R$ '", 'price')
-->alias('Título com Preço')
-->table('books')
-->exec()
-->getAll();
+  ->alias('Título com Preço')
+  ->table('books')
+  ->exec()
+  ->getAll();
 
 var_dump($result);
 </code>
@@ -551,12 +554,12 @@ var_dump($result);
 <pre>
 <code>
 array (size=7)
-0 => 
-array (size=1)
-'Título com Preço' => string 'Memórias de um suicida | R$ 52.80' (length=34)
-1 => 
-array (size=1)
-'Título com Preço' => string 'Nas voragens do pecado | R$ 35.95' (length=33)
+  0 => 
+    array (size=1)
+    'Título com Preço' => string 'Memórias de um suicida | R$ 52.80' (length=34)
+  1 => 
+    array (size=1)
+    'Título com Preço' => string 'Nas voragens do pecado | R$ 35.95' (length=33)
 ...
 </code>
 </pre>
@@ -569,11 +572,11 @@ por referência:
 <pre>
 <code>
 $result = DataB::select('title')
-->fnConcat('published', "' | '", 'price')
-->alias('Ano pub. com Preço')
-->table('books')
-->exec()
-->getAll();
+  ->fnConcat('published', "' | '", 'price')
+  ->alias('Ano pub. com Preço')
+  ->table('books')
+  ->exec()
+  ->getAll();
 </code>
 </pre>
 
@@ -582,15 +585,15 @@ $result = DataB::select('title')
 <pre>
 <code>
 array (size=7)
-0 => 
-array (size=2)
-'title' => string 'Memórias de um suicida' (length=23)
-'Ano pub. com Preço' => string '1958 | 52.80' (length=12)
-1 => 
-array (size=2)
-'title' => string 'Nas voragens do pecado' (length=22)
-'Ano pub. com Preço' => string '1959 | 35.95' (length=12)
-...
+  0 => 
+    array (size=2)
+    'title' => string 'Memórias de um suicida' (length=23)
+    'Ano pub. com Preço' => string '1958 | 52.80' (length=12)
+  1 => 
+    array (size=2)
+    'title' => string 'Nas voragens do pecado' (length=22)
+    'Ano pub. com Preço' => string '1959 | 35.95' (length=12)
+    ...
 </code>
 </pre>
 <p>
@@ -655,7 +658,7 @@ $books = DataB::select('*')
   </p>
 
   <p>
-    Observe no trecho de código abaixo, onde buscamos por todos os registros da tabela
+    Observe no trecho de código abaixo no qual buscamos por todos os registros da tabela
     <code>books</code> onde o preço tem que ser igual a <code>29.99</code>:
   </p>
 
@@ -670,7 +673,7 @@ $books = DataB::select('*')
 </code>
 </pre>
 
-<p>Abaixo ilustramos a intrução SQL equivalente ao trecho de código acima:</p>
+<p>Abaixo ilustramos a instrução SQL equivalente ao trecho de código acima:</p>
 
 <pre>
 <code>
@@ -711,7 +714,7 @@ $category = DataB::select('*')
 </code>
 </pre>
 
-<p>Abaixo ilustramos a intrução SQL equivalente ao trecho de código acima:</p>
+<p>Abaixo ilustramos a instrução SQL equivalente ao trecho de código acima:</p>
 
 <pre>
 <code>
@@ -740,12 +743,12 @@ $book = DataB::select('*')
 </code>
 </pre>
 
-<p>Abaixo ilustramos a intrução SQL equivalente ao trecho de código acima:</p>
+<p>Abaixo ilustramos a instrução SQL equivalente ao trecho de código acima:</p>
 
 <pre>
 <code>
 SELECT * FROM books WHERE price = :price
-    AND published = :published'
+  AND published = :published'
 </code>
 </pre>
 
@@ -818,14 +821,100 @@ var_dump($result);
         <code>geValue()</code>, <code>geColumn()</code> (&gt;=)
     </li>
 </ul>
+</section>
 
-  <div class="alert alert-warning">
-      <b>Observação:</b> Todo parâmetro de entrada para os métodos que comparam valores literais são convertidos
-      para mask place holders por padrão para evitar SQL Injection. Você tem que tomar cuidado somente ao usar os métodos que comparam colunas do banco de dados, pois os parâmetros passados para esses métodos são usados diretamente na montagem da query.
-  </div>
+<section>
+  <h4 id="2.6.2">Operadores lógicos</h4>
+
+  <p>
+    No exemplo abaixo usamos os operadores lógicos <code>DataB::and()</code> e 
+    <code>DataB::or()</code> para demonstrar o encadeamento de expressões lógicas. Obseve que 
+    fazemos a consulta em duas tabelas vinculadas, <code>authors</code> e <code>books</code>, para
+    recuperar somente os registros que obedecem ao conjunto de restrições encadeadas. Nessas restrições, definimos que haja a vinculação entre as duas tabelas e que o ano de publicação
+    do livro seja maior que <code>2000</code> ou o preço seja menor que <code>50.45</code>. 
+  </p>
+
+<pre>
+<code>
+$result = DataB::select('*')
+  ->table('authors, books')
+  ->cond('authors.id')
+  ->eqColumn('books.authors_id')
+  ->and('published')
+  ->gtValue(2000)
+  ->or('price')
+  ->ltValue(50.45)
+  ->exec()
+  ->getAll();
+</code>
+</pre>
+
+<p>Abaixo ilustramos a instrução SQL equivalente ao trecho de código acima:</p>
+
+<pre>
+<code>
+SELECT authors.name, books.title FROM authors, books 
+  WHERE authors.id = books.authors_id 
+  AND published &gt; ? OR price &lt; ?
+</code>
+</pre>
+
+<p>
+  Neste outro exemplo ilustramos o uso do operador <code>IN</code> através do método
+  <code>DataB::in()</code> para fazermos consulta na tabela <code>books</code>
+  recuperando somente os registros cujo ano de publicação seja 1958, 2011 ou 2019.
+  Os valores passados por parâmetros podem ser tanto um array quanto um conjunto de valores
+  separadas por vírgulas. Veja como funciona:
+</p>
+
+<pre>
+<code>
+// Usando conjunto de valores separados por vírgulas:
+
+$books = DataB::select('*')
+  ->table('books')
+  ->cond('published')
+  ->in(1958, 2011, 2019)
+  ->exec()
+  ->getAll();
+
+// Usando array como parâmetro:
+
+$books = DataB::select('*')
+  ->table('books')
+  ->cond('published')
+  ->in([1958, 2011, 2019])
+  ->exec()
+  ->getAll();
+</code>
+</pre>
+
+<p>
+  Envez de passar os valores direto para o método <code>DataB::in()</code>, você pode também substituí-los 
+  por <strong>Named Placeholders</strong> ou <strong>Mask Placeholders</strong>. Vale ressaltar que todo
+  parâmetro de entrada é convertido automaticamente para <strong>Mask Placeholders</strong> para evitar
+  SQL Injection. Observe no trecho de código abaixo no qual demonstramos o uso do método DataB::notIn()
+  com a entrada de parâmetros <strong>Named Placeholders</strong>:
+</p>
+
+<pre>
+<code>
+$books = DataB::select('*')
+  ->table('books')
+  ->cond('published')
+  ->notIn(':pub1', ':pub2', ':pub3')
+  ->exec([
+      'pub1' => 1958,
+      'pub2' => 2011,
+      'pub3' => 2019
+    ])
+  ->getAll();
+</code>
+</pre>
 
 </section>
 
+<!--Fim secao filtrando dados-->
 </section>
 
 <!--Fim secao consultas-->
