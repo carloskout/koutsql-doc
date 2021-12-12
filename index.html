@@ -110,7 +110,28 @@
                       <a href="#2.6.1">2.6.1. Operadores relacionais</a>
                     </li>
                     <li>
-                      <a href="#2.6.2">2.6.2. Operadores lógicos</a>
+                      <details>
+                        <summary>
+                          <a href="#2.6.2">2.6.2. Operadores lógicos</a>
+                        </summary>
+                        <ul class="sublist">
+                          <li>
+                            <a href="#2.6.2.1">2.6.2.1. AND e OR</a>
+                          </li>
+                          <li>
+                            <a href="#2.6.2.2">2.6.2.2. IN e NOT IN</a>
+                          </li>
+                          <li>
+                            <a href="#2.6.2.3">2.6.2.3. BETWEEN E NOT BETWEEN</a>
+                          </li>
+                          <li>
+                            <a href="#2.6.2.4">2.6.2.4. LIKE</a>
+                          </li>
+                          <li>
+                            <a href="#2.6.2.5">2.6.2.5. IS NULL e IS NOT NULL</a>
+                          </li>
+                        </ul>
+                      </details>
                     </li>
                   </ul>
                 </details>
@@ -826,14 +847,14 @@ var_dump($result);
 <section>
   <h4 id="2.6.2">Operadores lógicos</h4>
 
-  <p>
-    No exemplo abaixo usamos os operadores lógicos <code>DataB::and()</code> e 
-    <code>DataB::or()</code> para demonstrar o encadeamento de expressões lógicas. Obseve que 
-    fazemos a consulta em duas tabelas vinculadas, <code>authors</code> e <code>books</code>, para
-    recuperar somente os registros que obedecem ao conjunto de restrições encadeadas. Nessas restrições, definimos que haja a vinculação entre as duas tabelas e que o ano de publicação
-    do livro seja maior que <code>2000</code> ou o preço seja menor que <code>50.45</code>. 
-  </p>
+  <section>
+    <h5 id="2.6.2.1">AND e OR</h5>
 
+    <p>
+      Para encadear duas ou mais expressões lógicas use os métodos <code>DataB::and()</code> e
+      <code>DataB::or()</code>. Obseve no exemplo abaixo no qual demonstramos a consulta em duas tabelas vinculadas, <code>authors</code> e <code>books</code>, para recuperar somente os registros que obedecem ao conjunto de restrições encadeadas. Nessas restrições, definimos que haja a vinculação entre as duas tabelas e que o ano de publicação do livro seja maior que <code>2000</code> ou o preço seja menor que <code>50.45</code>. 
+    </p>
+  
 <pre>
 <code>
 $result = DataB::select('*')
@@ -848,9 +869,9 @@ $result = DataB::select('*')
   ->getAll();
 </code>
 </pre>
-
-<p>Abaixo ilustramos a instrução SQL equivalente ao trecho de código acima:</p>
-
+  
+  <p>Abaixo ilustramos a instrução SQL equivalente ao trecho de código acima:</p>
+  
 <pre>
 <code>
 SELECT authors.name, books.title FROM authors, books 
@@ -858,15 +879,19 @@ SELECT authors.name, books.title FROM authors, books
   AND published &gt; ? OR price &lt; ?
 </code>
 </pre>
+</section>
 
-<p>
-  Neste outro exemplo ilustramos o uso do operador <code>IN</code> através do método
-  <code>DataB::in()</code> para fazermos consulta na tabela <code>books</code>
-  recuperando somente os registros cujo ano de publicação seja 1958, 2011 ou 2019.
-  Os valores passados por parâmetros podem ser tanto um array quanto um conjunto de valores
-  separadas por vírgulas. Veja como funciona:
-</p>
+<section>
+  <h5 id="2.6.2.2">IN e NOT IN</h5>
 
+  <p>
+    No exemplo ilustramos o uso do operador <code>IN</code> através do método
+    <code>DataB::in()</code> para fazermos consulta na tabela <code>books</code>
+    recuperando somente os registros cujo ano de publicação seja 1958, 2011 ou 2019.
+    Os valores passados por parâmetros podem ser tanto um array quanto um conjunto de valores
+    separadas por vírgulas. Veja como funciona:
+  </p>
+  
 <pre>
 <code>
 // Usando conjunto de valores separados por vírgulas:
@@ -888,15 +913,15 @@ $books = DataB::select('*')
   ->getAll();
 </code>
 </pre>
-
-<p>
-  Envez de passar os valores direto para o método <code>DataB::in()</code>, você pode também substituí-los 
-  por <strong>Named Placeholders</strong> ou <strong>Mask Placeholders</strong>. Vale ressaltar que todo
-  parâmetro de entrada é convertido automaticamente para <strong>Mask Placeholders</strong> para evitar
-  SQL Injection. Observe no trecho de código abaixo no qual demonstramos o uso do método DataB::notIn()
-  com a entrada de parâmetros <strong>Named Placeholders</strong>:
-</p>
-
+  
+  <p>
+    Envez de passar os valores direto para o método <code>DataB::in()</code>, você pode também substituí-los 
+    por <strong>Named Placeholders</strong> ou <strong>Mask Placeholders</strong>. Vale ressaltar que todo
+    parâmetro de entrada é convertido automaticamente para <strong>Mask Placeholders</strong> para evitar
+    SQL Injection. Observe no trecho de código abaixo no qual demonstramos o uso do método DataB::notIn()
+    com a entrada de parâmetros <strong>Named Placeholders</strong>:
+  </p>
+  
 <pre>
 <code>
 $books = DataB::select('*')
@@ -911,7 +936,93 @@ $books = DataB::select('*')
   ->getAll();
 </code>
 </pre>
+</section>
 
+<section>
+  <h5 id="2.6.2.3">BETWEEN e NOT BETWEEN</h5>
+
+  <p>
+    Para incluir estes operadores na instrução SQL use os métodos
+    <code>DataB::between()</code> e <code>DataB::notBetween()</code>. Observe 
+    no trecho de código abaixo no qual fazemos uma consulta na tabela <code>books</code>
+    recuperando somente os registros onde o preço esteja no intervalo de valores 
+    <code>34.59</code> a <code>48.75</code>:
+  </p>
+<pre>
+<code>
+$books = DataB::select('*')
+  ->table('books')
+  ->cond('price')
+  ->between(34.59, 48.75)
+  ->exec()
+  ->getAll();
+</code>
+</pre>
+</section>
+
+<section>
+  <h5 id="2.6.2.4">LIKE</h5>
+
+  <p>
+    DataB disponibiliza três métodos para se trabalhar com o operador <code>LIKE</code>:
+</p>
+
+<ul>
+    <li>
+        <code>DataB::startsWith()</code> - Busca por um valor que começa com um padrão.
+    </li>
+    <li>
+        <code>DataB::contains()</code> - Busca por um valor que contêm um padrão.
+    </li>
+    <li>
+        <code>DataB::endsWith()</code> - Busca por um valor que termina com um padrão.
+    </li>
+</ul>
+
+<p>
+    A seguir demonstramos o uso do método <code>DataB::startsWith()</code> para buscar somente
+    os registros da tabela <code>categories</code> onde o nome inicia com a letra <code>R</code>.
+    Observe:
+</p>
+
+<pre>
+<code>
+$categories = DataB::select('*')
+  ->table('categories')
+  ->cond('name')
+  ->startsWith('R')
+  ->exec()
+  ->getAll();
+</code>
+</pre>
+
+<p>
+  Veja o mesmo exemplo acima só que usando o método <code>DataB::exec()</code> para receber o
+  padrão como parâmetro:
+</p>
+
+<pre>
+<code>
+$categories = DataB::select('*')
+  ->table('categories')
+  ->cond('name')
+  ->startsWith('?')
+  ->exec(['R%'])
+  ->getAll();
+</code>
+</pre>
+
+<p>
+  No exemplo acima foi usado <code>mask placeholders</code>, mas você pode usar também 
+  <code>named placeholders</code>.
+</p>
+</section>
+
+<section>
+  <h5 id="2.6.2.5">IS NULL e IS NOT NULL</h5>
+</section>
+
+<!--fim secao operadores logicos-->
 </section>
 
 <!--Fim secao filtrando dados-->
