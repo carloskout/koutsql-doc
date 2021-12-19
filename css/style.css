@@ -93,11 +93,11 @@ pre code {
   font-size: 13pt;
   padding  : 5px;
   width    : 300px;
-  min-height: 520px;
+  height   : 520px;
   overflow : scroll;
 }
 
-.sidebar nav > ul {
+.sidebar nav>ul {
   width: 400px;
 }
 
