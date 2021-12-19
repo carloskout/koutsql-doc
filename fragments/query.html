@@ -471,7 +471,7 @@
 <p>
     Observe a instrução SQL gerada no exemplo acima onde temos o campo
     <code>price = ?</code>. Por padrão, todos os parâmetros de entrada
-    para a instrução SQL são convertidos para <strong>mask placeholders</strong> para evitar
+    para a instrução SQL são convertidos para <code>mask placeholders</code> para evitar
     SQL Injection.
 </p>
 
@@ -480,7 +480,7 @@
     A primeira é através de métodos que recebem algum valor de entrada, como por exemplo o
     método <code>eq()</code> que equivale ao operador relacional de igualdade. A segunda é
     passando um array de dados para o método <code>exec()</code>. Ao trabalhar desta forma,
-    fica ao seu critério usar <strong>mask placeholders</strong> ou <strong>named placeholders</strong>.
+    fica ao seu critério usar <code>mask placeholders</code> ou <code>named placeholders</code>.
     Se você optar por esta, deverá passar um array associativo onde as chaves do array devem
     corresponder aos nomes das colunas da tabela; caso opte por aquela, então você terá que
     passar um array indexado como parâmentro. Veja como funciona:
