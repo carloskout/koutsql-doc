@@ -130,6 +130,9 @@
                           <li>
                             <a href="#2.6.2.5">2.6.2.5. IS NULL e IS NOT NULL</a>
                           </li>
+                          <li>
+                            <a href="#2.6.2.6">2.6.2.6. EXISTS e NOT EXISTS</a>
+                          </li>
                         </ul>
                       </details>
                     </li>
@@ -143,28 +146,7 @@
                 <a href="#2.8">2.8. Buscando dados não duplicados</a>
               </li>
               <li>
-                <details>
-                  <summary>
-                    <a href="#2.9">2.9. Junção de tabelas</a>
-                  </summary>
-                  <ul class="sublist">
-                    <li>
-                      <a href="2.9.1">2.9.1. Usando where</a>
-                    </li>
-                    <li>
-                      <a href="2.9.2">2.9.2. Usando inner join</a>
-                    </li>
-                    <li>
-                      <a href="2.9.3">2.9.3. Usando left join</a>
-                    </li>
-                    <li>
-                      <a href="2.9.4">2.9.4. Usando right join</a>
-                    </li>
-                    <li>
-                      <a href="2.9.5">2.9.5. Usando cross join</a>
-                    </li>
-                  </ul>
-                </details>
+                <a href="#2.9">2.9. Junção de tabelas</a>
               </li>
             </ul>
           </details>
@@ -1068,6 +1050,57 @@ $books = DataB::select('*')
 </code>
 </pre>
 </section>
+
+<section>
+  <h5 id="2.6.2.6">EXISTS e NOT EXISTS</h5>
+
+  <p>
+    Geralmente o operador <code>EXISTS</code> é usado com subqueries. Não entraremos a fundo 
+    neste conteúdo pois temos uma seção específica para abordá-lo. No entanto demonstraremos
+    como usá-lo.
+  </p>
+
+  <p>
+    DataB disponibiliza os métodos <code>DataB::exists()</code> e <code>DataB::notExists()</code>  
+    os quais recebem como parâmetro uma função <code>callback</code>
+    que retorna uma subquery. Veja como funciona:
+  </p>
+
+<pre>
+<code>
+$result = DataB::select('*')
+  ->table('authors')
+  ->cond()
+  ->exists(function() {
+      return DataB::select('*')
+        ->table('books')
+        ->cond('published')
+        ->between(2000, 2019)
+        ->and('authors.id')
+        ->eqColumn('books.authors_id');
+  })
+  ->exec()
+  ->getAll();
+</code>
+</pre>
+
+  <p>
+    No trecho de código acima buscamos por todos os autores que tenham livros publicados entre os anos de 
+    <code>2000</code> e <code>2019</code>.
+  </p>
+
+  <p>
+    Agora observe como fica a instrução SQL correspondente ao exemplo anterior:
+  </p>
+
+<pre>
+<code>
+SELECT * FROM authors WHERE 
+  EXISTS (SELECT * FROM books WHERE published BETWEEN ? AND ? AND authors.id = books.authors_id)
+</code>
+</pre>
+
+  </section>
 
 <!--fim secao operadores logicos-->
 </section>
