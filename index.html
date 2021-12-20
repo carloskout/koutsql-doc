@@ -1285,6 +1285,25 @@ $result = DataB::select('*')
 
 <section>
   <h3 id="2.10">Agrupando dados</h3>
+
+  <p>
+    Para agrupar dados use os métodos <code>DataB::groupBy()</code> ou 
+    <code>DataB::groupByWithRollup()</code>. E para definir condições
+    para o agrupamento de dados use o método <code>DataB::having()</code>. Observe
+    como funciona:
+  </p>
+
+<pre>
+<code>
+$result = DataB::select('*')
+  ->table('categories')
+  ->groupBy('name')
+  ->exec()
+  ->getAll();
+</code>
+</pre>
+
+
 </section>
 
 <!--Fim secao consultas-->
