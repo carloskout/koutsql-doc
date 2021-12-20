@@ -148,6 +148,9 @@
               <li>
                 <a href="#2.9">2.9. Junção de tabelas</a>
               </li>
+              <li>
+                <a href="#2.10">2.10. Agrupando dados</a>
+              </li>
             </ul>
           </details>
         </li>
@@ -891,6 +894,46 @@ SELECT authors.name, books.title FROM authors, books
   AND published &gt; ? OR price &lt; ?
 </code>
 </pre>
+
+  <p>
+    Você pode usar os métodos <code>DataB::and()</code> e <code>DataB::or()</code> sem a passagem
+    de parâmetros. Nesse caso, apenas o perador lógico será adicionado na query. Veja como funciona:
+  </p>
+
+<pre>
+<code>
+$result = DataB::select('*')
+  ->table('books')
+  ->cond('note')
+  ->isNull()
+  ->and()
+  ->exists(function() {
+      return DataB::select(1)
+        ->table('authors')
+        ->cond('name')
+        ->startsWith('J')
+        ->and('authors.id')
+        ->eqColumn('books.authors_id');
+  })
+  ->exec()
+  ->getAll();
+</code>
+</pre>
+
+  <p>
+    No exemplo acima buscamos por todos os registros da tabela <code>books</code> onde o 
+    campo <code>note</code> tem valor <code>nulo</code> e que exista para cada livro um autor
+    cujo nome inicia com a letra <code>J</code>.
+  </p>
+
+  <p>Veja como fica a instrução SQL correspondente ao exemplo anterior:</p>
+
+<pre>
+<code>
+  SELECT * FROM books WHERE note IS NULL 
+    AND EXISTS (SELECT 1 FROM authors WHERE name LIKE ? AND authors.id = books.authors_id)
+</code>
+</pre>
 </section>
 
 <section>
@@ -1237,8 +1280,11 @@ $result = DataB::select('*')
   representa a chave primária na primeira tabela deverá ser idêntico ao nome do campo de referência
   na segunda tabela.
 </p>
-
 <!--Fim secao junção de tabelas-->
+</section>
+
+<section>
+  <h3 id="2.10">Agrupando dados</h3>
 </section>
 
 <!--Fim secao consultas-->
