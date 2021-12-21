@@ -120,7 +120,7 @@ ul.sublist {
   border         : 0;
   background     : transparent;
   border-radius  : 0;
-  transition     : all .3s linear;
+  transition     : all .2s linear;
   height         : 30px;
   width          : 35px;
   cursor         : pointer;
@@ -180,7 +180,7 @@ ul.sublist {
 .content {
   padding-left: 15px;
   margin-left : 330px;
-  transition  : all 0.3s linear;
+  transition  : all 0.1s linear;
 }
 
 .content h1,
