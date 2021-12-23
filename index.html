@@ -1483,6 +1483,49 @@ SELECT * FROM books
 </pre>
 </section>
 
+<section>
+  <h3 id="2.13">Subexpressões</h3>
+  <p>
+    Subexpressões são criadas passando uma função callback como parâmetro para os métodos
+    <code>DataB::and()</code> e <code>DataB::or()</code>. Observe:
+  </p>
+
+<pre>
+<code>
+$result = DataB::select('*')
+  ->table('books')
+  ->cond('categories_id')
+  ->eqValue(1) // Romance
+  ->and(function() {
+      return DataB::column('published')
+      ->between(2012, 2019)
+      ->and('price')
+      ->leValue(40.00);
+  })
+  ->exec()
+  ->getAll();
+</code>
+</pre>
+
+  <p>
+    Observe que passamos uma função callback para o método <code>DataB::and()</code>. Dentro dessa função 
+    criamos e retornamos a subexpressão.
+  </p>
+
+  <p>
+    Veja como fica a instrução SQL referente ao exemplo anterior:
+  </p>
+
+<pre>
+<code>
+SELECT * FROM books 
+  WHERE categories_id = ? 
+  AND (published BETWEEN ? AND ? AND price &lt;= ?)
+</code>
+</pre>
+</section>
+
+
 <!--Fim secao consultas-->
 </section>
 
