@@ -157,7 +157,7 @@
                 <a href="#2.11">2.11. Union</a>
               </li>
               <li>
-                <a href="#2.12">2.12. Subquery</a>
+                <a href="#2.12">2.12. Subqueries</a>
               </li>
               <li>
                 <a href="#2.13">2.12. Subexpressões</a>
@@ -1371,7 +1371,116 @@ $result = DataB::select('books.title')
   ->getAll();
 </code>
 </pre>
+</section>
 
+<section>
+  <h3 id="2.12">Subqueries</h3>
+
+  <p>
+    No ambiente de banco de dados é bastante comum o uso de subqueries para construir 
+    consultas SQL complexas. Pois bem, DataB fornece
+    suporte a subqueries no qual usamos funções callbacks para criá-las. A maioria dos métodos em DataB recebem
+    função callback como parâmetro tanto para se criar subqueries quanto subexpressões. A seguir disponibilizamos
+    uma lista com todos os método que suportam subqueries:
+  </p>
+
+  <ul>
+    <li>
+      <code>DataB::eqValue()</code>
+    </li>
+    <li>
+      <code>DataB::neValue()</code>
+    </li>
+    <li>
+      <code>DataB::ltValue()</code>
+    </li>
+    <li>
+      <code>DataB::gtValue()</code>
+    </li>
+    <li>
+      <code>DataB::leValue()</code>
+    </li>
+    <li>
+      <code>DataB::geValue()</code>
+    </li>
+    <li>
+      <code>DataB::in()</code>
+    </li>
+    <li>
+      <code>DataB::notIn()</code>
+    </li>
+    <li>
+      <code>DataB::exists()</code>
+    </li>
+    <li>
+      <code>DataB::notExists()</code>
+    </li>
+    <li>
+      <code>DataB::union()</code>
+    </li>
+    <li>
+      <code>DataB::unionAll()</code>
+    </li>
+    <li>
+      <code>DataB::unionDistinct()</code>
+    </li>
+  </ul>
+
+  <p>
+    A função callback passada por parâmetro deve retornar um objeto <code>DataB</code> que representa
+    a query SQL.
+  </p>
+
+  <p>
+    Observe no exemplo a seguir no qual buscamos todos os registros da tabela <code>books</code>
+    somente se existir algum registro cadastrado na tabela <code>authors</code>:
+  </p>
+
+<pre>
+<code>
+$result = DataB::select('*')
+  ->table('books')
+  ->exists(function() {
+      return DataB::select('*')->table('authors');
+  })
+  ->exec()
+  ->getAll();
+</code>
+</pre>
+
+  <p>
+    Neste outro exemplo buscamos somente os registros da tabela <code>books</code> onde
+    o nome da categoria começa com a letra <code>R</code>. Observe também que dentro da subquery 
+    usamos <code>mask placeholders</code> como entrada de parâmetro para o método <code>DataB::startsWith()</code>
+    em vez de passar o valor literal. Fica a seu critério usar <code>mask placeholder</code>, <code>named placeholders</code> ou o próprio valor literal:
+  </p>
+
+<pre>
+<code>
+$result = DataB::select('*')
+  ->table('books')
+  ->cond('categories_id')
+  ->eqValue(function() {
+      return DataB::select('id')
+      ->table('categories')
+      ->cond('name')
+      ->startsWith('?');
+  })
+  ->exec(['R%'])
+  ->getAll();
+</code>
+</pre>
+
+<p>
+  O código SQL correspondente ao exemplo acima é ilustrado a seguir:
+</p>
+
+<pre>
+<code>
+SELECT * FROM books 
+  WHERE categories_id = (SELECT id FROM categories WHERE name LIKE ?)
+</code>
+</pre>
 </section>
 
 <!--Fim secao consultas-->
