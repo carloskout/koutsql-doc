@@ -183,6 +183,9 @@
               <li>
                 <a href="#3.3">3.3. Removendo registros</a>
               </li>
+              <li>
+                <a href="#3.4">3.4. Usando transações</a>
+              </li>
             </ul>
           </details>
         </li>
@@ -1845,6 +1848,32 @@ $rowCount = DataB::delete('books')
   ->rows();
 </code>
 </pre>
+  </section>
+
+  <section>
+    <h3 id="3.4">Usando transações</h3>
+
+    <p>
+      Para alterar, atualiazar ou remover registros de forma segura use o método <code>DataB::transaction()</code>
+      que recebe como parâmetro uma função callback que executa uma instrução SQL dentro de uma transação 
+      de banco de dados. Caso ocorra uma falha na transação SQL então tudo será desfeito (rollback).
+    </p>
+
+<pre>
+<code>
+$id = DataB::transaction(function() {
+  return DataB::insert('name')
+  ->table('categories')
+  ->values('Tecnologia')
+  ->exec()
+  ->getLastInsertedId();
+});
+</code>
+</pre>
+
+<p>
+  O métod <code>DataB::transaction()</code> só retorna um valor se você retornar o valor do callback.
+</p>
   </section>
 
   <!--Fim secao modificando dados-->
