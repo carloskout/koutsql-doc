@@ -1820,7 +1820,31 @@ UPDATE books
   <section>
     <h3 id="3.3">Removendo registros</h3>
 
-    <p>O processo de remover um registro de uma tabela é muito simples.</p>
+    <p>O processo de remover registros de uma tabela é muito simples. Veja como funciona:</p>
+
+<pre>
+<code>
+$rowCount = DataB::delete('books')
+  ->exec()
+  ->rows();
+</code>
+</pre>
+
+  <p>
+    No trecho de cógido acima excluímos todos os registros da tabela <code>books</code>.
+    Para definirmos filtros par alimitar quais registros deverão ser excluídos você pode usar 
+    o método <code>DataB::cond()</code> para encaderar os filtros. Observe:
+  </p>
+
+<pre>
+<code>
+$rowCount = DataB::delete('books')
+  ->cond('id')
+  ->eqValue(2)
+  ->exec()
+  ->rows();
+</code>
+</pre>
   </section>
 
   <!--Fim secao modificando dados-->
