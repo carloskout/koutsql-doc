@@ -1455,6 +1455,9 @@ $result = DataB::select('books.title')
     <li>
       <code>DataB::values()</code>
     </li>
+    <li>
+      <code>DataB::set()</code>
+    </li>
   </ul>
 
   <p>
@@ -1694,6 +1697,130 @@ $id = DataB::insert('name')
   Se você não especificar um filtro para limitar a quantidade de registros retornados pela query então todos 
   os registros retornados serao inseridos no banco de dados.
 </p>
+  </section>
+
+  <section>
+    <h3 id="3.2">Atualizando registros</h3>
+
+    <p>
+      Para fazer atualizações de registros em uma tabela específca devemos usar o método
+      <code>DataB::update()</code> no qual passampos por parâmetro a lista de colunas que
+      queremos atualizar; em seguida usamos o método <code>DataB::table()</code> para 
+      definirmos em qual tabela ocorrerá as alterações; na sequência invocamos o método
+      <code>DataB::set()</code>  no qual informamaos um conjunto de dados correspondentes à
+      lista de campos que queremos atualizar.
+    </p>
+
+    <p>
+      No trecho de código abaixo atualizamos o registro da tabela <code>books</code>
+      onde o campo identificador <code>id</code> seja igual a <code>1</code>:
+    </p>
+  
+<pre>
+<code>
+$rowCount = DataB::update('price', 'note')
+  ->table('books')
+  ->set(65.98, 'Este livro foi atualizado')
+  ->cond('id')
+  ->eqValue(1)
+  ->exec()
+  ->rows();
+</code>
+</pre>
+
+  <p>
+    O método <code>DataB::rows()</code> retorna o número de linhas afetadas pela query.
+  </p>
+
+  <p>
+    No exemplo acima passamos como parâmetro para o método <code>DataB::set()</code> os valores 
+    literais, mas você pode usar também <code>mask placeholders</code> ou <code>named placeholders</code>.
+  </p>
+
+  <p>
+    No exemplo abaixo demonstramos o mesmo exemplo só que usando <code>mask placeholders</code> e
+    passando a lista de campos para o método <code>DataB::update()</code> como um array:
+  </p>
+
+<pre>
+<code>
+$rowCount = DataB::update(['price', 'note'])
+  ->table('books')
+  ->set('?', '?')
+  ->cond('id')
+  ->eqValue('?')
+  ->exec([68.98, 'Este livro foi atualizado', 1])
+  ->rows();
+</code>
+</pre>
+
+  <p>
+    Neste outro exemplo demonstramos o uso de <code>named placeholders</code>:
+  </p>
+
+<pre>
+<code>
+$rowCount = DataB::update(['price', 'note'])
+  ->table('books')
+  ->set(':price', ':note')
+  ->cond('id')
+  ->eqValue(':id')
+  ->exec([
+    'price' => 68.98,
+    'note' => 'Este livro foi atualizado',
+    'id' => 1])
+  ->rows();
+</code>
+</pre>
+
+  <p>
+    Agora vamos mostrar como atualizar coluna usando o resultado de uma <code>subquery</code>:
+  </p>
+
+<pre>
+<code>
+$rowCount = DataB::update('price', 'note')
+  ->table('books')
+  ->set(64.95, 
+    function() {
+      return DataB::select('name')
+      ->table('authors')
+      ->cond('id')
+      ->eqValue(1);
+    }
+  )
+  ->cond('id')
+  ->eqValue(2)
+  ->exec()
+  ->rows();
+</code>
+</pre>
+
+  <p>
+    No exemplo acima atualizamos o valor da coluna <code>price</code> para <code>64.95</code>
+    e para a coluna <code>note</code> definimos como valor o resultado da subquery que retorna
+    o nome do autor cujo campo identificador tenha valor igual a <code>1</code>. Essa atualização
+    será feita somente no registro onde o campo identificar tenha valor igual a <code>2</code>.
+  </p>
+
+  <p>
+    Veja como fica o código SQL equivalente ao exemplo anterior:
+  </p>
+
+<pre>
+<code>
+UPDATE books 
+  SET price = ?, 
+  note = (SELECT name FROM authors WHERE id = ?) 
+  WHERE id = ?
+</code>
+</pre>
+  </section>
+
+  <section>
+    <h3 id="3.3">Removendo registros</h3>
+
+    <p>O processo de remover um registro de uma tabela é muito simples.</p>
   </section>
 
   <!--Fim secao modificando dados-->
