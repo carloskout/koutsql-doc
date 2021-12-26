@@ -236,7 +236,7 @@
     <p>
       Antes de comerçar a criar e executar instruções SQL, primeiro você deve
       informar para DataB uma conexão com Banco de Dados existente. Para isso, basta
-      passar por parâmetro um objeto PDO para o método <code>DataB::setPDO</code>:
+      passar por parâmetro um objeto PDO para o método <code>DataB::setPDO()</code>:
     </p>
   </section>
 
@@ -283,10 +283,10 @@ var_dump($sql);
 <section>
   <h1 id="2">Consultas SQL</h1>
   <p>
-    Para fazer consultas SQL use o método <code>select()</code> para especificar a lista de campos que serão
+    Para fazer consultas SQL use o método <code>DataB::select()</code> para especificar a lista de campos que serão
     retornados pela consulta. Você pode passar por parâmetro tanto um array de
-    nomes de colunas quanto uma lista de nomes de colunas separadas por virgulas. Em seguida, use o
-    método <code>table()</code> para definir em qual tabela será feita a consulta de dados.
+    nomes de colunas quanto uma lista de nomes de colunas separadas por vírgulas. Em seguida, use o
+    método <code>DataB::table()</code> para definir em qual tabela será feita a consulta de dados.
 </p>
 <p>
     No exemplo abaixo passamos um array como parâmetro contendo os nomes das colunas que queremos recuperar no resultado da query:
@@ -325,15 +325,15 @@ var_dump($books);
 </pre>
 
 <p>
-    O método <code>exec()</code> é chamado para executar a instrução SQL enquanto o método
-    <code>getAll()</code> recupera o resultado retornado pelo o banco de dados.
+    O método <code>DataB::exec()</code> é chamado para executar a instrução SQL enquanto o método
+    <code>DataB::getAll()</code> recupera o resultado retornado pelo o banco de dados.
 </p>
-<p>Para recuperar todos os campos da tabela use <code>select('*')</code></p>
+<p>Para recuperar todos os campos da tabela use <code>DataB::select('*')</code></p>
 
 <section>
   <h3 id="2.1">Recuperando resultado</h3>
   <p>
-    Use <code>getAll()</code> para recuperar todos
+    Use <code>DataB::getAll()</code> para recuperar todos
     os registros retornados pela consulta:
 </p>
 
@@ -372,7 +372,7 @@ array (size=5)
 </pre>
 
 <p>
-    Use <code>getFirst()</code> para recuperar o primeiro
+    Use <code>DataB::getFirst()</code> para recuperar o primeiro
     registro retornado pela consulta:
 </p>
 
@@ -388,7 +388,7 @@ var_dump($category);
 </pre>
 
 <p>
-    Use <code>getLast()</code> para recuperar o último
+    Use <code>DataB::getLast()</code> para recuperar o último
     registro retornado pela consulta:
 </p>
 
@@ -404,7 +404,7 @@ var_dump($category);
 </pre>
 
 <p>
-    Use <code>getSingleResult()</code> para recuperar o valor literal retornado pela query.
+    Use <code>DataB::getSingleResult()</code> para recuperar o valor literal retornado pela query.
     Observe que, diferente dos outros métodos visto acima, este método não retorna um array contento o resultado da
     consulta: Observe o trecho de código abaixo:
 </p>
@@ -425,7 +425,7 @@ var_dump($result);
 <p>
     Veja este outro exemplo onde buscamos pelo campo <code>title</code> da tabela
     <code>books</code>. Neste exemplo, usamos uma condição para limitar a quantidade de registros retornados pela
-    query. Se nenhuma condição for definida, então o método <code>getSingleResult()</code>
+    query. Se nenhuma condição for definida, então o método <code>DataB::getSingleResult()</code>
     retornará o valor da primeira coluna do primeiro registro encontrado.
 </p>
 
@@ -443,7 +443,7 @@ var_dump($title);
 </pre>
 
 <p>
-    Use <code>getObjects()</code> para recuperar todos os
+    Use <code>DataB::getObjects()</code> para recuperar todos os
     registros como objetos. Este método recebe por
     parâmetro o nome da classe que será usada para criar as instâncias dos objetos.
     Se nenhum parâmetro for especificado, então os registros serão retornados como
@@ -486,7 +486,7 @@ array (size=5)
 </pre>
 
 <p>
-    Use <code>getObject()</code> para recuperar o primeiro
+    Use <code>DataB::getObject()</code> para recuperar o primeiro
     registro como objeto. Este método recebe como
     parâmetro o nome da classe que será usada para criar a instância do objeto.
     Se nenhum parâmetro for especificado, então o primeiro registro será retornado como
@@ -494,7 +494,7 @@ array (size=5)
 </p>
 
 <p>
-    Use <code>getLazy()</code> para recuperar o primeiro
+    Use <code>DataB::getLazy()</code> para recuperar o primeiro
     registro como um objeto PDORow onde as variáveis desse objeto correspondem
     aos nomes das colunas da tabela. Esse método faz o carregamento dos
     dados conforme as variáveis do objeto <code>PDORow</code> forem acessadas.
