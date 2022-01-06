@@ -1155,7 +1155,6 @@ $books = DataB::select('*')
 <code>
 $result = DataB::select('*')
   ->table('authors')
-  ->cond()
   ->exists(function() {
       return DataB::select('*')
         ->table('books')
