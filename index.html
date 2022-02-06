@@ -31,34 +31,28 @@
 </head>
 
 <body>
-
-  <div id="header-container">
-    <header class="container-fluid bg-primary" id="header-top">
-      <div>
-        <a id="logo" href="#">
-          DataB<i class="bi bi-server"></i>
-        </a>
-      </div>
-
-      <div>
-        <a href="https://github.com/carloskout/datab" id="link-github" target="_blank">
-          DataB no Github
-          <i class="bi bi-box-arrow-up-right"></i>
-        </a>
-      </div>
-    </header>
-  </div>
+  <header class="container-fluid bg-primary" id="header-top">
+    <div>
+      <button class="btn-bar" onclick="openSidebar()">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div><a id="logo" href="#">DataB</a></div>
+    <div>
+      <a href="https://github.com/carloskout/datab" id="link-github" target="_blank">
+        DataB no Github
+        <i class="bi bi-box-arrow-up-right"></i>
+      </a>
+    </div>
+  </header>
 
   <!--Siderbar-->
-  <button class="btn-bar">
-    <span class="icon-bar"></span>
-    <span class="icon-bar"></span>
-    <span class="icon-bar"></span>
-  </button>
-
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebarElem">
     <div class="sidebar-header">
       <h3>Conteúdo</h3>
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     </div>
     <hr>
     <nav>
@@ -193,7 +187,7 @@
     </nav>
   </aside>
 
-<main class="content">
+<main class="content" id="contentElem">
 <div class="row">
 <div class="col-md-9">
 
@@ -1884,6 +1878,17 @@ $id = DataB::transaction(function() {
 </div>
 </main>
 
+<script>
+  function openSidebar() {
+    document.querySelector('#sidebarElem').style.width = '300px';
+    document.querySelector('#contentElem').style.marginLeft = '300px';
+  }
+
+  function closeNav() {
+    document.querySelector('#sidebarElem').style.width = '0';
+    document.querySelector('#contentElem').style.marginLeft = '0';
+}
+</script>
   <!--
   <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
     integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>

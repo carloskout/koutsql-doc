@@ -30,11 +30,6 @@ pre code {
   font-size       : 12pt;
 }
 
-#header-container {
-  height: 50px;
-
-}
-
 /*INICIO HEADER TOPO*/
 #header-top {
   padding    : 5px 10px 5px 20px;
@@ -54,6 +49,8 @@ pre code {
   font-family: 'Oswald', sans-serif;
   font-size  : 20pt;
   color      : #fff;
+  display:  block;
+  padding-left: 10px;
 }
 
 #link-github:hover {
@@ -66,27 +63,65 @@ pre code {
   margin-right: 20px;
 }
 
+.btn-bar {
+  display        : flex;
+  flex-direction : column;
+  justify-content: center;
+  border         : 0;
+  background     : transparent;
+  border-radius  : 0;
+  transition     : all .2s linear;
+  height         : 30px;
+  width          : 35px;
+  cursor         : pointer;
+  z-index        : 1;
+}
+
+.icon-bar {
+  display   : block;
+  width     : 25px;
+  height    : 3px;
+  background: #fff;
+  transition: .3s;
+}
+
+.icon-bar+.icon-bar {
+  margin-top: 5px;
+}
+
 /*FIM HEADER TOPO*/
 
 /*INICIO SIDEBAR*/
 .sidebar {
-  padding-right   : 0;
-  box-sizing      : border-box;
-  position        : fixed;
-  top             : 50px;
-  left            : 0;
-  height          : 100%;
-  width           : 300px;
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 50px;
+  left: 0;
   background-color: #f8f9fa;
-  transition      : all 0.3s linear;
+  overflow-x: hidden;
+  transition: 0.5s;
 }
 
 .sidebar-header {
   padding: 10px 0px 5px 10px;
 }
 
-.sidebar h3 {
+.sidebar-header h3 {
   color: #4C33A6;
+}
+
+.closebtn {
+  color: rgb(143, 5, 5);
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+}
+
+.closebtn:hover {
+  color: red;
 }
 
 .sidebar nav {
@@ -110,77 +145,12 @@ ul.sublist {
   padding-left: 30px;
 }
 
-.btn-bar {
-  position       : fixed;
-  top            : 60px;
-  left           : 250px;
-  display        : flex;
-  flex-direction : column;
-  justify-content: center;
-  border         : 0;
-  background     : transparent;
-  border-radius  : 0;
-  transition     : all .2s linear;
-  height         : 30px;
-  width          : 35px;
-  cursor         : pointer;
-  z-index        : 1;
-}
-
-.icon-bar {
-  display   : block;
-  width     : 25px;
-  height    : 3px;
-  background: rgba(250, 3, 168, 0.333);
-  transition: .3s;
-}
-
-.icon-bar+.icon-bar {
-  margin-top: 5px;
-}
-
-.icon-bar:nth-of-type(1) {
-  transform: translate3d(0, 8px, 0) rotate(45deg);
-}
-
-.icon-bar:nth-of-type(2) {
-  opacity: 0;
-}
-
-.icon-bar:nth-of-type(3) {
-  transform: translate3d(0, -8px, 0) rotate(-45deg);
-}
-
-.sidebar.hide {
-  margin-left: -300px;
-}
-
-.btn-bar.hide {
-  transform: translateX(-230px);
-}
-
-.btn-bar.hide .icon-bar:nth-of-type(1) {
-  transform: translate3d(0, 0, 0) rotate(0deg);
-}
-
-.btn-bar.hide .icon-bar:nth-of-type(2) {
-  opacity: 1;
-}
-
-.btn-bar.hide .icon-bar:nth-of-type(3) {
-  transform: translate3d(0, 0, 0) rotate(0deg);
-}
-
-.btn-bar.hide .icon-bar {
-  background-color: var(--bs-blue);
-}
 
 /*FIM SIDEBAR*/
 
 .content {
-  padding-left: 15px;
-  margin-left : 330px;
-  transition  : all 0.1s linear;
+  padding-left: 30px;
+  transition: margin-left .5s;
 }
 
 .content h1,
@@ -203,17 +173,7 @@ ul.sublist {
   background-color: (0, 0, 0, .5);
 }
 
-.content.hide {
-  margin-left: 60px;
-}
-
-@media (max-width: 450px) {
-  .btn-bar {
-    margin-left: -15px;
-  }
-
-  .content {
-    padding-left: 0;
-    margin-left : 10px;
-  }
+@media screen and (max-height: 450px) {
+  .sidebar {padding-top: 15px;}
+  .sidebar a {font-size: 18px;}
 }
