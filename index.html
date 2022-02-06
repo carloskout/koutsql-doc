@@ -33,7 +33,7 @@
 <body>
   <header class="container-fluid bg-primary" id="header-top">
     <div>
-      <button class="btn-bar" onclick="openSidebar()">
+      <button class="btn-bar" onclick="toggleSidebar()">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -52,7 +52,6 @@
   <aside class="sidebar" id="sidebarElem">
     <div class="sidebar-header">
       <h3>Conteúdo</h3>
-      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     </div>
     <hr>
     <nav>
@@ -185,6 +184,11 @@
         </li>
       </ul>
     </nav>
+    <hr>
+    <div id="developer">
+      <span>Desenvolvido por Carlos Coutinho</span> <br>
+      <span>coutinhoco@outlook.com</span>
+    </div>
   </aside>
 
 <main class="content" id="contentElem">
@@ -1879,15 +1883,10 @@ $id = DataB::transaction(function() {
 </main>
 
 <script>
-  function openSidebar() {
-    document.querySelector('#sidebarElem').style.width = '300px';
-    document.querySelector('#contentElem').style.marginLeft = '300px';
+  function toggleSidebar() {
+    document.querySelector('#sidebarElem').classList.toggle('hide');
+    document.querySelector('#contentElem').classList.toggle('hide');
   }
-
-  function closeNav() {
-    document.querySelector('#sidebarElem').style.width = '0';
-    document.querySelector('#contentElem').style.marginLeft = '0';
-}
 </script>
   <!--
   <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"

@@ -1,9 +1,11 @@
 html {
   scroll-behavior: smooth;
+  height: 100%;
 }
 
 body {
   overflow-x: hidden;
+  height: 100%;
 }
 
 :target {
@@ -94,13 +96,12 @@ pre code {
 /*INICIO SIDEBAR*/
 .sidebar {
   height: 100%;
-  width: 0;
+  width: 300px;
   position: fixed;
   z-index: 1;
   top: 50px;
   left: 0;
   background-color: #f8f9fa;
-  overflow-x: hidden;
   transition: 0.5s;
 }
 
@@ -128,8 +129,8 @@ pre code {
   font-size: 13pt;
   padding  : 5px;
   width    : 300px;
-  height   : 520px;
-  overflow : scroll;
+  height: 75vh;
+  overflow-x: auto;
 }
 
 .sidebar nav>ul {
@@ -145,10 +146,17 @@ ul.sublist {
   padding-left: 30px;
 }
 
+#developer {
+  text-align: center;
+  padding-top: 10px;
+  font-size: 0.7rem;
+  color: #4C33A6;
+}
 
 /*FIM SIDEBAR*/
 
 .content {
+  margin-left: 300px;
   padding-left: 30px;
   transition: margin-left .5s;
 }
@@ -177,3 +185,22 @@ ul.sublist {
   .sidebar {padding-top: 15px;}
   .sidebar a {font-size: 18px;}
 }
+
+@media screen and (max-width: 768px) {
+  .sidebar {width: 0;}
+  .content {margin-left: 0;}
+
+  .sidebar.hide {width: 300px;}
+  /*.content.hide {margin-left: 300px;}*/
+}
+
+@media screen and (min-width: 769px) {
+  .sidebar.hide {
+    width: 0;
+  }
+  
+  .content.hide {
+    margin-left: 0;
+  }
+}
+
