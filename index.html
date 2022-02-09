@@ -454,16 +454,16 @@
 
             <ul>
               <li>
-                <code>DataB::min()</code> - Busca pelo menor valor dentre um conjuntos de valores.
+                <code>min()</code> - Busca pelo menor valor dentre um conjuntos de valores.
               </li>
               <li>
-                <code>DataB::max()</code> - Busca pelo maior valor dentre um conjuntos de valores.
+                <code>max()</code> - Busca pelo maior valor dentre um conjuntos de valores.
               </li>
               <li>
-                <code>DataB::avg()</code> - Busca pela média aritmética dentre um conjuntos de valores.
+                <code>avg()</code> - Busca pela média aritmética dentre um conjuntos de valores.
               </li>
               <li>
-                <code>DataB::sum()</code> - Busca pela soma total dentre um conjuntos de valores.
+                <code>sum()</code> - Busca pela soma total dentre um conjuntos de valores.
               </li>
             </ul>
 
@@ -645,7 +645,7 @@
                 </div>
 
                 <p>
-                  No exemplo asseguir criamos a mesma expressão lógica acima só que dessa vez usamos
+                  No exemplo a seguir criamos a mesma expressão lógica acima só que dessa vez usamos
                   os métodos específicos para fazermos comparações:
                 </p>
 
@@ -667,7 +667,7 @@
                 <h5 id="2.6.2.2">IN e NOT IN</h5>
 
                 <p>
-                  Os operadores <code>IN</code> e <code>NOT IN</code> podem ser adicionados a query
+                  Os operadores <code>IN</code> e <code>NOT IN</code> podem ser adicionados à query
                   através do método <code>filter()</code> ou através dos métodos <code>in()</code>
                   e <code>notIn()</code>.
                 </p>
@@ -718,7 +718,7 @@
                 <h5 id="2.6.2.3">BETWEEN e NOT BETWEEN</h5>
 
                 <p>
-                  Os operadores <code>BETWEEN</code> e <code>NOT BETWEEN</code> podem ser adicionados a query
+                  Os operadores <code>BETWEEN</code> e <code>NOT BETWEEN</code> podem ser adicionados à query
                   através do método <code>filter()</code> ou através dos métodos <code>between()</code>
                   e <code>notBetween()</code>.
                 </p>
@@ -771,117 +771,140 @@
                 <h5 id="2.6.2.4">LIKE</h5>
 
                 <p>
-                  DataB disponibiliza três métodos para se trabalhar com o operador <code>LIKE</code>:
+                  Além do método <code>filter()</code> DataB disponibiliza três métodos para se trabalhar com o operador <code>LIKE</code>:
                 </p>
 
                 <ul>
                   <li>
-                    <code>DataB::startsWith()</code> - Busca por um valor que começa com um padrão.
+                    <code>startsWith()</code> - Busca por um valor que começa com um padrão.
                   </li>
                   <li>
-                    <code>DataB::contains()</code> - Busca por um valor que contêm um padrão.
+                    <code>contains()</code> - Busca por um valor que contêm um padrão.
                   </li>
                   <li>
-                    <code>DataB::endsWith()</code> - Busca por um valor que termina com um padrão.
+                    <code>endsWith()</code> - Busca por um valor que termina com um padrão.
                   </li>
                 </ul>
 
                 <p>
-                  A seguir demonstramos o uso do método <code>DataB::startsWith()</code> para buscar somente
-                  os registros da tabela <code>categories</code> onde o nome inicia com a letra <code>R</code>.
-                  Observe:
+                  Se você decidir usar somente o método <code>filter()</code> para incluír o 
+                  operador <code>LIKE</code> à instrução SQL, então é necessário usar um dos 
+                  seguintes caracteres para construir o padrão de busca:
+                </p>
+
+                <ul>
+                  <li>
+                    <code>'^'</code> - Busca por um valor que começa com um padrão.
+                  </li>
+                  <li>
+                    <code>'.'</code> - Busca por um valor que contêm um padrão.
+                  </li>
+                  <li>
+                    <code>'$'</code> - Busca por um valor que termina com um padrão.
+                  </li>
+                </ul>
+
+                <p>
+                  A seguir demonstramos o uso do método <code>filter()</code> para buscar somente
+                  os registros da tabela <code>categories</code> onde o nome inicia com a letra <code>R</code>:
                 </p>
 
                 <div class="code">
-                  $categories = DataB::select('*')
-                  ->table('categories')
-                  ->cond('name')
-                  ->startsWith('R')
-                  ->exec()
-                  ->getAll();
+                  $result = $st->get('categories')->filter('name', '^', 'R')->list();
                 </div>
 
                 <p>
-                  Veja o mesmo exemplo acima só que usando o método <code>DataB::exec()</code> para receber o
-                  padrão como parâmetro:
+                  Veja o mesmo exemplo acima só que usando o método <code>startsWith()</code>:
                 </p>
 
                 <div class="code">
-                  $categories = DataB::select('*')
-                  ->table('categories')
-                  ->cond('name')
-                  ->startsWith('?')
-                  ->exec(['R%'])
-                  ->getAll();
+                  $result = $st->get('categories')->filter('name')->startsWith('R')->list();
                 </div>
 
                 <p>
-                  No exemplo acima foi usado <code>mask placeholders</code>, mas você pode usar também
-                  <code>named placeholders</code>.
+                  Agora observe no exemplo abaixo como usar <code>Named Placeholders</code> com 
+                  o operador <code>LIKE</code>:
                 </p>
+
+                <div class="code">
+                  // Retorna todas as categorias cujo nome termina com 'de'
+                  $result = $st->get('categories')->filter('name', '$', ':pattern')
+                  ->list(['pattern' => '%de']);
+                </div>
               </section>
 
               <section>
                 <h5 id="2.6.2.5">IS NULL e IS NOT NULL</h5>
 
-                <p>
-                  Use os métodos <code>DataB::isNull()</code> e <code>DataB::isNotNull()</code>. No
-                  exemplo abaixo fazemos uma consulta na tabela <code>books</code> buscando por todos
-                  os registros onde a coluna <code>note</code> tenha valor nulo:
-                </p>
-
                 <div class="code">
-                  $books = DataB::select('*')
-                  ->table('books')
-                  ->cond('note')
-                  ->isNotNull()
-                  ->exec()
-                  ->getAll();
+                  //IS NULL
+                  $result = $st->get('categories')->filter('parent')->isNull()->list();
+
+                  // IS NOT NULL
+                  $result = $st->get('categories')->filter('parent')->isNotNull()->list();
                 </div>
               </section>
 
               <section>
                 <h5 id="2.6.2.6">EXISTS e NOT EXISTS</h5>
-
                 <p>
-                  Geralmente o operador <code>EXISTS</code> é usado com subqueries. Não entraremos a fundo
-                  neste conteúdo pois temos uma seção específica para abordá-lo. No entanto demonstraremos
-                  como usá-lo.
-                </p>
-
-                <p>
-                  DataB disponibiliza os métodos <code>DataB::exists()</code> e <code>DataB::notExists()</code>
+                  DataB disponibiliza os métodos <code>exists()</code> e <code>notExists()</code>
                   os quais recebem como parâmetro uma função <code>callback</code>
-                  que retorna uma subquery. Veja como funciona:
+                  na qual montamos a subquery.
                 </p>
 
-                <div class="code">
-                  $result = DataB::select('*')
-                  ->table('authors')
-                  ->exists(function() {
-                  return DataB::select('*')
-                  ->table('books')
-                  ->cond('published')
-                  ->between(2000, 2019)
-                  ->and('authors.id')
-                  ->eqColumn('books.authors_id');
-                  })
-                  ->exec()
-                  ->getAll();
-                </div>
-
                 <p>
-                  No trecho de código acima buscamos por todos os autores que tenham livros publicados entre os anos de
+                  No trecho de código abaixo demonstramos como recuperar todos os autores que tenham livros publicados entre os anos de
                   <code>2000</code> e <code>2019</code>.
                 </p>
 
+                <div class="code">
+                  $result = $st->get('authors')
+                  ->exists(function($query) {
+                    $query->get('books')
+                    ->filter('published', '|', [2000, 2019])
+                    ->and('authors.id', '=', '*books.authors_id');
+                  })
+                  ->list();
+                </div>
+
                 <p>
-                  Agora observe como fica a instrução SQL correspondente ao exemplo anterior:
+                  A instrução SQL correspondente ao exemplo anterior fica da seguinte forma:
                 </p>
 
                 <div class="code">
-                  SELECT * FROM authors WHERE
-                  EXISTS (SELECT * FROM books WHERE published BETWEEN ? AND ? AND authors.id = books.authors_id)
+                  SELECT * FROM authors WHERE 
+                  EXISTS (SELECT * FROM books WHERE published BETWEEN :col_1 AND :col_2 AND authors.id = books.authors_id)
+                </div>
+
+                <p>
+                  <strong>OBSERVAÇÃO:</strong> Ao se comparar duas colunas usando os métodos 
+                  <code>filter()</code>, <code>and()</code>, <code>or()</code> e <code>subexpr()</code> a última coluna deverá ser precedida pelo caracter <code>'*'</code>. Isso
+                  é necessário para que a ultima coluna não seja interpretada como um valor literal da primeira coluna.
+                </p>
+
+                <p>
+                  Por exemplo, no trecho de código a seguir fazemos comparação entre duas colunas:
+                </p>
+
+                <div class="code">
+                  $result = $st->get(['articles', 'authors'])
+                    ->filter('articles.authors_id', '=', '*authors.id')->list();
+                  
+                  /*Código SQL: 
+                  SELECT * FROM articles, authors WHERE articles.authors_id = authors.id*/
+                </div>
+
+                <p>
+                  Agora neste outro exemplo fazemos comparação entre a coluna e seu respectivo valor:
+                </p>
+
+                <div class="code">
+                  $result = $st->get('users')
+                    ->filter('email', '=', 'foo@bar.com')->list();
+                  
+                  /*Código SQL: 
+                  SELECT * FROM users WHERE email = :col_1*/
                 </div>
 
               </section>
@@ -894,167 +917,129 @@
 
           <section>
             <h3 id="2.7">Limitando retorno de linhas</h3>
+
             <p>
-              Use <code>DataB::limit()</code>:
+              Para este propósito DataB disponibiliza os seguintes métodos:
+              <code>offset()</code> e <code>fetch()</code>.
+            </p>
+
+            <p>
+              Em banco de dados <code>SQL Server</code> é necessário usar a ordenação de dados
+              antes de limitar o retorno de linhas. No <code>MYSQL</code> não é preciso.
+            </p>
+
+            <p>
+              Veja como funciona usando <code>SQL Server</code>:
             </p>
 
             <div class="code">
-              $books = DataB::select('*')
-              ->table('books')
-              ->limit(10)
-              ->exec()
-              ->getAll();
+              // Recuperando todos os registros a partir da décima linha
+              $result = $st->get('articles')->orderByAsc('title')->offset(10)->list();
+
+              // Recuperando os primeiros 10 registros
+              $result = $st->get('articles')->orderByAsc('title')->fetch(10)->list();
+
+              // Recuperando os primeiros 20 registros a partir da décima linha
+              $result = $st->get('articles')->orderByAsc('title')->offset(10)->fetch(20)->list();
             </div>
 
             <p>
-              Você pode especificar a partir de qual registro será retornado o resultado
-              da consulta. Observe:
+              Usando <code>MYSQL</code>:
             </p>
 
             <div class="code">
-              $books = DataB::select('*')
-              ->table('books')
-              ->limit(10, 2)
-              ->exec()
-              ->getAll();
+              /* Por padrão, se não for especificado o fetch, são retornados somente 1000 registros a partir do offset especificado.*/
+
+              // Recuperando 1000 registros a partir da décima linha.
+              $result = $st->get('articles')->offset(10)->list();
+
+              // Recuperando os primeiros 10 registros
+              $result = $st->get('articles')->fetch(10)->list();
+
+              // Recuperando 20 registros a partir da décima linha.
+              $result = $st->get('articles')->offset(10)->fetch(20)->list();
             </div>
-
-            <p>Abaixo ilustramos a instrução SQL equivalente ao trecho de código acima:</p>
-
-            <div class="code">
-              SELECT * FROM produtos LIMIT 2, 10
-            </div>
-
-            <p>
-              No trecho de código acima, buscamos por dez registros da tabela <code>books</code>, inicando
-              na linha seguinte depois da linha <code>2</code>.
-            </p>
           </section>
 
           <section>
             <h3 id="2.8">Buscando dados não duplicados</h3>
-            <p>Use o método <code>DataB::distinct()</code>:</p>
+            
+            <p>
+              DataB disponibiliza o método <code>distinct()</code> o qual recebe como parâmetro tanto um array quanto um conjunto de colunas separadas por vírgulas.
+            </p>
 
             <div class="code">
-              // buscando registros que não tenham o ano de publicação duplicado
-              $books = DataB::distinct('published')
-              ->table('books')
-              ->exec()
-              ->getAll();
+              $result = $st->get('employees')->distinct('lastname')->list();
+
+              // Usando mais de uma coluna
+              $result = $st->get('employees')->distinct('lastname', 'city')->list();
             </div>
+
           </section>
 
           <section>
             <h3 id="2.9"> Junção de tabelas</h3>
             <p>
               Nesta seção demonstramos como fazer junção de tabelas com DataB. No exemplo abaixo,
-              usamos o método <code>DataB::cond()</code> para criar a junção entre
+              usamos o método <code>filter()</code> para criar a junção entre
               as tabelas <code>authors</code> e <code>books</code>:
             </p>
 
             <div class="code">
-              $result = DataB::select('*')
-              ->table('authors', 'books')
-              ->cond('authors.id')
-              ->eqColumn('books.authors_id')
-              ->exec()
-              ->getAll();
-            </div>
+              $result = $st->get(['books', 'authors'])
+                ->filter('books.authors_id', '=', '*authors.id')->list();
 
-            <p>Veja como fica a instrução SQL equivalente ao trecho de código acima:</p>
-
-            <div class="code">
-              SELECT * FROM authors, books WHERE authors.id = books.authors_id
+              //Outra maneira usando filter
+              $result = $st->get(['books', 'authors'])
+                ->filter('books.authors_id')->eqColumn('authors.id')->list();
             </div>
 
             <p>
-              Agora, no exemplo abaixo, fazemos a junção de tabelas usando <code>inner join</code>:
+              Usando <code>inner join</code>:
             </p>
 
             <div class="code">
-              $result = DataB::select('*')
-              ->table('authors')
-              ->innerJoin('books')
-              ->on('authors.id')
-              ->eqColumn('books.authors_id')
-              ->exec()
-              ->getAll();
+              $result = $st->get('books')
+                ->innerJoin('authors', 'books.authors_id', 'authors.id')->list();
             </div>
 
             <p>
               Ok. Os demais métodos disponíveis em DataB para criar junções de tabelas são estes:
-              <code>DataB::leftJoin()</code>, <code>DataB::rightJoin()</code> e <code>DataB::crossJoin()</code>.
+              <code>leftJoin()</code>, <code>rightJoin()</code>, <code>crossJoin()</code> e
+              <code>fullJoin()</code>.
             </p>
-
-            <p>
-              <strong>Observação:</strong> Se os campos de comparação das tabelas envolvidas tiverem o mesmo nome, então
-              você pode usar o método <code>DataB::using()</code> em vez do método <code>DataB::on()</code>. Veja como
-              funciona:
-            </p>
-
-
-            <div class="code">
-              $result = DataB::select('*')
-              ->table('authors')
-              ->innerJoin('books')
-              ->using('author_id')
-              ->exec()
-              ->getAll();
-            </div>
-
-            <p>
-              Para que o método <code>DataB::using()</code> funcione corretamente, o nome do campo que
-              representa a chave primária na primeira tabela deverá ser idêntico ao nome do campo de referência
-              na segunda tabela.
-            </p>
-            <!--Fim secao junção de tabelas-->
           </section>
 
           <section>
             <h3 id="2.10">Agrupando dados</h3>
 
             <p>
-              Para agrupar dados use os métodos <code>DataB::groupBy()</code>; e para definir condições
-              para o agrupamento de dados use o método <code>DataB::having()</code>. Observe
-              no exemplo abaixo no qual contamos quantos livros existem por categoria:
+              Para agrupar dados use o método <code>groupBy()</code> e para definir condições
+              de agrupamento use o método <code>having()</code>.
+            </p>
+
+            <p>
+              A seguir demonstramos uma query na qual buscamos todos os registros da tabela
+              funcionários agrupando por departamentos:
             </p>
 
             <div class="code">
-              $result = DataB::select('categories.name')
-              ->alias('Categoria')
-              ->count('*')
-              ->alias('Qtd livros')
-              ->table('categories', 'books')
-              ->cond('categories.id')
-              ->eqColumn('books.categories_id')
-              ->groupBy('categories.id')
-              ->exec()
-              ->getAll();
+              $result = $st->get('employees', ['employees.name', 'departaments.name'])
+              ->innerJoin('departaments', 'employees.dep_id', 'departaments.id')
+              ->groupBy('departaments.name')->list();
             </div>
 
-            <p>
-              Veja como fica a instrução SQL equivale ao exemplo anterior:
-            </p>
+            <p>Instrução SQL:</p>
 
             <div class="code">
-              array (size=3)
-              0 =>
-              array (size=2)
-              'Categoria' => string 'Romance' (length=7)
-              'Qtd livros' => string '3' (length=1)
-              1 =>
-              array (size=2)
-              'Categoria' => string 'Drama' (length=5)
-              'Qtd livros' => string '3' (length=1)
-              2 =>
-              array (size=2)
-              'Categoria' => string 'Autobiografia' (length=13)
-              'Qtd livros' => string '1' (length=1)
+              SELECT employees.name, departaments.name FROM employees 
+              INNER JOIN departaments ON employees.dep_id = departaments.id 
+              GROUP BY departaments.name
             </div>
 
             <p>
-              Se você já está familiarizado com o uso do método <code>DataB::cond()</code> então não terá
-              nenhum problema ao usar o método <code>Data::having()</code> pois funcionam da mesma maneira.
+              Se você já está familiarizado com o uso do método <code>filter()</code> então não terá
+              nenhum problema em usar o método <code>Data::having()</code> pois funciona da mesma maneira.
             </p>
           </section>
 
@@ -1062,24 +1047,16 @@
             <h3 id="2.11">Union</h3>
 
             <p>
-              Para unir dois ou mais conjuntos de resultados DataB disponibiliza os seguintes métodos:
-              <code>DataB::union()</code>, <code>DataB::unionAll()</code> e <code>DataB::unionDistinct()</code>.
-            </p>
-
-            <p>
-              Todos esses métodos recebem como parâmetro uma <code>função callback</code> que retorna uma
-              <code>subquery</code>. Observe no exemplo a seguir:
+              Para unir dois ou mais conjuntos de resultados DataB disponibiliza os métodos
+              <code>union()</code> e <code>unionAll()</code> que recebem como parâmetro uma <code>função callback</code> na qual montamos uma <code>subquery</code>. Observe:
             </p>
 
             <div class="code">
-              $result = DataB::select('books.title')
-              ->table('books')
-              ->union(function() {
-              return DataB::select('authors.name')
-              ->table('authors');
-              })
-              ->exec()
-              ->getAll();
+              //Combinando nomes de funcionários e clientes
+              $result = $st->get('employees', ['name'])
+              ->union(function($query) {   
+                $query->get('customers', ['name']);
+               })->list();
             </div>
           </section>
 
@@ -1098,87 +1075,65 @@
 
             <ul>
               <li>
-                <code>DataB::eqValue()</code>
+                <code>filter()</code>
               </li>
               <li>
-                <code>DataB::neValue()</code>
+                <code>eqValue()</code>
               </li>
               <li>
-                <code>DataB::ltValue()</code>
+                <code>neValue()</code>
               </li>
               <li>
-                <code>DataB::gtValue()</code>
+                <code>ltValue()</code>
               </li>
               <li>
-                <code>DataB::leValue()</code>
+                <code>gtValue()</code>
               </li>
               <li>
-                <code>DataB::geValue()</code>
+                <code>leValue()</code>
               </li>
               <li>
-                <code>DataB::in()</code>
+                <code>geValue()</code>
               </li>
               <li>
-                <code>DataB::notIn()</code>
+                <code>in()</code>
               </li>
               <li>
-                <code>DataB::exists()</code>
+                <code>notIn()</code>
               </li>
               <li>
-                <code>DataB::notExists()</code>
+                <code>exists()</code>
               </li>
               <li>
-                <code>DataB::union()</code>
+                <code>notExists()</code>
               </li>
               <li>
-                <code>DataB::unionAll()</code>
+                <code>union()</code>
               </li>
               <li>
-                <code>DataB::unionDistinct()</code>
+                <code>unionAll()</code>
               </li>
               <li>
-                <code>DataB::values()</code>
+                <code>put()</code>
               </li>
-              <li>
-                <code>DataB::set()</code>
-              </li>
+              <li><code>remove()</code></li>
             </ul>
-
-            <p>
-              A função callback passada por parâmetro deve retornar um objeto <code>DataB</code> que representa
-              a query SQL.
-            </p>
-
-            <p>
-              Observe no exemplo a seguir no qual buscamos todos os registros da tabela <code>books</code>
-              somente se existir algum registro cadastrado na tabela <code>authors</code>:
-            </p>
-
-            <div class="code">
-              $result = DataB::select('*')
-              ->table('books')
-              ->exists(function() {
-              return DataB::select('*')->table('authors');
-              })
-              ->exec()
-              ->getAll();
-            </div>
 
             <p>
               Neste outro exemplo buscamos somente os registros da tabela <code>books</code> onde
               o nome da categoria começa com a letra <code>R</code>. Observe também que dentro da subquery
               usamos <code>mask placeholders</code> como entrada de parâmetro para o método
-              <code>DataB::startsWith()</code>
+              <code>startsWith()</code>
               em vez de passar o valor literal. Fica a seu critério usar <code>mask placeholder</code>,
               <code>named placeholders</code> ou o próprio valor literal:
             </p>
 
             <div class="code">
-              $result = DataB::select('*')
+              $result = select('*')
               ->table('books')
               ->cond('categories_id')
               ->eqValue(function() {
-              return DataB::select('id')
+              return select('id')
               ->table('categories')
               ->cond('name')
               ->startsWith('?');
@@ -1201,16 +1156,16 @@
             <h3 id="2.13">Subexpressões</h3>
             <p>
               Subexpressões são criadas passando uma função callback como parâmetro para os métodos
-              <code>DataB::and()</code> e <code>DataB::or()</code>. Observe:
+              <code>and()</code> e <code>or()</code>. Observe:
             </p>
 
             <div class="code">
-              $result = DataB::select('*')
+              $result = select('*')
               ->table('books')
               ->cond('categories_id')
               ->eqValue(1) // Romance
               ->and(function() {
-              return DataB::column('published')
+              return column('published')
               ->eqValue(2019)
               ->or('price')
               ->leValue(40.00);
@@ -1220,7 +1175,7 @@
             </div>
 
             <p>
-              Observe que passamos uma função callback para o método <code>DataB::and()</code>. Dentro dessa função
+              Observe que passamos uma função callback para o método <code>and()</code>. Dentro dessa função
               criamos e retornamos a subexpressão.
             </p>
 
@@ -1250,7 +1205,7 @@
 
             <p>
               Para inserir novos registros em uma tabela com DataB muito fácil, basta passar
-              para o método <code>DataB::insert()</code> a relação de campos da tabela que
+              para o método <code>insert()</code> a relação de campos da tabela que
               você quer inserir. Essa relação pode ser tanto um <code>array</code> quanto uma lista
               de <code>strings</code>.
             </p>
@@ -1260,7 +1215,7 @@
             </p>
 
             <div class="code">
-              $id = DataB::insert('title', 'price', 'published', 'categories_id', 'authors_id')
+              $id = insert('title', 'price', 'published', 'categories_id', 'authors_id')
               ->table('books')
               ->values('Cinquenta Tons de Cinza', 24.95, 2011, 1, 1)
               ->exec()
@@ -1269,13 +1224,13 @@
 
             <p>
               Agora observe o mesmo exemplo só que passando um array como parâmetro para o método
-              <code>DataB::insert()</code>:
+              <code>insert()</code>:
             </p>
 
             <div class="code">
               $columns = ['title', 'price', 'published', 'categories_id', 'authors_id'];
 
-              $id = DataB::insert($columns)
+              $id = insert($columns)
               ->table('books')
               ->values('Cinquenta Tons de Cinza', 24.95, 2011, 1, 1)
               ->exec()
@@ -1283,7 +1238,7 @@
             </div>
 
             <p>
-              No exemplos acima passamos os valores literais para o método <code>DataB::values()</code>, mas
+              No exemplos acima passamos os valores literais para o método <code>values()</code>, mas
               você pode usar também <code>mask placeholders</code> ou <code>named placeholders</code>.
             </p>
 
@@ -1294,7 +1249,7 @@
             <div class="code">
               $data = ['Cinquenta Tons de Cinza', 24.95, 2011, 1, 1];
 
-              $id = DataB::insert('title', 'price', 'published', 'categories_id', 'authors_id')
+              $id = insert('title', 'price', 'published', 'categories_id', 'authors_id')
               ->table('books')
               ->values('?', '?', '?', '?', '?')
               ->exec($data)
@@ -1314,7 +1269,7 @@
               'authors_id' => 1
               ];
 
-              $id = DataB::insert('title', 'price', 'published', 'categories_id', 'authors_id')
+              $id = insert('title', 'price', 'published', 'categories_id', 'authors_id')
               ->table('books')
               ->values(':title', ':price', ':published', ':cat_id', ':authors_id')
               ->exec($data)
@@ -1326,7 +1281,7 @@
             </p>
 
             <div class="code">
-              $id = DataB::insert('name')
+              $id = insert('name')
               ->table('authors')
               ->values('Carlos Coutinho')
               ->values('Junior César')
@@ -1337,15 +1292,15 @@
 
             <p>
               Você pode também inserir um novo registro usando dados de uma consulta. Neste caso, devemos passar
-              para o método <code>Datab::values()</code> uma função callback que retorna uma subquery.
+              para o método <code>values()</code> uma função callback que retorna uma subquery.
               Observe:
             </p>
 
             <div class="code">
-              $id = DataB::insert('name')
+              $id = insert('name')
               ->table('authors')
               ->values(function() {
-              return DataB::select('name')
+              return select('name')
               ->table('authors')
               ->cond('id')
               ->eqValue(2);
@@ -1371,10 +1326,10 @@
 
             <p>
               Para fazer atualizações de registros em uma tabela específca devemos usar o método
-              <code>DataB::update()</code> no qual passampos por parâmetro a lista de colunas que
-              queremos atualizar; em seguida usamos o método <code>DataB::table()</code> para
+              <code>update()</code> no qual passampos por parâmetro a lista de colunas que
+              queremos atualizar; em seguida usamos o método <code>table()</code> para
               definirmos em qual tabela ocorrerá as alterações; na sequência invocamos o método
-              <code>DataB::set()</code> no qual informamaos um conjunto de dados correspondentes à
+              <code>set()</code> no qual informamaos um conjunto de dados correspondentes à
               lista de campos que queremos atualizar.
             </p>
 
@@ -1384,7 +1339,7 @@
             </p>
 
             <div class="code">
-              $rowCount = DataB::update('price', 'note')
+              $rowCount = update('price', 'note')
               ->table('books')
               ->set(65.98, 'Este livro foi atualizado')
               ->cond('id')
@@ -1394,21 +1349,21 @@
             </div>
 
             <p>
-              O método <code>DataB::rows()</code> retorna o número de linhas afetadas pela query.
+              O método <code>rows()</code> retorna o número de linhas afetadas pela query.
             </p>
 
             <p>
-              No exemplo acima passamos como parâmetro para o método <code>DataB::set()</code> os valores
+              No exemplo acima passamos como parâmetro para o método <code>set()</code> os valores
               literais, mas você pode usar também <code>mask placeholders</code> ou <code>named placeholders</code>.
             </p>
 
             <p>
               No exemplo abaixo demonstramos o mesmo exemplo só que usando <code>mask placeholders</code> e
-              passando a lista de campos para o método <code>DataB::update()</code> como um array:
+              passando a lista de campos para o método <code>update()</code> como um array:
             </p>
 
             <div class="code">
-              $rowCount = DataB::update(['price', 'note'])
+              $rowCount = update(['price', 'note'])
               ->table('books')
               ->set('?', '?')
               ->cond('id')
@@ -1422,7 +1377,7 @@
             </p>
 
             <div class="code">
-              $rowCount = DataB::update(['price', 'note'])
+              $rowCount = update(['price', 'note'])
               ->table('books')
               ->set(':price', ':note')
               ->cond('id')
@@ -1439,11 +1394,11 @@
             </p>
 
             <div class="code">
-              $rowCount = DataB::update('price', 'note')
+              $rowCount = update('price', 'note')
               ->table('books')
               ->set(64.95,
               function() {
-              return DataB::select('name')
+              return select('name')
               ->table('authors')
               ->cond('id')
               ->eqValue(1);
@@ -1480,7 +1435,7 @@
             <p>O processo de remover registros de uma tabela é muito simples. Veja como funciona:</p>
 
             <div class="code">
-              $rowCount = DataB::delete('books')
+              $rowCount = delete('books')
               ->exec()
               ->rows();
             </div>
@@ -1488,11 +1443,11 @@
             <p>
               No trecho de cógido acima excluímos todos os registros da tabela <code>books</code>.
               Para definirmos filtros par alimitar quais registros deverão ser excluídos você pode usar
-              o método <code>DataB::cond()</code> para encaderar os filtros. Observe:
+              o método <code>cond()</code> para encaderar os filtros. Observe:
             </p>
 
             <div class="code">
-              $rowCount = DataB::delete('books')
+              $rowCount = delete('books')
               ->cond('id')
               ->eqValue(2)
               ->exec()
@@ -1505,14 +1460,14 @@
 
             <p>
               Para alterar, atualiazar ou remover registros de forma segura use o método
-              <code>DataB::transaction()</code>
+              <code>transaction()</code>
               que recebe como parâmetro uma função callback que executa uma instrução SQL dentro de uma transação
               de banco de dados. Caso ocorra uma falha na transação SQL então tudo será desfeito (rollback).
             </p>
 
             <div class="code">
-              $id = DataB::transaction(function() {
-              return DataB::insert('name')
+              $id = transaction(function() {
+              return insert('name')
               ->table('categories')
               ->values('Tecnologia')
               ->exec()
@@ -1521,7 +1476,7 @@
             </div>
 
             <p>
-              O métod <code>DataB::transaction()</code> só retorna um valor se você retornar o valor do callback.
+              O métod <code>transaction()</code> só retorna um valor se você retornar o valor do callback.
             </p>
           </section>
 
