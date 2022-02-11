@@ -8,6 +8,10 @@ body {
   height    : 100%;
 }
 
+summary a {
+  pointer-events: none;
+}
+
 :target {
   scroll-margin-top: 70px;
 }
@@ -23,15 +27,6 @@ a:hover {
 hr {
   margin: 0;
 }
-
-/*
-pre code {
-  border          : 1px solid #c1e8fa;
-  border-radius   : 5px;
-  background-color: aliceblue !important;
-  padding-top     : 0 !important;
-  font-size       : 12pt;
-}*/
 
 div.code {
   border          : 1px solid #c1e8fa;
@@ -51,6 +46,9 @@ div.code {
   display    : flex;
   align-items: center;
   position   : fixed;
+  top: 0;
+  z-index: 1000;
+  backface-visibility: hidden;
 }
 
 #header-top div:last-child {
@@ -108,18 +106,19 @@ div.code {
 
 /*INICIO SIDEBAR*/
 .sidebar {
-  height          : 100%;
-  width           : 300px;
   position        : fixed;
+  height          : 100vh;
   z-index         : 1;
   top             : 50px;
   left            : 0;
-  background-color: #f8f9fa;
-  transition      : 0.5s;
+  background-color: #eef6fd;
+  transition      : 0.3s;
+  overflow: hidden;
+  backface-visibility: hidden;
 }
 
 .sidebar-header {
-  padding: 10px 0px 5px 10px;
+  padding: 10px 0px 0px 10px;
 }
 
 .sidebar-header h3 {
@@ -139,15 +138,11 @@ div.code {
 }
 
 .sidebar nav {
-  font-size : 13pt;
-  padding   : 5px;
-  width     : 300px;
-  height    : 75vh;
-  overflow-x: auto;
-}
-
-.sidebar nav>ul {
-  width: 400px;
+  position: relative;
+    top: 0;
+    bottom:0; 
+    height: calc(100vh - 148px); /*50px do topo da sidebar + 45px da altura da div developer + 53px da div conteudo*/
+    overflow: auto;
 }
 
 .sidebar ul {
@@ -155,11 +150,17 @@ div.code {
   padding-left   : 10px;
 }
 
+ul#summary {
+  padding-top: 10px;
+  width: 25em;
+}
+
 ul.sublist {
   padding-left: 30px;
 }
 
 #developer {
+  position: relative;
   text-align : center;
   padding-top: 10px;
   font-size  : 0.7rem;
@@ -172,7 +173,7 @@ ul.sublist {
   margin-left : 300px;
   padding-left: 30px;
   padding-top : 30px;
-  transition  : margin-left .5s;
+  transition  : margin-left .3s;
 }
 
 .content h1,
@@ -205,7 +206,27 @@ ul.sublist {
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (min-width: 768px) {
+  .sidebar {
+    width: 17em;
+  }
+
+  .content {
+    margin-left: 300px;
+  }
+
+  .sidebar.toggle {
+    width: 0;
+  }
+
+  .content.toggle {
+    margin-left: 0;
+  }
+
+}
+
+@media screen and (max-width: 767px) {
+
   .sidebar {
     width: 0;
   }
@@ -214,19 +235,11 @@ ul.sublist {
     margin-left: 0;
   }
 
-  .sidebar.hide {
-    width: 300px;
+  .sidebar.toggle {
+    width: 17em;
   }
 
-  /*.content.hide {margin-left: 300px;}*/
-}
-
-@media screen and (min-width: 769px) {
-  .sidebar.hide {
-    width: 0;
-  }
-
-  .content.hide {
-    margin-left: 0;
+  .content.toggle {
+    margin-left: 300px;
   }
 }

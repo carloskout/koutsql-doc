@@ -3,7 +3,8 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="description" content="Documentação DataB">
   <meta name="author" content="Carlos Coutinho">
   <meta name="theme-color" content="#0d6efd">
@@ -55,10 +56,10 @@
     </div>
     <hr>
     <nav>
-      <ul>
+      <ul id="summary">
         <li>
           <details>
-            <summary>
+            <summary onclick="redirect(this)" data-redir="1">
               <a href="#1">1. Introdução</a>
             </summary>
             <ul class="sublist">
@@ -79,7 +80,7 @@
         </li>
         <li>
           <details>
-            <summary>
+            <summary onclick="redirect(this)" data-redir="2">
               <a href="#2">2. Consultas SQL</a>
             </summary>
             <ul class="sublist">
@@ -160,7 +161,7 @@
         </li>
         <li>
           <details>
-            <summary>
+            <summary onclick="redirect(this)" data-redir="3">
               <a href="#3">3. Modificando dados</a>
             </summary>
             <ul class="sublist">
@@ -181,7 +182,6 @@
         </li>
       </ul>
     </nav>
-    <hr>
     <div id="developer">
       <span>Desenvolvido por Carlos Coutinho</span> <br>
       <span>coutinhoco@outlook.com</span>
@@ -1193,7 +1193,7 @@
         </section>
 
         <section>
-          <h1>Modificando dados</h1>
+          <h1 id="3">Modificando dados</h1>
 
           <p>
             Nesta seção você aprenderá como inserir, atualizar e remover registros do banco de dados
@@ -1494,8 +1494,11 @@
       hljs.highlightElement(el);
     });
     function toggleSidebar() {
-      document.querySelector('#sidebarElem').classList.toggle('hide');
-      document.querySelector('#contentElem').classList.toggle('hide');
+      document.querySelector('#sidebarElem').classList.toggle('toggle');
+      document.querySelector('#contentElem').classList.toggle('toggle');
+    }
+    function redirect(e) {
+      location.href = '#' + e.dataset.redir;
     }
   </script>
   <!--
@@ -1509,8 +1512,6 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"></script>
-
-  <script src="./js/main.js"></script>
 </body>
 
 </html>
