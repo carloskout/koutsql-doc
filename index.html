@@ -1120,20 +1120,29 @@
             </ul>
 
             <p>
-              Exemplo de subquery com método <code>filter()</code> usando operador <code>IN</code>:
+              No exemplo abaixo demonstramos o uso de subquery com o método <code>filter()</code>
+              para o operador <code>IN '->'</code>. Buscamos por registros de autores que tenham 
+              livros cuja categoria seja Drama:
             </p>
 
             <div class="code">
-              $result = $st->get()
+              $subQ = function($query) {
+                $query->get('books', ['authors.id'])
+                ->innerJoin('authors', 'authors.id', 'books.author_id')
+                ->innerJoin('categories', 'categories.id', 'books.cat_id')
+                ->and('categories.name', '=', 'Drama');
+              };
+              $result = $st->get('authors')->filter('id', '->', $subQ)->list();
+
+              //Você pode também usar o método in()
+              //$result = $st->get('authors')->filter('id')->in($subQ)->list();
+              
             </div>
 
-            <p>
-              O código SQL correspondente ao exemplo acima é ilustrado a seguir:
-            </p>
+            <p>Instrução SQL:</p>
 
             <div class="code">
-              SELECT * FROM books
-              WHERE categories_id = (SELECT id FROM categories WHERE name LIKE ?)
+              SELECT * FROM authors WHERE id IN (SELECT authors.id FROM books INNER JOIN authors ON authors.id = books.author_id INNER JOIN categories ON categories.id = books.cat_id AND categories.name = :col_1)
             </div>
           </section>
 
@@ -1141,37 +1150,32 @@
             <h3 id="2.13">Subexpressões</h3>
             <p>
               Subexpressões são criadas passando uma função callback como parâmetro para os métodos
-              <code>and()</code> e <code>or()</code>. Observe:
+              <code>and()</code> e <code>or()</code>. Dentro da função callback montamos a 
+              subexpressão usando o método <code>filter()</code> ou o método <code>subexpr()</code>.
+            </p>
+
+            <p>
+              Na query a seguir buscamos por registros da tabela artigos cujo campo título comece
+              com a palavra <code>'Pres'</code> e termina com a palavra <code>'ente'</code> ou 
+              <code>'idente'</code>.
             </p>
 
             <div class="code">
-              $result = select('*')
-              ->table('books')
-              ->cond('categories_id')
-              ->eqValue(1) // Romance
-              ->and(function() {
-              return column('published')
-              ->eqValue(2019)
-              ->or('price')
-              ->leValue(40.00);
-              })
-              ->exec()
-              ->getAll();
+              $expr = function($query) {
+                $query->filter('title')->endsWith('ente')
+                ->or('title')->endsWith('idente');
+              };
+              $result = $st->get('articles')->filter('title')->startsWith('Pres')
+              ->and($expr)->list();
             </div>
-
-            <p>
-              Observe que passamos uma função callback para o método <code>and()</code>. Dentro dessa função
-              criamos e retornamos a subexpressão.
-            </p>
 
             <p>
               Veja como fica a instrução SQL referente ao exemplo anterior:
             </p>
 
             <div class="code">
-              SELECT * FROM books
-              WHERE categories_id = ?
-              AND (published = ? OR price &lt;= ?)
+              SELECT * FROM articles 
+              WHERE title LIKE :col_1 AND (title LIKE :col_2 OR title LIKE :col_3)
             </div>
           </section>
           <!--Fim secao consultas-->
@@ -1181,236 +1185,73 @@
           <h1 id="3">Modificando dados</h1>
 
           <p>
-            Nesta seção você aprenderá como inserir, atualizar e remover registros do banco de dados
-            usando <code>DataB</code>.
+            Nesta seção você aprenderá como inserir, atualizar e remover registros do banco de dados.
           </p>
 
           <section>
             <h3 id="3.1">Inserindo registros</h3>
 
             <p>
-              Para inserir novos registros em uma tabela com DataB muito fácil, basta passar
-              para o método <code>insert()</code> a relação de campos da tabela que
-              você quer inserir. Essa relação pode ser tanto um <code>array</code> quanto uma lista
-              de <code>strings</code>.
+              Para inserir novos registros em uma tabela é muito fácil, basta passar
+              para o método <code>put()</code> o nome da tabela e um array associativo contendo os dados para inserção. Observe: as chaves do array devem corresponder ao nomes das colunas da tabela na qual queremos inserir os dados.
             </p>
 
             <p>
-              Veja no exemplo abaixo no qual inserimos um registro na tabela <code>books</code>:
-            </p>
-
-            <div class="code">
-              $id = insert('title', 'price', 'published', 'categories_id', 'authors_id')
-              ->table('books')
-              ->values('Cinquenta Tons de Cinza', 24.95, 2011, 1, 1)
-              ->exec()
-              ->getLastInsertedId();
-            </div>
-
-            <p>
-              Agora observe o mesmo exemplo só que passando um array como parâmetro para o método
-              <code>insert()</code>:
-            </p>
-
-            <div class="code">
-              $columns = ['title', 'price', 'published', 'categories_id', 'authors_id'];
-
-              $id = insert($columns)
-              ->table('books')
-              ->values('Cinquenta Tons de Cinza', 24.95, 2011, 1, 1)
-              ->exec()
-              ->getLastInsertedId();
-            </div>
-
-            <p>
-              No exemplos acima passamos os valores literais para o método <code>values()</code>, mas
-              você pode usar também <code>mask placeholders</code> ou <code>named placeholders</code>.
-            </p>
-
-            <p>
-              Usando mask placeholders:
-            </p>
-
-            <div class="code">
-              $data = ['Cinquenta Tons de Cinza', 24.95, 2011, 1, 1];
-
-              $id = insert('title', 'price', 'published', 'categories_id', 'authors_id')
-              ->table('books')
-              ->values('?', '?', '?', '?', '?')
-              ->exec($data)
-              ->getLastInsertedId();
-            </div>
-
-            <p>
-              Usando named placeholders:
+              Ao inserir o novo registro, o método <code>put()</code> retorna o último campo identificador <code>(id)</code>.
             </p>
 
             <div class="code">
               $data = [
-              'title' => 'Cinquenta Tons de Cinza',
-              'price' => 24.95,
-              'published' => 2011,
-              'cat_id' => 1,
-              'authors_id' => 1
+                'email' => 'foo@bar.com',
+                'pass' => 'foo123'
               ];
 
-              $id = insert('title', 'price', 'published', 'categories_id', 'authors_id')
-              ->table('books')
-              ->values(':title', ':price', ':published', ':cat_id', ':authors_id')
-              ->exec($data)
-              ->getLastInsertedId();
+              $id = $st->put('users', $data);
             </div>
-
-            <p>
-              No exemplo abaixo mostramos como inserir vários registros ao mesmo tempo:</code>
-            </p>
-
-            <div class="code">
-              $id = insert('name')
-              ->table('authors')
-              ->values('Carlos Coutinho')
-              ->values('Junior César')
-              ->values('Cláudio Borges')
-              ->exec()
-              ->getLastInsertedId();
-            </div>
-
-            <p>
-              Você pode também inserir um novo registro usando dados de uma consulta. Neste caso, devemos passar
-              para o método <code>values()</code> uma função callback que retorna uma subquery.
-              Observe:
-            </p>
-
-            <div class="code">
-              $id = insert('name')
-              ->table('authors')
-              ->values(function() {
-              return select('name')
-              ->table('authors')
-              ->cond('id')
-              ->eqValue(2);
-              })
-              ->exec()
-              ->getLastInsertedId();
-            </div>
-
-            <p>
-              No exemplo acima buscamos pelo registro da tabela <code>authors</code> cujo campo identificador
-              <code>(id)</code> seja igual a <code>2</code>, entao usamos o resultado dessa query para inserir um novo
-              registro no banco de dados
-            </p>
-
-            <p>
-              Se você não especificar um filtro para limitar a quantidade de registros retornados pela query então todos
-              os registros retornados serao inseridos no banco de dados.
-            </p>
           </section>
 
           <section>
             <h3 id="3.2">Atualizando registros</h3>
 
             <p>
-              Para fazer atualizações de registros em uma tabela específca devemos usar o método
-              <code>update()</code> no qual passampos por parâmetro a lista de colunas que
-              queremos atualizar; em seguida usamos o método <code>table()</code> para
-              definirmos em qual tabela ocorrerá as alterações; na sequência invocamos o método
-              <code>set()</code> no qual informamaos um conjunto de dados correspondentes à
-              lista de campos que queremos atualizar.
+              Para fazer atualizações também usamos o método <code>put()</code>, mas com um 
+              diferencial: Devemos passar um terceiro parâmetro que corresponde ao um 
+              <code>filtro</code> ou a um string <code>'*'</code>.
             </p>
 
             <p>
-              No trecho de código abaixo atualizamos o registro da tabela <code>books</code>
-              onde o campo identificador <code>id</code> seja igual a <code>1</code>:
+              Existem duas maneiras de criarmos um filtro; a primeira é usando uma função 
+              <code>callback</code> e a segunda é passando um array indexado com dois elementos
+              onde o primeiro é nome de uma coluna e segundo é o valor dessa coluna a ser comparado.
+            </p>
+
+            <p>
+              A seguir demonstramos as duas maneiras de atualizarmos os registros da tabela <code>users</code> onde o campo <code>id</code> seja igual a <code>2</code>:
             </p>
 
             <div class="code">
-              $rowCount = update('price', 'note')
-              ->table('books')
-              ->set(65.98, 'Este livro foi atualizado')
-              ->cond('id')
-              ->eqValue(1)
-              ->exec()
-              ->rows();
+              $data = [
+                'email' => 'bar@foo.com'
+              ];
+
+              // usando função callback
+              $rowCount = $st->put('users', $data, function($f) {
+                $f->filter('id')->eqValue(2);
+              });
+
+              // usando array indexado
+              $rowCount = $st->put('users', $data, ['id', 2]);
             </div>
 
             <p>
-              O método <code>rows()</code> retorna o número de linhas afetadas pela query.
+              Se quisermos atualiazar todos os registros devemos passar a string <code>'*'</code>
+              como terceiro parâmetro:
             </p>
 
-            <p>
-              No exemplo acima passamos como parâmetro para o método <code>set()</code> os valores
-              literais, mas você pode usar também <code>mask placeholders</code> ou <code>named placeholders</code>.
-            </p>
-
-            <p>
-              No exemplo abaixo demonstramos o mesmo exemplo só que usando <code>mask placeholders</code> e
-              passando a lista de campos para o método <code>update()</code> como um array:
-            </p>
-
-            <div class="code">
-              $rowCount = update(['price', 'note'])
-              ->table('books')
-              ->set('?', '?')
-              ->cond('id')
-              ->eqValue('?')
-              ->exec([68.98, 'Este livro foi atualizado', 1])
-              ->rows();
-            </div>
-
-            <p>
-              Neste outro exemplo demonstramos o uso de <code>named placeholders</code>:
-            </p>
-
-            <div class="code">
-              $rowCount = update(['price', 'note'])
-              ->table('books')
-              ->set(':price', ':note')
-              ->cond('id')
-              ->eqValue(':id')
-              ->exec([
-              'price' => 68.98,
-              'note' => 'Este livro foi atualizado',
-              'id' => 1])
-              ->rows();
-            </div>
-
-            <p>
-              Agora vamos mostrar como atualizar coluna usando o resultado de uma <code>subquery</code>:
-            </p>
-
-            <div class="code">
-              $rowCount = update('price', 'note')
-              ->table('books')
-              ->set(64.95,
-              function() {
-              return select('name')
-              ->table('authors')
-              ->cond('id')
-              ->eqValue(1);
-              }
-              )
-              ->cond('id')
-              ->eqValue(2)
-              ->exec()
-              ->rows();
-            </div>
-
-            <p>
-              No exemplo acima atualizamos o valor da coluna <code>price</code> para <code>64.95</code>
-              e para a coluna <code>note</code> definimos como valor o resultado da subquery que retorna
-              o nome do autor cujo campo identificador tenha valor igual a <code>1</code>. Essa atualização
-              será feita somente no registro onde o campo identificar tenha valor igual a <code>2</code>.
-            </p>
-
-            <p>
-              Veja como fica o código SQL equivalente ao exemplo anterior:
-            </p>
-
-            <div class="code">
-              UPDATE books
-              SET price = ?,
-              note = (SELECT name FROM authors WHERE id = ?)
-              WHERE id = ?
+            <div class="code"></div>
+              //Atualizando a senha de todos os usuários para '123'
+              $data = ['pass' => '123'];
+              $rowCount = $st->put('users', $data, '*');
             </div>
           </section>
 
