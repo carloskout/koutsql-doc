@@ -1070,7 +1070,7 @@
               recebem
               função callback como parâmetro tanto para se criar subqueries quanto subexpressões. A seguir
               disponibilizamos
-              uma lista com todos os método que suportam subqueries:
+              uma lista completa com todos os método que suportam subqueries:
             </p>
 
             <ul>
@@ -1120,26 +1120,11 @@
             </ul>
 
             <p>
-              Neste outro exemplo buscamos somente os registros da tabela <code>books</code> onde
-              o nome da categoria começa com a letra <code>R</code>. Observe também que dentro da subquery
-              usamos <code>mask placeholders</code> como entrada de parâmetro para o método
-              <code>startsWith()</code>
-              em vez de passar o valor literal. Fica a seu critério usar <code>mask placeholder</code>,
-              <code>named placeholders</code> ou o próprio valor literal:
+              Exemplo de subquery com método <code>filter()</code> usando operador <code>IN</code>:
             </p>
 
             <div class="code">
-              $result = select('*')
-              ->table('books')
-              ->cond('categories_id')
-              ->eqValue(function() {
-              return select('id')
-              ->table('categories')
-              ->cond('name')
-              ->startsWith('?');
-              })
-              ->exec(['R%'])
-              ->getAll();
+              $result = $st->get()
             </div>
 
             <p>
