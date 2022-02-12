@@ -233,6 +233,7 @@ ul.sublist {
 
   .content {
     margin-left: 0;
+    padding: 0 15px;
   }
 
   .sidebar.toggle {
