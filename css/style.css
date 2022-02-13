@@ -30,24 +30,48 @@ hr {
 
 div.code {
   border          : 1px solid #c1e8fa;
+  border-left     : 5px solid #4C33A6;
   border-radius   : 5px;
   background-color: aliceblue;
-  font-family     : monospace;
-  white-space     : pre-line;
-  padding         : 0px 15px 15px 15px;
-  margin-bottom: 15px;
-  line-height     : normal;
+  font-family     : "Droid Sans Mono", "DejaVu Sans Mono", monospace;
+  white-space     : pre-wrap;
+  padding         : 1em;
+  margin-bottom   : 15px;
+  overflow-x      : auto;
+  word-wrap       : break-word;
+  line-height     : 1.45;
+  direction       : ltr;
+
+}
+
+pre {
+  margin     : 0;
+  line-height: normal;
+}
+
+pre code {
+  border          : 1px solid #c1e8fa;
+  border-left     : 5px solid #4C33A6;
+  border-radius   : 5px;
+  background-color: aliceblue !important;
+  font-family     : "Droid Sans Mono", "DejaVu Sans Mono", monospace;
+  white-space     : pre-wrap;
+  padding         : 1em;
+  overflow-x      : auto;
+  word-wrap       : break-word;
+  line-height     : 1.45 !important;
+  direction       : ltr;
 }
 
 
 /*INICIO HEADER TOPO*/
 #header-top {
-  padding    : 5px 10px 5px 20px;
-  display    : flex;
-  align-items: center;
-  position   : fixed;
-  top: 0;
-  z-index: 1000;
+  padding            : 5px 10px 5px 20px;
+  display            : flex;
+  align-items        : center;
+  position           : fixed;
+  top                : 0;
+  z-index            : 1000;
   backface-visibility: hidden;
 }
 
@@ -106,14 +130,14 @@ div.code {
 
 /*INICIO SIDEBAR*/
 .sidebar {
-  position        : fixed;
-  height          : 100vh;
-  z-index         : 1;
-  top             : 50px;
-  left            : 0;
-  background-color: #eef6fd;
-  transition      : 0.3s;
-  overflow: hidden;
+  position           : fixed;
+  height             : 100vh;
+  z-index            : 1;
+  top                : 50px;
+  left               : 0;
+  background-color   : #eef6fd;
+  transition         : 0.3s;
+  overflow           : hidden;
   backface-visibility: hidden;
 }
 
@@ -139,10 +163,11 @@ div.code {
 
 .sidebar nav {
   position: relative;
-    top: 0;
-    bottom:0; 
-    height: calc(100vh - 148px); /*50px do topo da sidebar + 45px da altura da div developer + 53px da div conteudo*/
-    overflow: auto;
+  top     : 0;
+  bottom  : 0;
+  height  : calc(100vh - 148px);
+  /*50px do topo da sidebar + 45px da altura da div developer + 53px da div conteudo*/
+  overflow: auto;
 }
 
 .sidebar ul {
@@ -152,7 +177,7 @@ div.code {
 
 ul#summary {
   padding-top: 10px;
-  width: 25em;
+  width      : 25em;
 }
 
 ul.sublist {
@@ -160,7 +185,7 @@ ul.sublist {
 }
 
 #developer {
-  position: relative;
+  position   : relative;
   text-align : center;
   padding-top: 10px;
   font-size  : 0.7rem;
@@ -170,10 +195,9 @@ ul.sublist {
 /*FIM SIDEBAR*/
 
 .content {
-  margin-left : 300px;
-  padding-left: 30px;
-  padding-top : 30px;
-  transition  : margin-left .3s;
+  margin-left: 300px;
+  padding    : 30px;
+  transition : margin-left .3s;
 }
 
 .content h1,
@@ -208,7 +232,7 @@ ul.sublist {
 
 @media screen and (min-width: 768px) {
   .sidebar {
-    width: 15em;
+    width: 16em;
   }
 
   .content {
@@ -233,11 +257,11 @@ ul.sublist {
 
   .content {
     margin-left: 0;
-    padding: 0 15px;
+    padding    : 25px 15px;
   }
 
   .sidebar.toggle {
-    width: 15em;
+    width: 16em;
   }
 
   .content.toggle {

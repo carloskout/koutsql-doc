@@ -195,7 +195,8 @@
         <section>
           <h1 id="1">Introdução</h1>
           <p>
-            DataB é uma library PHP que facilita a criação e execução de instruções SQL usando PDO (PHP Data Object).
+            O projeto DataB consiste em uma biblioteca PHP que facilita a criação e execução de instruções SQL usando
+            PDO (PHP Data Object).
           </p>
 
           <p>
@@ -205,63 +206,41 @@
           <section>
             <h3 id="1.1">Pré-requisitos</h3>
             <p>
-              Para usar DataB é necessário ter conhecimento prévio da linguagem PHP e SQL.
+              Para usar DataB é necessário ter conhecimento prévio na linguagem PHP e SQL.
             </p>
           </section>
 
           <section>
             <h3 id="1.2">Detalhes</h3>
             <p>
-              Bancos de dados suportados: <b>MYSQL</b> e <b>SQL Server</b><br>
-              Versão atual da library: <b>2.0.0</b> <br>
-              Licença: <b>MIT</b>
+              Bancos de dados suportados: <b>MYSQL</b> e <b>SQL Server</b>.<br>
+              Versão atual: <b>1.0.0</b>.<br>
+              Licença: <b>MIT</b>.
             </p>
           </section>
 
           <section>
             <h3 id="1.3">Como instalar</h3>
             <p>
-              DataB pode ser instalada através do Composer, que é gerenciador de pacotes
-              para a linguagem PHP. Basta executar o comando: <code>composer require kout/datab</code>
-            </p>
-            <p>
-              Instalado? Ótimo! Agora você está pronto para dá os primeiros passos
-              com DataB através de exemplos práticos</a>.
+              DataB pode ser instalada através do Composer, que é um gerenciador de pacotes
+              para a linguagem PHP. Basta executar o comando: <code>composer require kout/datab</code>.
             </p>
           </section>
 
           <section>
-            <h3 id="1.4">Configuração e exemplo de uso</h3>
+            <h3 id="1.4">Configuração</h3>
             <p>
-              Antes de comerçar a criar e executar instruções SQL, primeiro você deve
+              Antes de comerçar a criar e executar instruções SQL você deve
               informar para DataB uma conexão com Banco de Dados existente:
             </p>
           </section>
 
-          <div class="code">
-            $pdo = new \PDO('mysql:dbname=datab_test;host=localhost', 'root', 'root');
-            $st = DB::getStatement($pdo);
-          </div>
-
-          <p>Prontinho! Agora você já pode começar a criar e executar instruções SQL. Veja como é fácil:</p>
-
-          <div class="code">
-            $result = $st->get('books')->list();
-          </div>
-
-          <p>
-            O trecho de código acima retorna um array indexado com todos
-            os registros da tabela <code>books</code>.
-          </p>
-
-          <p>
-            Para obter a instrução SQL correspondente ao código acima basta executar
-            o método <code>sql()</code> em vez do método <code>list()</code>:
-          </p>
-
-          <div class="code">
-            $sql = $st->get('books')->sql();
-          </div>
+          <pre>
+            <code>
+              $connection = new \PDO('mysql:dbname=db_test;host=localhost', 'root', 'root');
+              $st = DB::getStatement($connection);
+            </code>
+          </pre>
         </section>
 
         <hr>
@@ -288,12 +267,14 @@
             resultado da query:
           </p>
 
-          <div class="code">
-            $result = $st->get('books', ['title', 'price'])->list();
-          </div>
+          <pre>
+            <code>
+              $result = $st->get('books', ['title', 'price'])->list();
+            </code>
+          </pre>
 
           <p>
-            Se não informarmos o segundo parâmetro para o método <code>get()</code> então
+            Se não informarmos o segundo parâmetro para o método <code>get()</code>,
             será retornado todas as colunas da tabela especificada no primeiro parâmetro.
           </p>
 
@@ -301,49 +282,60 @@
             Neste outro exemplo fazemos consultas em duas tabelas distintas:
           </p>
 
-          <div class="code">
-            $result = $st->get(['authors', 'books'])->list();
-          </div>
+          <pre>
+            <code>
+              $result = $st->get(['authors', 'books'])->list();
+            </code>
+          </pre>
+
+          <p>
+            Para obter a instrução SQL correspondente ao código acima basta executar
+            o método <code>sql()</code> em vez do método <code>list()</code>.
+          </p>
 
           <section>
             <h3 id="2.1">Recuperando resultado</h3>
 
             <p>
-              Nesta seção demonstraremos todos os métodos que são usados para
+              Nesta seção demonstramos todos os métodos que são usados para
               recuperar o resultado da consulta.
             </p>
 
             <ul>
               <li>
                 <p>
-                  Método <code>list()</code>: Retorna array indexado contendo todos os
+                  Método <code>list()</code>: Obtém array indexado contendo todos os
                   registro retornados pela query.
                 </p>
 
-                <div class="code">
-                  $result = $st->get('authors')->list();
-                </div>
+                <pre>
+                  <code>
+                    $result = $st->get('authors')->list();
+                  </code>
+                </pre>
 
                 <p>
                   O código acima gera a seguinte saída:
                 </p>
 
-                <div class="code">
-                  array (size=5)
-                  0 =>
-                  array (size=2)
-                  'id' => string '1' (length=1)
-                  'name' => string 'Yvonne do Amaral Pereira' (length=24)
-                  1 =>
-                  array (size=2)
-                  'id' => string '2' (length=1)
-                  'name' => string 'Henrik Ibsen' (length=12)
-                  2 =>
-                  array (size=2)
-                  'id' => string '3' (length=1)
-                  'name' => string 'John Green' (length=10)
-                  ...
-                </div>
+                <pre>
+                  <code>
+                    array (size=5)
+                      0 =>
+                      array (size=2)
+                      'id' => string '1' (length=1)
+                      'name' => string 'Yvonne do Amaral Pereira' (length=24)
+                      1 =>
+                      array (size=2)
+                      'id' => string '2' (length=1)
+                      'name' => string 'Henrik Ibsen' (length=12)
+                      2 =>
+                      array (size=2)
+                      'id' => string '3' (length=1)
+                      'name' => string 'John Green' (length=10)
+                      ...
+                  </code>
+                </pre>
               </li>
 
               <li>
@@ -363,24 +355,30 @@
                   Método <code>singleResult()</code>: Recupera valor literal retornado pela query.
                   Diferente dos outros métodos listado acima este não retorna um array.
                 </p>
-                <div class="code">
-                  $result = $st->get('users', ['email'])->filter('id', '=', 1)->singleResult();
-                  var_dump($result);
 
-                  // A saída do método var_dump() será o valor 'foobar@datab.com'
-                </div>
+                <pre>
+                  <code>
+                    $result = $st->get('users', ['email'])->filter('id', '=', 1)->singleResult();
+                    var_dump($result);
+
+                    // A saída do método var_dump() será o valor 'foobar@datab.com'
+                  </code>
+                </pre>
               </li>
               <li>
                 <p>
                   Método <code>toObjects()</code>: Busca um conjunto de registros no banco de dados
                   e os retorna como instâncias de objetos da classe passada por parâmetro. Se nenhuma
-                  classe for especificada o resultado da query será retornado como instâncias
-                  da classe 'stdClass';
+                  classe for especificada, o resultado será retornado como instâncias 'stdClass';
                 </p>
-                <div class="code">
-                  class Book {}
-                  $books = $st->get('books')->toObjects(Book::class);
-                </div>
+                
+                <pre>
+                  <code>
+                    class Book {}
+                    $books = $st->get('books')->toObjects(Book::class);
+                  </code>
+                </pre>
+
               </li>
               <li>
                 <p>
@@ -406,49 +404,62 @@
             <p>
               Instrução DML:
             </p>
-            <div class="code">
-              $authors = $st->nativeSQL('SELECT * FROM authors');
-            </div>
+
+            <pre>
+              <code>
+                $authors = $st->nativeSQL('SELECT * FROM authors');
+              </code>
+            </pre>
 
             <p>
               Instrução DDL:
             </p>
 
-            <div class="code">
-              $rowCount = $st->nativeSQL('ALTER TABLE categories ADD COLUMN parent INT');
-            </div>
+            <pre>
+              <code>
+                $rowCount = $st->nativeSQL('ALTER TABLE categories ADD COLUMN parent INT');
+              </code>
+            </pre>
+
           </section>
 
           <section>
             <h3 id="2.3">Executando funções do banco de dados</h3>
 
             <p>
-              Contando quantos registros existem na tabela <code>users</code>
+              Contando quantos registros existem na tabela <code>users</code>:
             </p>
-            <div class="code">
-              $count = $st->get('users')->count('*')->singleResult();
-            </div>
+
+            <pre>
+              <code>
+                $count = $st->get('users')->count('*')->singleResult();
+              </code>
+            </pre>
 
             <p>
               Neste outro exemplo contamos quantos livros foram publicados por
               cada autor:
             </p>
 
-            <div class="code">
-              $result = $st->get('books', ['authors.name'])
-              ->count('*')
-              ->innerJoin('authors', 'books.authors_id', 'authors.id')
-              ->groupBy('authors.name')
-              ->list();
-            </div>
+            <pre>
+              <code>
+                $result = $st->get('books', ['authors.name'])
+                  ->count('*')
+                  ->innerJoin('authors', 'books.authors_id', 'authors.id')
+                  ->groupBy('authors.name')
+                  ->list();
+              </code>
+            </pre>
 
             <p>Veja como fica a instrução SQL correspondente ao código acima:</p>
 
-            <div class="code">
-              SELECT authors.name, COUNT(*) FROM books
-              INNER JOIN authors ON books.authors_id = authors.id
-              GROUP BY authors.name
-            </div>
+            <pre>
+              <code>
+                SELECT authors.name, COUNT(*) FROM books
+                INNER JOIN authors ON books.authors_id = authors.id
+                GROUP BY authors.name
+              </code>
+            </pre>
 
             <p>As demais funções de agregação implementadas em DataB são listadas abaixo:</p>
 
@@ -475,34 +486,37 @@
             </p>
 
             <p>
-              Veja no exemplo abaixo onde fazemos chamada à função de banco de dados <code>CONCAT</code>:
+              Veja no exemplo abaixo onde fazemos chamada à função de banco de dados 
+              <code>CONCAT()</code>:
             </p>
 
-            <div class="code">
-              $result = $st->get('books')->concat('title', "'| R$ '", 'price')->list();
-            </div>
+            <pre>
+              <code>
+                $result = $st->get('books')->concat('title', "'| R$ '", 'price')->list();
+              </code>
+            </pre>
 
             <p>
-              Se a função que você quer executar for composta por mais de uma palavra onde exista
-              o caracter <code>underline</code> para fazer a divisão entre as palavras, então nesse
-              caso você deverá chamar a função removendo o caracter <code>underline</code>
-              e juntando as palavras usando o estilo camel case. Por exemplo, para a função
-              <code>DATE_FORMAT()</code> presente no banco de dados <code>MYSQL</code> você
-              deverá invocá-la da seguinte forma: <code>dateFormat()</code>. Observe no trecho de código
-              abaixo:
-            </p>
+              Se a função a ser executada for composta por mais de uma palavra separadas
+              pelo caractere <code>underline</code>, então
+              você deverá chamar a função removendo o caracter <code>underline</code>
+              e juntando as palavras usando o estilo <code>Camel Case</code>. Observe:
 
-            <div class="code">
-              $result = $st->get('articles')->dateFormat('created_at', "'%d/%m/%Y'")->list();
-            </div>
+            <pre>
+              <code>
+                $result = $st->get('articles')->dateFormat('created_at', "'%d/%m/%Y'")->list();
+              </code>
+            </pre>
 
             <p>
               Veja como fica a instrução SQL correspondente ao código acima:
             </p>
 
-            <div class="code">
-              SELECT DATE_FORMAT(updated_at, '%d/%m/%Y') FROM articles
-            </div>
+            <pre>
+              <code>
+                SELECT DATE_FORMAT(updated_at, '%d/%m/%Y') FROM articles
+              </code>
+            </pre>
           </section>
 
           <section>
@@ -510,30 +524,46 @@
 
             <p>Ordenação ascendente:</p>
 
-            <div class="code">
-              $result = $st->get('authors')->orderByAsc('name')->list();
-            </div>
+            <pre>
+              <code>
+                $result = $st->get('authors')->orderByAsc('name')->list();
+              </code>
+            </pre>
 
             <p>Ordenação descendente:</p>
 
-            <div class="code">
-              $result = $st->get('categories')->orderByDesc('name')->list();
-            </div>
+            <pre>
+              <code>
+                $result = $st->get('categories')->orderByDesc('name')->list();
+              </code>
+            </pre>
 
             <p>Ordenação por mais de uma coluna:</p>
 
-            <div class="code">
-              $result = $st->get('articles')->orderByAsc('title', 'created_at')->list();
-            </div>
+            <pre>
+              <code>
+                $result = $st->get('articles')->orderByAsc('title', 'created_at')->list();
+              </code>
+            </pre>
+
+            <p>Ordenação ascendente e descendente:</p>
+
+            <pre>
+              <code>
+                $result = $st->get('articles')
+                ->orderByAsc('title')
+                ->orderByDesc('created_at')
+                ->list();
+              </code>
+            </pre>
           </section>
 
           <section>
             <h3 id="2.6">Filtrando Dados</h3>
 
             <p>
-              Para adicionar filtros à instrução SQL DataB disponibiliza o método <code>filter()</code>,
-              que é usado para criar predicados, e também outros métodos como por exemplo <code>eqValue(),</code> que é
-              usado para adicionar restrições de igualdade.
+              Para adicionar predicados à instrução SQL use o método <code>filter()</code>. Outros métodos podem também ser usados em conjuntos, como por exemplo: <code>eqValue()</code>, <code>in()</code>,
+              <code>between()</code> etc.
             </p>
 
             <p>
@@ -541,32 +571,43 @@
               <code>books</code> onde o preço tem que ser igual a <code>29.99</code>:
             </p>
 
-            <div class="code">
-              $result = $st->get('books')->filter('price', '=', 29.99)->list();
-            </div>
+            <pre>
+              <code>
+                // Usando apenas o método filter() para adicionar predicados
+                $result = $st->get('books')->filter('price', '=', 29.99)->list();
+
+                // Usando o método filter() em conjunto com o método eqValue()
+                // para adicionar predicados
+                $result = $st->get('books')->filter('price')->eqValue(29.99)->list();
+              </code>
+            </pre>
 
             <p>Abaixo ilustramos a instrução SQL equivalente ao trecho de código acima:</p>
 
-            <div class="code">
-              SELECT * FROM books WHERE price = :col_1
-            </div>
+            <pre>
+              <code>
+                SELECT * FROM books WHERE price = :col_1
+              </code>
+            </pre>
 
             <p>
               Por padrão, toda entrada de dados para a instrução SQL é convertida para
-              <code>Named Placeholders</code> por motivos de segurança para evitar SQL injection, como visto
-              no exemplo anterior onde a coluna <code>price</code> é igual a <code>:col_1</code>.
+              <code>Named Placeholders</code> por motivos de segurança para evitar SQL injection.
+              Observe no trecho de código acima onde o valor <code>29.99</code> foi convertido
+              para <code>:col_1</code>.
             </p>
 
             <p>
-              Em alguns casos tavez você queira especificar <code>Named Placeholders</code> como entrada
-              para a instrução SQL em vez de passar os dados literais. Neste caso, é necessário passar
+              Em alguns casos, talvez você queira especificar <code>Named Placeholders</code> como entrada em vez de passar os dados literais. Neste caso é necessário passar
               um array associativo contendo os dados de entrada para a instrução SQL. Observe:
             </p>
 
-            <div class="code">
-              $data = array('email' => 'foo@bar.com')
-              $result = $st->get('users')->filter('email', '=', ':email')->list($data);
-            </div>
+            <pre>
+              <code>
+                $data = array('email' => 'foo@bar.com')
+                $result = $st->get('users')->filter('email', '=', ':email')->list($data);
+              </code>
+            </pre>
 
             <p>
               O array de dados deverá ser passado como parâmetro para os
@@ -575,15 +616,16 @@
             </p>
 
             <p>
-              DataB não trabalha com <code>Mask Placeholders</code>, então evite usá-lo.
+              DataB não trabalha com <code>Mask Placeholders</code>, então para evitar 
+              divergências no resultado da query evite usá-lo.
             </p>
 
             <section>
               <h4 id="2.6.1">Operadores relacionais</h4>
 
               <p>
-                Existem duas maneiras de trabalharmos com operadores relacionais com DataB, a primeira
-                é usando o método <code>filter()</code> e a segunda é usando um dos seguintes métodos
+                Existem duas maneiras de se trabalhar com operadores relacionais com DataB: A primeira
+                é usando o método <code>filter()</code>; e a segunda é usando um dos seguintes métodos
                 listados abaixo:
               </p>
 
@@ -612,17 +654,21 @@
                 Usando <code>filter()</code>:
               </p>
 
-              <div class="code">
-                $result = $st->get('users')->filter('email', '=', 'foo@bar.com')->list();
-              </div>
+              <pre>
+                <code>
+                  $result = $st->get('users')->filter('email', '=', 'foo@bar.com')->list();
+                </code>
+              </pre>
 
               <p>
                 Usando métodos específicos:
               </p>
 
-              <div class="code">
-                $result = $st->get('users')->filter('email')->eqValue('foo@bar.com')->list();
-              </div>
+              <pre>
+                <code>
+                  $result = $st->get('users')->filter('email')->eqValue('foo@bar.com')->list();
+                </code>
+              </pre>
 
             </section>
 
@@ -637,30 +683,36 @@
                   lógicas. Observe:
                 </p>
 
-                <div class="code">
-                  $result = $st->get('users')->filter('id', '>', 2)
-                  ->and('email', '=', 'foo@bar.com')
-                  ->or('email', '=', 'bar@foo.com')
-                  ->list();
-                </div>
+                <pre>
+                  <code>
+                    $result = $st->get('users')->filter('id', '>', 2)
+                      ->and('email', '=', 'foo@bar.com')
+                      ->or('email', '=', 'bar@foo.com')
+                      ->list();
+                  </code>
+                </pre>
 
                 <p>
                   No exemplo a seguir criamos a mesma expressão lógica acima só que dessa vez usamos
                   os métodos específicos para fazermos comparações:
                 </p>
 
-                <div class="code">
-                  $result = $st->get('users')->filter('id')->gtValue(2)
-                  ->and('email')->eqValue('foo@bar.com')
-                  ->or('email')->eqValue('bar@foo.com')
-                  ->list();
-                </div>
+                <pre>
+                  <code>
+                    $result = $st->get('users')->filter('id')->gtValue(2)
+                      ->and('email')->eqValue('foo@bar.com')
+                      ->or('email')->eqValue('bar@foo.com')
+                      ->list();
+                  </code>
+                </pre>
 
                 <p>Abaixo ilustramos a instrução SQL equivalente aos dois exemplos acima:</p>
 
-                <div class="code">
-                  SELECT * FROM users WHERE id > :col_1 AND email = :col_2 OR email = :col_3
-                </div>
+                <pre>
+                  <code>
+                    SELECT * FROM users WHERE id > :col_1 AND email = :col_2 OR email = :col_3
+                  </code>
+                </pre>
               </section>
 
               <section>
@@ -674,44 +726,50 @@
 
                 <p>
                   Dentro do método <code>filter()</code> o operador <code>IN</code> corresponde ao sinal
-                  <code>-></code>, enquanto o operador <code>NOT IN</code> corresponde ao sinal
-                  <code>!-></code>. Veja como funciona:
+                  <code>' -> '</code>, enquanto o operador <code>NOT IN</code> corresponde ao sinal
+                  <code>' !-> '</code>. Veja como funciona:
                 </p>
 
-                <div class="code">
-                  // Operador IN (->)
-                  $result = $st->get('users')->filter('id', '->', array(1,2,3,4))->list();
-                </div>
+                <pre>
+                  <code>
+                    // Operador IN ->
+                    $result = $st->get('users')->filter('id', '->', array(1, 2, 3, 4))->list();
+                  </code>
+                </pre>
 
                 <p>
                   No trecho de código abaixo demonstramos o mesmo exemplo acima só que
                   usando o método <code>in()</code>:
                 </p>
 
-                <div class="code">
-                  $result = $st->get('users')->filter('id')->in(1, 2, 3, 4)->list();
-                </div>
+                <pre>
+                  <code>
+                    $result = $st->get('users')->filter('id')->in(1, 2, 3, 4)->list();
+
+                    // Podemos também passar um array para o método in()
+                    $result = $st->get('users')->filter('id')->in([1, 2, 3, 4])->list();
+                  </code>
+                </pre>
 
                 <p>Os dois exemplos acima gera a mesma instrução SQL:</p>
 
-                <div class="code">
-                  SELECT * FROM users WHERE id IN (:col_1, :col_2, :col_3, :col_4)
-                </div>
-
-                <p>
-                  Os métodos <code>in()</code> e <code>notIn()</code> recebem como parâmetro
-                  tanto um array de dados quanto um conjunto de valores separados por vírgulas.
-                </p>
+                <pre>
+                  <code>
+                    SELECT * FROM users WHERE id IN (:col_1, :col_2, :col_3, :col_4)
+                  </code>
+                </pre>
 
                 <p>
                   Lembrando que você pode também usar <code>Named Placeholders</code> tanto no método
                   <code>filter()</code> quanto nos métodos <code>in()</code> e <code>notIn()</code>:
                 </p>
 
-                <div class="code">
-                  $result = $st->get('users')->filter('id', '!->', array(':id1', ':id2'))
-                  ->list(array('id1' => 1, 'id2' => 2));
-                </div>
+                <pre>
+                  <code>
+                    $result = $st->get('users')->filter('id', '!->', array(':id1', ':id2'))
+                      ->list(array('id1' => 1, 'id2' => 2));
+                  </code>
+                </pre>
               </section>
 
               <section>
@@ -729,49 +787,60 @@
                   <code>' ^| '</code>. Veja como funciona:
                 </p>
 
-                <div class="code">
-                  // Usando operador BETWEEN |
-                  $result = $st->get('articles')
-                  ->filter('updated_at', '|', array('2022-01-01', '2022-02-01'))->list();
-                </div>
+                <pre>
+                  <code>
+                    // Usando operador BETWEEN |
+                    $result = $st->get('articles')
+                      ->filter('updated_at', '|', array('2022-01-01', '2022-02-01'))->list();
+                  </code>
+                </pre>
 
                 <p>
                   No código acima buscamos por todos os registros da tabela <code>articles</code>
-                  que foram atualizados entre as datas <code>2022-01-01</code> a <code>2022-02-01</code>
+                  que foram atualizados entre as datas <code>01/01/2022</code> à <code>01/02/2022</code>.
                 </p>
 
                 <p>
                   Agora observe o mesmo exemplo acima só que desta vez usando o método <code>between()</code>:
                 </p>
 
-                <div class="code">
-                  $result = $st->get('articles')
-                  ->filter('updated_at')->between('2022-01-01', '2022-02-01')->list();
-                </div>
+                <pre>
+                  <code>
+                    $result = $st->get('articles')
+                      ->filter('updated_at')->between('2022-01-01', '2022-02-01')->list();
+
+                    // Podemos também passar um array para o método between()
+                    $result = $st->get('articles')
+                      ->filter('updated_at')->between(['2022-01-01', '2022-02-01'])->list();
+                  </code>
+                </pre>
 
                 <p>
-                  Tanto o método <code>filter()</code> quanto os métodos <code>between()</code> e 
+                  Tanto o método <code>filter()</code> quanto os métodos <code>between()</code> e
                   <code>notBetween()</code> aceitam <code>Named Placeholders</code>.
                 </p>
 
-                <div class="code">
-                  // Usando método filter
-                  $result = $st->get('articles')
-                  ->filter('updated_at', '|', array(':date1', ':date2'))
-                  ->list(array('date1' => '2022-01-01', 'date2' => '2022-02-01'));
+                <pre>
+                  <code>
+                    // Usando método filter()
+                    $result = $st->get('articles')
+                      ->filter('updated_at', '|', array(':date1', ':date2'))
+                      ->list(array('date1' => '2022-01-01', 'date2' => '2022-02-01'));
 
-                  // Usando método notBetween
-                  $result = $st->get('articles')
-                  ->filter('updated_at')->between(':date1', ':date2')
-                  ->list(array('date1' => '2022-01-01', 'date2' => '2022-02-01'));
-                </div>
+                    // Usando método between()
+                    $result = $st->get('articles')
+                      ->filter('updated_at')->between(':date1', ':date2')
+                      ->list(array('date1' => '2022-01-01', 'date2' => '2022-02-01'));
+                  </code>
+                </pre>
               </section>
 
               <section>
                 <h5 id="2.6.2.4">LIKE</h5>
 
                 <p>
-                  Além do método <code>filter()</code> DataB disponibiliza três métodos para se trabalhar com o operador <code>LIKE</code>:
+                  Além do método <code>filter()</code>, DataB disponibiliza três métodos para se trabalhar com o operador
+                  <code>LIKE</code>:
                 </p>
 
                 <ul>
@@ -787,8 +856,8 @@
                 </ul>
 
                 <p>
-                  Se você decidir usar somente o método <code>filter()</code> para incluír o 
-                  operador <code>LIKE</code> à instrução SQL, então é necessário usar um dos 
+                  Se você decidir usar somente o método <code>filter()</code> para incluír o
+                  operador <code>LIKE</code> à instrução SQL, então é necessário usar um dos
                   seguintes caracteres para construir o padrão de busca:
                 </p>
 
@@ -809,40 +878,48 @@
                   os registros da tabela <code>categories</code> onde o nome inicia com a letra <code>R</code>:
                 </p>
 
-                <div class="code">
-                  $result = $st->get('categories')->filter('name', '^', 'R')->list();
-                </div>
+                <pre>
+                  <code>
+                    $result = $st->get('categories')->filter('name', '^', 'R')->list();
+                  </code>
+                </pre>
 
                 <p>
                   Veja o mesmo exemplo acima só que usando o método <code>startsWith()</code>:
                 </p>
 
-                <div class="code">
-                  $result = $st->get('categories')->filter('name')->startsWith('R')->list();
-                </div>
+                <pre>
+                  <code>
+                    $result = $st->get('categories')->filter('name')->startsWith('R')->list();
+                  </code>
+                </pre>
 
                 <p>
-                  Agora observe no exemplo abaixo como usar <code>Named Placeholders</code> com 
+                  Agora observe no exemplo abaixo como usar <code>Named Placeholders</code> com
                   o operador <code>LIKE</code>:
                 </p>
 
-                <div class="code">
-                  // Retorna todas as categorias cujo nome termina com 'de'
-                  $result = $st->get('categories')->filter('name', '$', ':pattern')
-                  ->list(['pattern' => '%de']);
-                </div>
+                <pre>
+                  <code>
+                    // Retorna todas as categorias cujo nome termina com 'de'
+                    $result = $st->get('categories')->filter('name', '$', ':pattern')
+                      ->list(['pattern' => '%de']);
+                  </code>
+                </pre>
               </section>
 
               <section>
                 <h5 id="2.6.2.5">IS NULL e IS NOT NULL</h5>
 
-                <div class="code">
-                  //IS NULL
-                  $result = $st->get('categories')->filter('parent')->isNull()->list();
+                <pre>
+                  <code>
+                    //IS NULL
+                    $result = $st->get('categories')->filter('parent')->isNull()->list();
 
-                  // IS NOT NULL
-                  $result = $st->get('categories')->filter('parent')->isNotNull()->list();
-                </div>
+                    // IS NOT NULL
+                    $result = $st->get('categories')->filter('parent')->isNotNull()->list();
+                  </code>
+                </pre>
               </section>
 
               <section>
@@ -854,32 +931,38 @@
                 </p>
 
                 <p>
-                  No trecho de código abaixo demonstramos como recuperar todos os autores que tenham livros publicados entre os anos de
+                  No trecho de código abaixo demonstramos como recuperar todos os autores que tenham livros publicados
+                  entre os anos de
                   <code>2000</code> e <code>2019</code>.
                 </p>
 
-                <div class="code">
-                  $result = $st->get('authors')
-                  ->exists(function($query) {
-                    $query->get('books')
-                    ->filter('published', '|', [2000, 2019])
-                    ->and('authors.id', '=', '*books.authors_id');
-                  })
-                  ->list();
-                </div>
+                <pre>
+                  <code>
+                    $result = $st->get('authors')
+                      ->exists(function($query) {
+                                $query->get('books')
+                                ->filter('published', '|', [2000, 2019])
+                                ->and('authors.id', '=', '*books.authors_id');
+                              })
+                      ->list();
+                  </code>
+                </pre>
 
                 <p>
                   A instrução SQL correspondente ao exemplo anterior fica da seguinte forma:
                 </p>
 
-                <div class="code">
-                  SELECT * FROM authors WHERE 
-                  EXISTS (SELECT * FROM books WHERE published BETWEEN :col_1 AND :col_2 AND authors.id = books.authors_id)
-                </div>
+                <pre>
+                  <code>
+                    SELECT * FROM authors WHERE
+                    EXISTS (SELECT * FROM books WHERE published BETWEEN :col_1 AND :col_2 
+                    AND authors.id = books.authors_id)
+                  </code>
+                </pre>
 
                 <p>
-                  <strong>OBSERVAÇÃO:</strong> Ao se comparar duas colunas usando os métodos 
-                  <code>filter()</code>, <code>and()</code>, <code>or()</code> e <code>subexpr()</code> a última coluna deverá ser precedida pelo caracter <code>'*'</code>. Isso
+                  <strong>OBSERVAÇÃO:</strong> Ao se comparar duas colunas usando os métodos
+                  <code>filter()</code>, <code>and()</code>, <code>or()</code> e <code>subexpr()</code>; a última coluna deverá ser precedida pelo caracter <code>'*'</code>. Isso
                   é necessário para que a ultima coluna não seja interpretada como um valor literal da primeira coluna.
                 </p>
 
@@ -887,25 +970,29 @@
                   Por exemplo, no trecho de código a seguir fazemos comparação entre duas colunas:
                 </p>
 
-                <div class="code">
-                  $result = $st->get(['articles', 'authors'])
-                    ->filter('articles.authors_id', '=', '*authors.id')->list();
-                  
-                  /*Código SQL: 
-                  SELECT * FROM articles, authors WHERE articles.authors_id = authors.id*/
-                </div>
+                <pre>
+                  <code>
+                    $result = $st->get(['articles', 'authors'])
+                      ->filter('articles.authors_id', '=', '*authors.id')->list();
+
+                    /*Código SQL:
+                    SELECT * FROM articles, authors WHERE articles.authors_id = authors.id*/
+                  </code>
+                </pre>
 
                 <p>
                   Agora neste outro exemplo fazemos comparação entre a coluna e seu respectivo valor:
                 </p>
 
-                <div class="code">
-                  $result = $st->get('users')
-                    ->filter('email', '=', 'foo@bar.com')->list();
-                  
-                  /*Código SQL: 
-                  SELECT * FROM users WHERE email = :col_1*/
-                </div>
+                <pre>
+                  <code>
+                    $result = $st->get('users')
+                      ->filter('email', '=', 'foo@bar.com')->list();
+
+                    /*Código SQL:
+                    SELECT * FROM users WHERE email = :col_1*/
+                  </code>
+                </pre>
 
               </section>
 
@@ -932,79 +1019,90 @@
               Veja como funciona usando <code>SQL Server</code>:
             </p>
 
-            <div class="code">
-              // Recuperando todos os registros a partir da décima linha
-              $result = $st->get('articles')->orderByAsc('title')->offset(10)->list();
+            <pre>
+              <code>
+                // Recuperando todos os registros a partir da décima linha
+                $result = $st->get('articles')->orderByAsc('title')->offset(10)->list();
 
-              // Recuperando os primeiros 10 registros
-              $result = $st->get('articles')->orderByAsc('title')->fetch(10)->list();
+                // Recuperando os primeiros 10 registros
+                $result = $st->get('articles')->orderByAsc('title')->fetch(10)->list();
 
-              // Recuperando os primeiros 20 registros a partir da décima linha
-              $result = $st->get('articles')->orderByAsc('title')->offset(10)->fetch(20)->list();
-            </div>
+                // Recuperando os primeiros 20 registros a partir da décima linha
+                $result = $st->get('articles')->orderByAsc('title')->offset(10)->fetch(20)->list();
+              </code>
+            </pre>
 
             <p>
               Usando <code>MYSQL</code>:
             </p>
 
-            <div class="code">
-              /* Por padrão, se não for especificado o fetch, são retornados somente 1000 registros a partir do offset especificado.*/
+            <pre>
+              <code>
+                /* Por padrão, se não for especificado o fetch, são retornados somente 1000 registros a partir do offset especificado.*/
 
-              // Recuperando 1000 registros a partir da décima linha.
-              $result = $st->get('articles')->offset(10)->list();
+                // Recuperando 1000 registros a partir da décima linha.
+                $result = $st->get('articles')->offset(10)->list();
 
-              // Recuperando os primeiros 10 registros
-              $result = $st->get('articles')->fetch(10)->list();
+                // Recuperando os primeiros 10 registros
+                $result = $st->get('articles')->fetch(10)->list();
 
-              // Recuperando 20 registros a partir da décima linha.
-              $result = $st->get('articles')->offset(10)->fetch(20)->list();
-            </div>
+                // Recuperando 20 registros a partir da décima linha.
+                $result = $st->get('articles')->offset(10)->fetch(20)->list();
+              </code>
+            </pre>
           </section>
 
           <section>
             <h3 id="2.8">Buscando dados não duplicados</h3>
-            
+
             <p>
-              DataB disponibiliza o método <code>distinct()</code> o qual recebe como parâmetro tanto um array quanto um conjunto de colunas separadas por vírgulas.
+              DataB disponibiliza o método <code>distinct()</code> o qual recebe como parâmetro tanto um array quanto um
+              conjunto de colunas separadas por vírgulas.
             </p>
 
-            <div class="code">
-              $result = $st->get('employees')->distinct('lastname')->list();
+            <pre>
+              <code>
+                $result = $st->get('employees')->distinct('lastname')->list();
 
-              // Usando mais de uma coluna
-              $result = $st->get('employees')->distinct('lastname', 'city')->list();
-            </div>
+                // Usando mais de uma coluna
+                $result = $st->get('employees')->distinct('lastname', 'city')->list();
+              </code>
+            </pre>
 
           </section>
 
           <section>
             <h3 id="2.9"> Junção de tabelas</h3>
             <p>
-              Nesta seção demonstramos como fazer junção de tabelas com DataB. No exemplo abaixo,
+              Nesta seção demonstramos como fazer junção de tabelas com DataB. No exemplo abaixo
               usamos o método <code>filter()</code> para criar a junção entre
               as tabelas <code>authors</code> e <code>books</code>:
             </p>
 
-            <div class="code">
-              $result = $st->get(['books', 'authors'])
-                ->filter('books.authors_id', '=', '*authors.id')->list();
+            <pre>
+              <code>
+                $result = $st->get(['books', 'authors'])
+                  ->filter('books.authors_id', '=', '*authors.id')->list();
 
-              //Outra maneira usando filter
-              $result = $st->get(['books', 'authors'])
-                ->filter('books.authors_id')->eqColumn('authors.id')->list();
-            </div>
+                //Outra maneira usando filter
+                $result = $st->get(['books', 'authors'])
+                  ->filter('books.authors_id')->eqColumn('authors.id')->list();
+              </code>
+            </pre>
 
             <p>
               Usando <code>inner join</code>:
             </p>
 
-            <div class="code">
-              $result = $st->get('books')
-                ->innerJoin('authors', 'books.authors_id', 'authors.id')->list();
-            </div>
+            <pre>
+              <code>
+                $result = $st->get('books')
+                  ->innerJoin('authors', 'books.authors_id', 'authors.id')->list();
+              </code>
+            </pre>
 
             <p>
-              Ok. Os demais métodos disponíveis em DataB para criar junções de tabelas são estes:
+              Os demais métodos usados para criar junções de tabelas são estes:
               <code>leftJoin()</code>, <code>rightJoin()</code>, <code>crossJoin()</code> e
               <code>fullJoin()</code>.
             </p>
@@ -1023,19 +1121,23 @@
               funcionários agrupando por departamentos:
             </p>
 
-            <div class="code">
-              $result = $st->get('employees', ['employees.name', 'departaments.name'])
-              ->innerJoin('departaments', 'employees.dep_id', 'departaments.id')
-              ->groupBy('departaments.name')->list();
-            </div>
+            <pre>
+              <code>
+                $result = $st->get('employees', ['employees.name', 'departaments.name'])
+                  ->innerJoin('departaments', 'employees.dep_id', 'departaments.id')
+                  ->groupBy('departaments.name')->list();
+              </code>
+            </pre>
 
             <p>Instrução SQL:</p>
 
-            <div class="code">
-              SELECT employees.name, departaments.name FROM employees 
-              INNER JOIN departaments ON employees.dep_id = departaments.id 
-              GROUP BY departaments.name
-            </div>
+            <pre>
+              <code>
+                SELECT employees.name, departaments.name FROM employees
+                INNER JOIN departaments ON employees.dep_id = departaments.id
+                GROUP BY departaments.name
+              </code>
+            </pre>
 
             <p>
               Se você já está familiarizado com o uso do método <code>filter()</code> então não terá
@@ -1048,16 +1150,20 @@
 
             <p>
               Para unir dois ou mais conjuntos de resultados DataB disponibiliza os métodos
-              <code>union()</code> e <code>unionAll()</code> que recebem como parâmetro uma <code>função callback</code> na qual montamos uma <code>subquery</code>. Observe:
+              <code>union()</code> e <code>unionAll()</code> que recebem como parâmetro uma <code>função callback</code>
+              na qual montamos uma <code>subquery</code>. Observe:
             </p>
 
-            <div class="code">
-              //Combinando nomes de funcionários e clientes
-              $result = $st->get('employees', ['name'])
-              ->union(function($query) {   
-                $query->get('customers', ['name']);
-               })->list();
-            </div>
+            <pre>
+              <code>
+                //Combinando nomes de funcionários e clientes
+                $result = $st->get('employees', ['name'])
+                  ->union(function($query) {
+                            $query->get('customers', ['name']);
+                        })
+                  ->list();
+              </code>
+            </pre>
           </section>
 
           <section>
@@ -1121,62 +1227,73 @@
 
             <p>
               No exemplo abaixo demonstramos o uso de subquery com o método <code>filter()</code>
-              para o operador <code>IN '->'</code>. Buscamos por registros de autores que tenham 
+              para o operador <code>IN '->'</code>. Buscamos por registros de autores que tenham
               livros cuja categoria seja Drama:
             </p>
 
-            <div class="code">
-              $subQ = function($query) {
-                $query->get('books', ['authors.id'])
-                ->innerJoin('authors', 'authors.id', 'books.author_id')
-                ->innerJoin('categories', 'categories.id', 'books.cat_id')
-                ->and('categories.name', '=', 'Drama');
-              };
-              $result = $st->get('authors')->filter('id', '->', $subQ)->list();
+            <pre>
+              <code>
+                $subQ = function($query) {
+                  $query->get('books', ['authors.id'])
+                  ->innerJoin('authors', 'authors.id', 'books.author_id')
+                  ->innerJoin('categories', 'categories.id', 'books.cat_id')
+                  ->and('categories.name', '=', 'Drama');
+                };
 
-              //Você pode também usar o método in()
-              //$result = $st->get('authors')->filter('id')->in($subQ)->list();
-              
-            </div>
+                $result = $st->get('authors')->filter('id', '->', $subQ)->list();
+  
+                //Você pode também usar o método in()
+                //$result = $st->get('authors')->filter('id')->in($subQ)->list();
+              </code>
+            </pre>
 
             <p>Instrução SQL:</p>
 
-            <div class="code">
-              SELECT * FROM authors WHERE id IN (SELECT authors.id FROM books INNER JOIN authors ON authors.id = books.author_id INNER JOIN categories ON categories.id = books.cat_id AND categories.name = :col_1)
-            </div>
+            <pre>
+              <code>
+                SELECT * FROM authors WHERE id IN (SELECT authors.id FROM books INNER JOIN authors ON authors.id = books.author_id INNER JOIN categories ON categories.id = books.cat_id 
+                AND categories.name = :col_1)
+              </code>
+            </pre>
           </section>
 
           <section>
             <h3 id="2.13">Subexpressões</h3>
             <p>
               Subexpressões são criadas passando uma função callback como parâmetro para os métodos
-              <code>and()</code> e <code>or()</code>. Dentro da função callback montamos a 
+              <code>and()</code> e <code>or()</code>. Dentro da função callback montamos a
               subexpressão usando o método <code>filter()</code> ou o método <code>subexpr()</code>.
             </p>
 
             <p>
               Na query a seguir buscamos por registros da tabela artigos cujo campo título comece
-              com a palavra <code>'Pres'</code> e termina com a palavra <code>'ente'</code> ou 
+              com a palavra <code>'Pres'</code> e termina com a palavra <code>'ente'</code> ou
               <code>'idente'</code>.
             </p>
 
-            <div class="code">
-              $expr = function($query) {
-                $query->filter('title')->endsWith('ente')
-                ->or('title')->endsWith('idente');
-              };
-              $result = $st->get('articles')->filter('title')->startsWith('Pres')
-              ->and($expr)->list();
-            </div>
+            <pre>
+              <code>
+                  $expr = function($query) {
+                      $query->filter('title')->endsWith('ente')
+                      ->or('title')->endsWith('idente');
+                  };
+
+                  $result = $st->get('articles')->filter('title')->startsWith('Pres')
+                  ->and($expr)->list();
+              </code>
+            </pre>
 
             <p>
               Veja como fica a instrução SQL referente ao exemplo anterior:
             </p>
 
-            <div class="code">
-              SELECT * FROM articles 
-              WHERE title LIKE :col_1 AND (title LIKE :col_2 OR title LIKE :col_3)
-            </div>
+            <pre>
+              <code>
+                SELECT * FROM articles
+                WHERE title LIKE :col_1 
+                AND (title LIKE :col_2 OR title LIKE :col_3)
+              </code>
+            </pre>
           </section>
           <!--Fim secao consultas-->
         </section>
@@ -1193,138 +1310,165 @@
 
             <p>
               Para inserir novos registros em uma tabela é muito fácil, basta passar
-              para o método <code>put()</code> o nome da tabela e um array associativo contendo os dados para inserção. Observe: as chaves do array devem corresponder ao nomes das colunas da tabela na qual queremos inserir os dados.
+              para o método <code>put()</code> o nome da tabela e um array associativo contendo os dados para inserção.
+              Observe: as chaves do array devem corresponder ao nomes das colunas da tabela na qual queremos inserir os
+              dados.
             </p>
 
             <p>
-              Ao inserir o novo registro, o método <code>put()</code> retorna o último campo identificador <code>(id)</code>.
+              Ao inserir um novo registro, o método <code>put()</code> retorna o último campo identificador
+              <code>(id)</code>.
             </p>
 
-            <div class="code">
-              $data = [
-                'email' => 'foo@bar.com',
-                'pass' => 'foo123'
-              ];
+            <pre>
+              <code>
+                $data = [
+                  'email' => 'foo@bar.com',
+                  'password' => 'foo123'
+                ];
 
-              $id = $st->put('users', $data);
-            </div>
+                $id = $st->put('users', $data);
+              </code>
+            </pre>
           </section>
 
           <section>
             <h3 id="3.2">Atualizando registros</h3>
 
             <p>
-              Para fazer atualizações também usamos o método <code>put()</code>, mas com um 
-              diferencial: Devemos passar um terceiro parâmetro que corresponde ao um 
-              <code>filtro</code> ou a um string <code>'*'</code>.
+              Para fazer atualizações também usamos o método <code>put()</code>, mas com um
+              diferencial: Devemos passar um terceiro parâmetro que corresponde ao um
+              <code>filtro</code>.
             </p>
 
             <p>
-              Existem duas maneiras de criarmos um filtro; a primeira é usando uma função 
-              <code>callback</code> e a segunda é passando um array indexado com dois elementos
-              onde o primeiro é nome de uma coluna e segundo é o valor dessa coluna a ser comparado.
+              Existem três maneiras de criarmos um filtro; a primeira é usando uma função
+              <code>callback</code>; a segunda é passando um array indexado com dois elementos
+              onde o primeiro é nome de uma coluna e segundo é o valor dessa coluna a ser comparado;
+              a terceira maneira é passando uma string <code>'*'</code> onde todos os registros da tabela são
+              atualizados.
             </p>
 
             <p>
-              A seguir demonstramos as duas maneiras de atualizarmos os registros da tabela <code>users</code> onde o campo <code>id</code> seja igual a <code>2</code>:
+              Observe como funciona:
             </p>
 
-            <div class="code">
-              $data = [
-                'email' => 'bar@foo.com'
-              ];
+            <pre>
+              <code>
+                $data = ['email' => 'bar@foo.com'];
 
-              // usando função callback
-              $rowCount = $st->put('users', $data, function($f) {
-                $f->filter('id')->eqValue(2);
-              });
+                // Criando filtro usando função callback
+                $rowCount = $st->put('users', $data, function($f) {
+                  $f->filter('id')->eqValue(2);
+                });
 
-              // usando array indexado
-              $rowCount = $st->put('users', $data, ['id', 2]);
-            </div>
+                // Criando filtro usando array indexado
+                $rowCount = $st->put('users', $data, ['id', 2]);
 
-            <p>
-              Se quisermos atualiazar todos os registros devemos passar a string <code>'*'</code>
-              como terceiro parâmetro:
-            </p>
-
-            <div class="code"></div>
-              //Atualizando a senha de todos os usuários para '123'
-              $data = ['pass' => '123'];
-              $rowCount = $st->put('users', $data, '*');
-            </div>
-          </section>
-
-          <section>
-            <h3 id="3.3">Removendo registros</h3>
-
-            <p>O processo de remover registros de uma tabela é muito simples. Veja como funciona:</p>
-
-            <div class="code">
-              $rowCount = delete('books')
-              ->exec()
-              ->rows();
-            </div>
-
-            <p>
-              No trecho de cógido acima excluímos todos os registros da tabela <code>books</code>.
-              Para definirmos filtros par alimitar quais registros deverão ser excluídos você pode usar
-              o método <code>cond()</code> para encaderar os filtros. Observe:
-            </p>
-
-            <div class="code">
-              $rowCount = delete('books')
-              ->cond('id')
-              ->eqValue(2)
-              ->exec()
-              ->rows();
-            </div>
-          </section>
-
-          <section>
-            <h3 id="3.4">Usando transações</h3>
-
-            <p>
-              Para alterar, atualiazar ou remover registros de forma segura use o método
-              <code>transaction()</code>
-              que recebe como parâmetro uma função callback que executa uma instrução SQL dentro de uma transação
-              de banco de dados. Caso ocorra uma falha na transação SQL então tudo será desfeito (rollback).
-            </p>
-
-            <div class="code">
-              $id = transaction(function() {
-              return insert('name')
-              ->table('categories')
-              ->values('Tecnologia')
-              ->exec()
-              ->getLastInsertedId();
-              });
-            </div>
-
-            <p>
-              O métod <code>transaction()</code> só retorna um valor se você retornar o valor do callback.
-            </p>
-          </section>
-
-          <!--Fim secao modificando dados-->
-        </section>
-
-        <hr>
-
+                //Atualizando todos os registros
+                $rowCount = $st->put('users', $data, '*');
+              </code>
+            </pre>
       </div>
+      </section>
+
+      <section>
+        <h3 id="3.3">Removendo registros</h3>
+
+        <p>
+          Para excluir registros do banco de dados use o método <code>remove()</code> que
+          recebe como parâmetros o nome do tabela e um filtro, caso necessário.
+        </p>
+
+        <p>
+          Existem duas maneiras de criarmos um filtro; a primeira é usando uma função
+          <code>callback</code> e a segunda é passando um array indexado com dois elementos
+          onde o primeiro é nome de uma coluna e o segundo é o valor dessa coluna a ser comparado.
+        </p>
+
+        <p>
+          No exemplo abaixo demonstramos as três maneiras de remover registros:
+        </p>
+
+        <pre>
+          <code>
+            //criando filtro com função callback
+            $rowCount = $st->remove('users', function($f) {
+              $f->filter('email', '=', 'foo@bar.com');
+            });
+
+            // usando array indexado
+            $rowCount = $st->remove('users', ['id', 2]);
+
+            //removendo todos os registros de users
+            $rowCount = $st->remove('users');
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h3 id="3.4">Usando transações</h3>
+
+        <p>
+          Para inserir, atualiazar ou remover registros de forma segura use o método
+          <code>transaction()</code>, que recebe como parâmetro uma função callback que executa uma instrução SQL dentro de uma transação de banco de dados. Caso ocorra uma falha tudo será desfeito (rollback).
+        </p>
+
+        <pre>
+          <code>
+            $rowCount = $st->transaction(function($statement) {
+              return $statement->remove('authors', ['id', 10]);
+            });
+          </code>
+        </pre>
+
+        <p>
+          O métod <code>transaction()</code> só retorna um valor se você retornar o valor do callback.
+        </p>
+      </section>
+
+      <!--Fim secao modificando dados-->
+      </section>
+    </div>
     </div>
   </main>
 
   <script>
-    document.querySelectorAll('div.code').forEach(el => {
-      hljs.highlightElement(el);
-    });
+    // Exibe ou oculta menu lateral
     function toggleSidebar() {
       document.querySelector('#sidebarElem').classList.toggle('toggle');
       document.querySelector('#contentElem').classList.toggle('toggle');
     }
+
+    //Ao clicar no link do sumario do menu lateral redireciona 
+    // para o titulo ancorado com o link
     function redirect(e) {
       location.href = '#' + e.dataset.redir;
+    }
+
+    // Removendo identação inicial desnecessárias dos elementos <pre>
+    let elements = document.querySelectorAll('pre code');
+
+    elements.forEach((element) => formatPreElement(element));
+    function formatPreElement(element) {
+      let promise = new Promise((resolve, reject) => {
+        let content = element.textContent;
+
+        let lines = content.split('\n');
+
+        let firstLine = lines[1];
+
+        let pos = firstLine.search(/\S/);
+
+        let buffer = '';
+        let regexp = new RegExp("\\s{" + pos + "}");
+        for (let i = 0; i < lines.length; i++) {
+          let newLine = lines[i].replace(regexp, '');
+          buffer += newLine + "\n";
+        }
+        element.textContent = buffer.trim();
+        resolve();
+      });
     }
   </script>
   <!--
